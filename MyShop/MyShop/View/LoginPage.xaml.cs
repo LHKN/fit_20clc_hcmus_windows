@@ -27,12 +27,9 @@ namespace MyShop.View
     /// </summary>
     public sealed partial class LoginPage : Page
     {
-        private LoginViewModel viewModel;
         public LoginPage()
         {
             this.InitializeComponent();
-            viewModel = new LoginViewModel();
-            DataContext = viewModel;
         }
 
         private void RevealModeCheckbox_Changed(object sender, RoutedEventArgs e)

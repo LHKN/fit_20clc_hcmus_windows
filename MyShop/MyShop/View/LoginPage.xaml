@@ -8,7 +8,7 @@
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:viewmodel="using:MyShop.ViewModel"
+    xmlns:viewmodel="using:MyShop.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:LoginViewModel}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -20,19 +20,19 @@
                        FontSize="25"
                        TextAlignment="Center"></TextBlock>
 
-            <TextBlock Text="{x:Bind viewModel.ErrorMessage}"
+            <TextBlock Text="{Binding ErrorMessage}"
                        TextWrapping="WrapWholeWords"
                        TextAlignment="Center"
                        FontSize="10"></TextBlock>
 
             <TextBox x:Name="usernameTextBox" 
                      PlaceholderText="Username"
-                     Text="{x:Bind viewModel.Username}"/>
+                     Text="{Binding Username}"/>
 
             <PasswordBox x:Name="passwordBox" 
                          PasswordRevealMode="Hidden" 
                          PlaceholderText="Password"
-                         Password="{x:Bind viewModel.Password}"/>
+                         Password="{Binding Password}"/>
             
             <CheckBox Name="revealModeCheckBox" Content="Show password" IsChecked="False"
             Checked="RevealModeCheckbox_Changed" Unchecked="RevealModeCheckbox_Changed"/>
@@ -44,7 +44,7 @@
 
 
             <Button Content="SIGN IN"
-                    Command="{x:Bind viewModel.LoginCommand}"
+                    Command="{Binding LoginCommand}"
                     HorizontalAlignment="Stretch"
                     x:Name="loginButton">
 
