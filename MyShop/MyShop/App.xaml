@@ -5,7 +5,8 @@
     x:Class="MyShop.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MyShop">
+    xmlns:local="using:MyShop"
+    xmlns:service="using:MyShop.Services">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,6 +14,8 @@
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
+            <service:ViewModelToView x:Key="ViewModelToView"/>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
