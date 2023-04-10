@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
@@ -16,9 +16,17 @@
     <Content Remove="Assets\wp9381234.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Styles\ButtonStyles.xaml" />
+    <None Remove="Styles\UIColors.xaml" />
+    <None Remove="View\AccountPage.xaml" />
+    <None Remove="View\BookPage.xaml" />
+    <None Remove="View\DashboardPage.xaml" />
     <None Remove="View\HomePage.xaml" />
     <None Remove="View\LoginView.xaml" />
+    <None Remove="View\OrderHistoryPage.xaml" />
     <None Remove="View\RootPage.xaml" />
+    <None Remove="View\SettingPage.xaml" />
+    <None Remove="View\StatisticPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,6 +75,41 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="View\SettingPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\StatisticPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\AccountPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\OrderHistoryPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\DashboardPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\BookPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Styles\ButtonStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="View\RootPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -78,6 +121,11 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="View\LoginView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Styles\UIColors.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

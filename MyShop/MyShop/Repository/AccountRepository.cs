@@ -17,27 +17,36 @@ namespace MyShop.Repository
             throw new NotImplementedException();
         }
 
-        public bool AuthenticateAccount(NetworkCredential credentical)
+        public async Task<bool> AuthenticateAccount(NetworkCredential credentical)
         {
-            bool validUser;
             int role_id = 0;
             var connection = GetConnection();
-            connection.Open();
-            string sql = "select role_id from ACCOUNT where username = @username and password = @password";
-            var command = new SqlCommand(sql, connection);
-            command.Parameters.Add("@username", SqlDbType.NVarChar).Value = credentical.UserName;
-            command.Parameters.Add("@password", SqlDbType.NVarChar).Value = credentical.Password;
-            SqlDataReader reader = command.ExecuteReader();
 
-            while (reader.Read())
+            await Task.Run(() =>
             {
-                role_id = (int)reader["role_id"];
+                connection.Open();
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                string sql = "select role_id from ACCOUNT where username = @username and password = @password";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@username", SqlDbType.NVarChar).Value = credentical.UserName;
+                command.Parameters.Add("@password", SqlDbType.NVarChar).Value = credentical.Password;
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    role_id = (int)reader["role_id"];
+                }
+
+                if (role_id == 1) { return true; }
+                else return false;
             }
+            return false;
+            
 
-            if (role_id == 1) { validUser = true; }
-            else validUser = false;
 
-            return validUser;
         }
 
         public void Edit(Account account)

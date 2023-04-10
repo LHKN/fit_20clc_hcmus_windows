@@ -8,10 +8,119 @@
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:MyShop.ViewModel" d:DataContext="{d:DesignInstance Type=vm:HomeViewModel}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock Text="HOME PAGE"></TextBlock>
+
+        <!--Navigation Menu-->
+        <!--
+        <Border CornerRadius="10,0,0,10"
+                Grid.Column="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                    <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"></GradientStop>
+                    <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"></GradientStop>
+                </LinearGradientBrush>
+            </Border.Background>
+            
+        </Border>
+
+        -->
+        <!--Main Section-->
+        <!--
+        <Border CornerRadius="0,10,10,10"
+                Grid.Column="1">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                    <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0"></GradientStop>
+                    <GradientStop Color="{StaticResource primaryBackColor2}" Offset="1"></GradientStop>
+                </LinearGradientBrush>
+            </Border.Background>
+
+        <StackPanel>
+        <Image Source="/Assets/logo_bookit.png" Height="30"
+                        Margin="15,25,0,40"/>
+        <RadioButtons>
+            <RadioButton Style="{StaticResource menuButton}"
+                         Tag="{StaticResource color1}"
+                         IsChecked="True">
+
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xF246;" />
+                    <TextBlock Text="DASHBOARD"></TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Style="{StaticResource menuButton}"
+                         Tag="{StaticResource color1}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE716;" />
+                    <TextBlock Text="ACCOUNT"></TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Style="{StaticResource menuButton}"
+                         Tag="{StaticResource color1}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE8F1;" />
+                    <TextBlock Text="BOOK"></TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Style="{StaticResource menuButton}"
+                         Tag="{StaticResource color1}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xEC5B;" />
+                    <TextBlock Text="RECEIPT"></TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Style="{StaticResource menuButton}"
+                         Tag="{StaticResource color1}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xEF42;" />
+                    <TextBlock Text="STATISTIC"></TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Style="{StaticResource menuButton}"
+                         Tag="{StaticResource color1}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE713;" />
+                    <TextBlock Text="SETTING"></TextBlock>
+                </StackPanel>
+            </RadioButton>
+        </RadioButtons>
+
+    </StackPanel>-->
+
+        <!--</Border>-->
+        <!--<Image Source="/Assets/logo_bookit.png" 
+               HorizontalAlignment="Center"/>-->
+        <NavigationView x:Name="nvHomePage"
+                            PaneDisplayMode="Left"
+                            IsSettingsVisible="False"
+                            IsBackButtonVisible="Collapsed"
+                            SelectionChanged="nvHomePage_SelectionChanged">
+
+            
+            <NavigationView.Header>
+                <Image Source="/Assets/logo_bookit.png"
+                           HorizontalAlignment="Center"
+                           MaxHeight="100"
+                       Margin="10,10,10,10"></Image>
+            </NavigationView.Header>
+            
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Dashboard" x:Name="navItemDashboard" Icon="SolidStar"/>
+                <NavigationViewItem Content="Statistic" x:Name="navItemStatistic" Icon="Shop" />
+                <NavigationViewItem Content="Book" x:Name="navItemBook" Icon="Library" />
+                <NavigationViewItem Content="Order History" x:Name="navItemOrderHistory" Icon="Tag" />
+                <NavigationViewItem Content="Account" x:Name="navItemAccount" Icon="Contact" />
+            </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem Content="Settings" x:Name="navItemSetting" Icon="Setting" />
+            </NavigationView.FooterMenuItems>
+            <Frame x:Name="contentFrame"
+                   Content="{Binding ChildPageNavigation.ViewModel,Converter={StaticResource ViewModelToView}}"/>
+
+        </NavigationView>
     </Grid>
 </Page>

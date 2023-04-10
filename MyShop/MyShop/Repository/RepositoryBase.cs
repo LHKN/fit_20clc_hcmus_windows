@@ -16,19 +16,27 @@ namespace MyShop.Repository
         public RepositoryBase()
         {
             //Connect to database and verify data
-            string username = "sa";
-            string password = "sqlpassword123";
-            const string db_name = "db_book";
+            //may be save information in usersecret?
+            String username = "sa";
+            String password = "sqlpassword123";
+            String db_name = "db_book";
 
             //var extconfig = new ConfigurationBuilder().AddUserSecrets<LoginPage>().Build();
-            //// Ý nghĩa: tìm assembly có lớp LoginPage chứa SecretID
+            // Ý nghĩa: tìm assembly có lớp LoginPage chứa SecretID
 
             //var connectionString = extconfig.GetSection("DB")["ConnectionString"];
+            //SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
+            //builder.DataSource = ".\\sqlexpress";
+            //builder.UserID = "sa";
+            //builder.Password= password;
+            //builder.TrustServerCertificate= true;
+            //builder.InitialCatalog = db_name;
+            var connectionString = $"Server=.\\sqlexpress;User ID={username};Password={password};Database={db_name};TrustServerCertificate=True";
             //connectionString.Replace("@username", username);
             //connectionString.Replace("@password", password);
             //connectionString.Replace("@db_name", db_name);
 
-            var connectionString = "Server=.\\sqlexpress;User ID=sa;Password=sqlpassword123;Database=db_book;TrustServerCertificate=True";
+
 
             _connectionString = connectionString;
 

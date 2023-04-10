@@ -10,6 +10,7 @@ namespace MyShop.ViewModel
 {
     public class ViewModelBase : ObservableObject
     {
+
         public PageNavigation ParentPageNavigation { get; set; }
 
     }

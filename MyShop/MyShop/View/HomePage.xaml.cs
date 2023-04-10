@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using MyShop.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,9 +27,31 @@ namespace MyShop.View
     /// </summary>
     public sealed partial class HomePage : Page
     {
+        private HomeViewModel homeViewModel { get; set; }
         public HomePage()
         {
             this.InitializeComponent();
+            homeViewModel = new HomeViewModel();
+        }
+
+
+        private void nvHomePage_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            FrameNavigationOptions navOptions = new FrameNavigationOptions();
+            navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
+            if (sender.PaneDisplayMode == NavigationViewPaneDisplayMode.Top)
+            {
+                navOptions.IsNavigationStackEnabled = false;
+            }
+            Type pageType = typeof(RootPage); //init
+            var selectedItem = (NavigationViewItem)args.SelectedItem;
+            if (selectedItem.Name == navItemBook.Name) { pageType = typeof(BookPage); }
+
+            if (pageType == typeof(BookPage) &&
+                homeViewModel.ChildPageNavigation.ViewModel.GetType() != pageType)
+            {
+                homeViewModel.ChildPageNavigation.ViewModel = new BookViewModel();
+            }
         }
     }
 }

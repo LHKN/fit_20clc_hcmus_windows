@@ -27,12 +27,12 @@
 
             <TextBox x:Name="usernameTextBox" 
                      PlaceholderText="Username"
-                     Text="{Binding Username}"/>
+                     Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <PasswordBox x:Name="passwordBox" 
                          PasswordRevealMode="Hidden" 
                          PlaceholderText="Password"
-                         Password="{Binding Password}"/>
+                         Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             
             <CheckBox Name="revealModeCheckBox" Content="Show password" IsChecked="False"
             Checked="RevealModeCheckbox_Changed" Unchecked="RevealModeCheckbox_Changed"/>
@@ -54,8 +54,10 @@
                         </Setter>
                     </Style>
                 </Button.Resources>
-
             </Button>
+
+            <ProgressBar Width="200" Height="50" IsIndeterminate="{Binding IsDatabaseConnected}"
+                HorizontalAlignment ="Center"/>
         </StackPanel>
     </Grid>
 </Page>

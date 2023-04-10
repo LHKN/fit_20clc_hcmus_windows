@@ -8,14 +8,18 @@
     xmlns:local="using:MyShop"
     xmlns:service="using:MyShop.Services">
     <Application.Resources>
-        <ResourceDictionary>
+        <ResourceDictionary >
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!-- Other merged dictionaries here -->
+                <ResourceDictionary Source="/Styles/UIColors.xaml"/>
+                <ResourceDictionary Source="/Styles/ButtonStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
             <service:ViewModelToView x:Key="ViewModelToView"/>
+            
 
         </ResourceDictionary>
+
     </Application.Resources>
 </Application>

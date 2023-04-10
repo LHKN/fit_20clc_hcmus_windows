@@ -11,6 +11,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace MyShop.ViewModel
 {
@@ -20,45 +21,38 @@ namespace MyShop.ViewModel
         private string _username;
         private string _password;
         private string _errorMessage;
-        private bool _isViewVisible = false;
         private bool _isValidData;
+        private bool _isDatabaseConnected;
         private IAccountRepository _accountRepository;
 
         //-> Constructor
         public LoginViewModel()
         {
             _accountRepository = new AccountRepository();
-            LoginCommand = new RelayCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
+            LoginCommand = new RelayCommand(ExecuteLoginCommand);
 
         }
 
         private void ExecuteLoginCommand()
         {
-            var isValidAccount = _accountRepository.AuthenticateAccount(new System.Net.NetworkCredential(Username, Password));
+            bool isValidAccount = false;
+            IsDatabaseConnected = true;
+
+            var task = _accountRepository.AuthenticateAccount(new System.Net.NetworkCredential(Username, Password));
+            IsDatabaseConnected = !task.Result;
+            isValidAccount= task.Result;
+
             if (isValidAccount)
             {
                 Thread.CurrentPrincipal = new GenericPrincipal(
                     new GenericIdentity(Username), null);
-                IsViewVisible = false;
+                ParentPageNavigation.ViewModel = new HomeViewModel();
             }
             else
             {
                 ErrorMessage = "* Invalid username or password";
             }
-            ParentPageNavigation.ViewModel = new HomeViewModel();
-        }
-
-        private bool CanExecuteLoginCommand() //TODO: try to figure out a way to call this method again if PropertyChanged
-        {
-            //if (string.IsNullOrWhiteSpace(Username) || Username.Length < 3 ||
-            //    Password == null || Password.Length < 3)
-            //{
-            //    IsValidData = false;
-            //}
-            //else IsValidData = true;
-
-            //return IsValidData;
-            return true;
+            
         }
 
         //-> getter, setter
@@ -99,9 +93,18 @@ namespace MyShop.ViewModel
                 OnPropertyChanged(nameof(IsValidData));
             }
         }
-        public bool IsViewVisible { get => _isViewVisible; set => _isViewVisible = value; }
+
+        public bool IsDatabaseConnected {
+            get => _isDatabaseConnected;
+            set
+            {
+                SetProperty(ref _isDatabaseConnected, value);
+                OnPropertyChanged(nameof(IsDatabaseConnected));
+            }
+        }
 
         //-> Commands
         public RelayCommand LoginCommand { get; }
+        
     }
 }

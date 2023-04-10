@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +8,9 @@ namespace MyShop.ViewModel
 {
     public class HomeViewModel: ViewModelBase
     {
+        public HomeViewModel() {
+            ChildPageNavigation = new PageNavigation(new DashboardViewModel());
+        }
+        public PageNavigation ChildPageNavigation { get; set; }
     }
 }

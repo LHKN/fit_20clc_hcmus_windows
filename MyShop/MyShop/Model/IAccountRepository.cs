@@ -9,7 +9,7 @@ namespace MyShop.Model
 {
     public interface IAccountRepository
     {
-        bool AuthenticateAccount(NetworkCredential credentical);
+        Task<bool> AuthenticateAccount(NetworkCredential credentical);
         void Add(Account account);
         void Edit(Account account);
         void Remove(int id);

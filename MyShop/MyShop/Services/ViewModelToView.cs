@@ -17,6 +17,12 @@ namespace MyShop.Services
         {
             {typeof(LoginViewModel), typeof(LoginPage)},
             {typeof(HomeViewModel), typeof(HomePage)},
+            {typeof(BookViewModel), typeof(BookPage)},
+            {typeof(DashboardViewModel), typeof(DashboardPage)},
+            {typeof(OrderHistoryViewModel), typeof(OrderHistoryPage)},
+            {typeof(AccountViewModel), typeof(AccountPage)},
+            {typeof(SettingViewModel), typeof(SettingPage)}
+            
             //add more page...
 
         };

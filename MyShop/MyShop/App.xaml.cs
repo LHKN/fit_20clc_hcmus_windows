@@ -47,6 +47,8 @@ namespace MyShop
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             m_window = new MainWindow() { Content = new RootPage() };
+            m_window.ExtendsContentIntoTitleBar= true;
+            m_window.SetTitleBar(null);
             m_window.Activate();
         }
 
