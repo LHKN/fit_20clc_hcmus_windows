@@ -55,9 +55,6 @@
                     </Style>
                 </Button.Resources>
             </Button>
-
-            <ProgressBar Width="200" Height="50" IsIndeterminate="{Binding IsDatabaseConnected}"
-                HorizontalAlignment ="Center"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -24,7 +24,11 @@ namespace MyShop.Repository
 
             await Task.Run(() =>
             {
-                connection.Open();
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception ex) { }
             }).ConfigureAwait(false);
 
             if (connection != null && connection.State == ConnectionState.Open)

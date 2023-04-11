@@ -22,7 +22,6 @@ namespace MyShop.ViewModel
         private string _password;
         private string _errorMessage;
         private bool _isValidData;
-        private bool _isDatabaseConnected;
         private IAccountRepository _accountRepository;
 
         //-> Constructor
@@ -33,14 +32,11 @@ namespace MyShop.ViewModel
 
         }
 
-        private void ExecuteLoginCommand()
+        private async void ExecuteLoginCommand()
         {
-            bool isValidAccount = false;
-            IsDatabaseConnected = true;
+            var task = await _accountRepository.AuthenticateAccount(new System.Net.NetworkCredential(Username, Password));
 
-            var task = _accountRepository.AuthenticateAccount(new System.Net.NetworkCredential(Username, Password));
-            IsDatabaseConnected = !task.Result;
-            isValidAccount= task.Result;
+            bool isValidAccount = task;
 
             if (isValidAccount)
             {
@@ -52,7 +48,7 @@ namespace MyShop.ViewModel
             {
                 ErrorMessage = "* Invalid username or password";
             }
-            
+
         }
 
         //-> getter, setter
@@ -94,17 +90,7 @@ namespace MyShop.ViewModel
             }
         }
 
-        public bool IsDatabaseConnected {
-            get => _isDatabaseConnected;
-            set
-            {
-                SetProperty(ref _isDatabaseConnected, value);
-                OnPropertyChanged(nameof(IsDatabaseConnected));
-            }
-        }
-
         //-> Commands
         public RelayCommand LoginCommand { get; }
-        
     }
 }

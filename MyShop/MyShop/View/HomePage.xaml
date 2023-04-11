@@ -120,14 +120,14 @@
             </i:Interaction.Behaviors>
 
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Dashboard" x:Name="navItemDashboard" Icon="SolidStar" IsSelected="True"/>
-                <NavigationViewItem Content="Statistic" x:Name="navItemStatistic" Icon="Shop"/>
-                <NavigationViewItem Content="Book" x:Name="navItemBook" Icon="Library" />
-                <NavigationViewItem Content="Order History" x:Name="navItemOrderHistory" Icon="Tag" />
-                <NavigationViewItem Content="Account" x:Name="navItemAccount" Icon="Contact" />
+                <NavigationViewItem Content="Dashboard" Icon="SolidStar" IsSelected="True"/>
+                <NavigationViewItem Content="Statistic" Icon="Shop"/>
+                <NavigationViewItem Content="Book" Icon="Library" />
+                <NavigationViewItem Content="Order History" Icon="Tag" />
+                <NavigationViewItem Content="Account" Icon="Contact" />
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem Content="Settings" x:Name="navItemSetting" Icon="Setting" />
+                <NavigationViewItem Content="Settings" Icon="Setting" />
             </NavigationView.FooterMenuItems>
             <Frame x:Name="contentFrame"
                    Content="{Binding ChildPageNavigation.ViewModel,Converter={StaticResource ViewModelToView}}"/>
