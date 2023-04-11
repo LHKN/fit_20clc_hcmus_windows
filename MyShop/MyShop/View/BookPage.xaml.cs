@@ -33,41 +33,5 @@ namespace MyShop.View
             this.InitializeComponent();
             bookViewModel = new BookViewModel();
         }
-
-
-        private void nvBookPage_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-        {
-            FrameNavigationOptions navOptions = new FrameNavigationOptions();
-            navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
-            if (sender.PaneDisplayMode == NavigationViewPaneDisplayMode.Auto)
-            {
-                navOptions.IsNavigationStackEnabled = false;
-            }
-            Type pageType = typeof(BooksPage); //init
-            var selectedItem = (NavigationViewItem)args.SelectedItem;
-            if (selectedItem.Name == navItemBooks.Name)
-            {
-                pageType = typeof(BooksPage);
-            }
-            else if (selectedItem.Name == navItemBookTypes.Name)
-            {
-                pageType = typeof(BookTypePage);
-            }
-
-
-            if (bookViewModel.ChildPageNavigation.ViewModel.GetType() != typeof(DashboardViewModel))
-            {
-                if (pageType == typeof(BooksPage))
-                {
-                    bookViewModel.ChildPageNavigation.ViewModel = new BooksViewModel();
-                }
-                else if (pageType == typeof(BookTypePage))
-                {
-                    bookViewModel.ChildPageNavigation.ViewModel = new BookTypeViewModel();
-                }
-
-                _ = contentFrame.Navigate(pageType);
-            }
-        }
     }
 }
