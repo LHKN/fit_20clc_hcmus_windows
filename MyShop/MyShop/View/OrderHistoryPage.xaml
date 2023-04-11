@@ -11,7 +11,33 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid Margin="20, 20, 20, 20">
+
+        <Button Grid.Row="3" Grid.Column="1" Content="Sort Options">
+            <Button.Flyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Text="Sort by Day" />
+                </MenuFlyout>
+            </Button.Flyout>
+        </Button>
+        
+        <ListView x:Name="dataListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="400" Height="400">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="200" Height="100">
+                        <!--Create item here-->
+                        <TextBlock Text="{Binding ID}" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Name}" Foreground="Red"/>
+                        
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
 
     </Grid>
 </Page>

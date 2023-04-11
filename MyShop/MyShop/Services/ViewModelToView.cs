@@ -23,6 +23,8 @@ namespace MyShop.Services
             {typeof(AccountViewModel), typeof(AccountPage)},
             {typeof(SettingViewModel), typeof(SettingPage)},
             {typeof(StatisticViewModel), typeof(StatisticPage)},
+            {typeof(BooksViewModel), typeof(BooksPage)},
+            {typeof(BookTypeViewModel), typeof(BookTypePage)},
             
             //add more page...
 

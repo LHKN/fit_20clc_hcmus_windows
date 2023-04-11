@@ -20,6 +20,8 @@
     <None Remove="Styles\UIColors.xaml" />
     <None Remove="View\AccountPage.xaml" />
     <None Remove="View\BookPage.xaml" />
+    <None Remove="View\BooksPage.xaml" />
+    <None Remove="View\BookTypePage.xaml" />
     <None Remove="View\DashboardPage.xaml" />
     <None Remove="View\HomePage.xaml" />
     <None Remove="View\LoginView.xaml" />
@@ -31,6 +33,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+    <PackageReference Include="H.OxyPlot.WinUI" Version="0.9.30" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221109.1" />
@@ -74,6 +77,16 @@
     <Content Update="Assets\Wide310x150Logo.scale-200.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\BookTypePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\BooksPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="View\SettingPage.xaml">

@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace MyShop.ViewModel
 {
-    public class HomeViewModel: ViewModelBase
+    public class HomeViewModel : ViewModelBase
     {
         public HomeViewModel() {
             ChildPageNavigation = new PageNavigation(new DashboardViewModel());
