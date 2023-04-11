@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Forms;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -27,31 +28,44 @@ namespace MyShop.View
     /// </summary>
     public sealed partial class HomePage : Page
     {
-        private HomeViewModel homeViewModel { get; set; }
         public HomePage()
         {
             this.InitializeComponent();
-            homeViewModel = new HomeViewModel();
         }
+        
+        //private void nvHomePage_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        //{
+        //    FrameNavigationOptions navOptions = new FrameNavigationOptions();
+        //    navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
+        //    if (sender.PaneDisplayMode == NavigationViewPaneDisplayMode.Top)
+        //    {
+        //        navOptions.IsNavigationStackEnabled = false;
+        //    }
+        //    Type pageType = typeof(RootPage); //init
 
+        //    var selectedItem = (NavigationViewItem)args.SelectedItem;
 
-        private void nvHomePage_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-        {
-            FrameNavigationOptions navOptions = new FrameNavigationOptions();
-            navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
-            if (sender.PaneDisplayMode == NavigationViewPaneDisplayMode.Top)
-            {
-                navOptions.IsNavigationStackEnabled = false;
-            }
-            Type pageType = typeof(RootPage); //init
-            var selectedItem = (NavigationViewItem)args.SelectedItem;
-            if (selectedItem.Name == navItemBook.Name) { pageType = typeof(BookPage); }
+        //    if (selectedItem.Name == navItemDashboard.Name) { pageType = typeof(DashboardPage); }
+        //    else if (selectedItem.Name == navItemBook.Name) { pageType = typeof(BookPage); }
+        //    else if (selectedItem.Name == navItemAccount.Name) { pageType = typeof(AccountPage); }
+        //    else if (selectedItem.Name == navItemOrderHistory.Name) { pageType = typeof(OrderHistoryPage); }
+        //    else if (selectedItem.Name == navItemStatistic.Name) { pageType = typeof(StatisticPage); }
+        //    else if (selectedItem.Name == navItemSetting.Name) { pageType = typeof(SettingPage); }
 
-            if (pageType == typeof(BookPage) &&
-                homeViewModel.ChildPageNavigation.ViewModel.GetType() != pageType)
-            {
-                homeViewModel.ChildPageNavigation.ViewModel = new BookViewModel();
-            }
-        }
+        //    if (homeViewModel.ChildPageNavigation.ViewModel.GetType() != typeof(DashboardViewModel)
+        //        && pageType == typeof(DashboardPage)) { homeViewModel.ChildPageNavigation.ViewModel = new DashboardViewModel(); }
+        //    else if (homeViewModel.ChildPageNavigation.ViewModel.GetType() != typeof(StatisticViewModel)
+        //        && pageType == typeof(StatisticPage)) { homeViewModel.ChildPageNavigation.ViewModel = new StatisticViewModel(); }
+        //    else if (homeViewModel.ChildPageNavigation.ViewModel.GetType() != typeof(OrderHistoryViewModel)
+        //        && pageType == typeof(OrderHistoryPage)) { homeViewModel.ChildPageNavigation.ViewModel = new OrderHistoryViewModel(); }
+        //    else if (homeViewModel.ChildPageNavigation.ViewModel.GetType() != typeof(BookViewModel)
+        //        && pageType == typeof(BookPage)) { homeViewModel.ChildPageNavigation.ViewModel = new BookViewModel(); }
+        //    else if (homeViewModel.ChildPageNavigation.ViewModel.GetType() != typeof(AccountViewModel)
+        //        && pageType == typeof(AccountPage)) { homeViewModel.ChildPageNavigation.ViewModel = new AccountViewModel(); }
+        //    else if (homeViewModel.ChildPageNavigation.ViewModel.GetType() != typeof(SettingViewModel)
+        //        && pageType == typeof(SettingPage)) { homeViewModel.ChildPageNavigation.ViewModel = new SettingViewModel(); }
+
+        //    _ = contentFrame.Navigate(pageType);
+        //}
     }
 }

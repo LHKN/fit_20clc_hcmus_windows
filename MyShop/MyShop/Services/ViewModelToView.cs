@@ -21,7 +21,8 @@ namespace MyShop.Services
             {typeof(DashboardViewModel), typeof(DashboardPage)},
             {typeof(OrderHistoryViewModel), typeof(OrderHistoryPage)},
             {typeof(AccountViewModel), typeof(AccountPage)},
-            {typeof(SettingViewModel), typeof(SettingPage)}
+            {typeof(SettingViewModel), typeof(SettingPage)},
+            {typeof(StatisticViewModel), typeof(StatisticPage)},
             
             //add more page...
 

@@ -39,7 +39,6 @@ namespace MyShop.Repository
                 {
                     role_id = (int)reader["role_id"];
                 }
-
                 if (role_id == 1) { return true; }
                 else return false;
             }

@@ -9,8 +9,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:MyShop.ViewModel" d:DataContext="{d:DesignInstance Type=vm:HomeViewModel}"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    >
 
     <Grid>
 
@@ -95,22 +98,30 @@
         <!--<Image Source="/Assets/logo_bookit.png" 
                HorizontalAlignment="Center"/>-->
         <NavigationView x:Name="nvHomePage"
-                            PaneDisplayMode="Left"
-                            IsSettingsVisible="False"
-                            IsBackButtonVisible="Collapsed"
-                            SelectionChanged="nvHomePage_SelectionChanged">
-
-            
+                        PaneDisplayMode="Left"
+                        IsSettingsVisible="False"
+                        IsBackButtonVisible="Collapsed"
+                        
+                        MenuItemsSource="{Binding MenuItems}">
+   
             <NavigationView.Header>
                 <Image Source="/Assets/logo_bookit.png"
                            HorizontalAlignment="Center"
                            MaxHeight="100"
                        Margin="10,10,10,10"></Image>
             </NavigationView.Header>
-            
+
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="ItemInvoked">
+                    <core:EventTriggerBehavior.Actions>
+                        <core:InvokeCommandAction Command="{Binding ItemInvokedCommand}" />
+                    </core:EventTriggerBehavior.Actions>
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Dashboard" x:Name="navItemDashboard" Icon="SolidStar"/>
-                <NavigationViewItem Content="Statistic" x:Name="navItemStatistic" Icon="Shop" />
+                <NavigationViewItem Content="Dashboard" x:Name="navItemDashboard" Icon="SolidStar" IsSelected="True"/>
+                <NavigationViewItem Content="Statistic" x:Name="navItemStatistic" Icon="Shop"/>
                 <NavigationViewItem Content="Book" x:Name="navItemBook" Icon="Library" />
                 <NavigationViewItem Content="Order History" x:Name="navItemOrderHistory" Icon="Tag" />
                 <NavigationViewItem Content="Account" x:Name="navItemAccount" Icon="Contact" />
@@ -120,7 +131,7 @@
             </NavigationView.FooterMenuItems>
             <Frame x:Name="contentFrame"
                    Content="{Binding ChildPageNavigation.ViewModel,Converter={StaticResource ViewModelToView}}"/>
-
+            
         </NavigationView>
     </Grid>
 </Page>
