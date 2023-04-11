@@ -11,56 +11,33 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <RelativePanel>
-            <StackPanel Orientation="Horizontal" Height="50" RelativePanel.AlignTopWithPanel="True">
-                <Button x:Name="addButton" Width="80" Height="35" Content="Add" />
-                <Button x:Name="deleteButton" Width="80" Height="35" Content="Delete" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Button x:Name="updateButton" Width="80" Height="35" Content="Update" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+    <Grid Margin="20, 20, 20, 20">
 
-            </StackPanel>
+        <NavigationView x:Name="nvBookPage"
+                            PaneDisplayMode="Top"
+                            IsSettingsVisible="False"
+                            IsBackButtonVisible="Collapsed"
+                            SelectionChanged="nvBookPage_SelectionChanged">
 
-            <!--<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Padding="10, 10, 0, 0" Name="booksComboBox" >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <Image RenderOptions.BitmapScalingMode="HighQuality" Margin="0, 0, 5, 0" Width="100" Height="100" 
-                               Source="{Binding Image, Converter={StaticResource absoluteConverter}}"/>
-                            <TextBlock TextWrapping="Wrap" MaxWidth="100">
-                            <Run Text="{Binding Title}" FontWeight="Bold" Foreground="Blue"/>
-                            --><!--<Run Text="{Binding Author}" Foreground="Red"/>
-                        
-                            <Run Text="{Binding Year}" Foreground="ForestGreen"/>--><!--
-                            </TextBlock>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.Resources>
-                    <ContextMenu x:Key="booksContextMenu">
-                        <MenuItem Header="View details" Click="MenuItem_Click">
-                            <MenuItem.Icon>
-                                <Image RenderOptions.BitmapScalingMode="HighQuality" 
-                                   Source="{Binding Image, Converter={StaticResource absoluteConverter}}"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="Delete" Click="deleteMenu_Click"/>
-                        <MenuItem Header="Edit" Click="editMenu_Click"/>
-                    </ContextMenu>
-                </ListView.Resources>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="ContextMenu"
-                            Value="{StaticResource booksContextMenu}"/>
-                        <EventSetter Event="MouseDoubleClick"
-                                 Handler="booksListView_MouseDoubleClick"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>-->
-        </RelativePanel>
+            <!--<NavigationView.Header>
+                <Image Source="/Assets/logo_bookit.png"
+                           HorizontalAlignment="Center"
+                           MaxHeight="100"
+                       Margin="10,10,10,30"></Image>
+            </NavigationView.Header>-->
+
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Book Types" x:Name="navItemBookTypes" Icon="Priority"/>
+                <NavigationViewItem Content="Books" x:Name="navItemBooks" Icon="Library" HorizontalAlignment="Right" />
+
+            </NavigationView.MenuItems>
+
+            <!--<NavigationView.FooterMenuItems>
+                <NavigationViewItem Content="Settings" x:Name="navItemSetting" Icon="Setting" />
+            </NavigationView.FooterMenuItems>-->
+            <Frame x:Name="contentFrame"
+                   Content="{Binding ChildPageNavigation.ViewModel,Converter={StaticResource ViewModelToView}}"/>
+        </NavigationView>
+
     </Grid>
 </Page>

@@ -11,7 +11,31 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid Margin="20, 20, 20, 20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Full Name"/>
+        <TextBlock Grid.Column="1" Text="My Full Name"/>
+
+        <TextBlock Grid.Row="1" Text="Phone Number"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="My Phone Number"/>
+
+        <TextBlock Grid.Row="2" Text="Address"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="My Address"/>
+
+        <AppBarButton x:Name="editButton" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" Icon="Edit" Label="Edit profile"/>
 
     </Grid>
 </Page>

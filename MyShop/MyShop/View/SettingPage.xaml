@@ -11,7 +11,25 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid Margin="20, 20, 20, 20">
+
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Configure no. of books per page "/>
+            <Slider
+                AutomationProperties.Name="Book number per page Slider"
+                TickFrequency="5"
+                TickPlacement="Outside"
+                SnapsTo="Ticks"
+                Minimum="5"
+                Maximum="20"
+                Width="200"
+                Padding="20"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <ToggleSwitch Header="Open last closed page" OffContent="Disabled" OnContent="Enabled" IsOn="False" />
+            <!--<ProgressRing IsActive="{x:Bind ToggleSwitch2.IsOn, Mode=OneWay}" Width="32"/>-->
+        </StackPanel>
 
     </Grid>
 </Page>

@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace MyShop.ViewModel
 {
-    public class BookViewModel: ViewModelBase
+    public class BookViewModel : ViewModelBase
     {
+        public BookViewModel()
+        {
+            ChildPageNavigation = new PageNavigation(new BooksViewModel());
+        }
+        public PageNavigation ChildPageNavigation { get; set; }
     }
 }

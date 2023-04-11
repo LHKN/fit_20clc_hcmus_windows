@@ -1,0 +1,35 @@
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<Page
+    x:Class="MyShop.View.BookTypePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyShop.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <!--<TabView>
+            <TabView.TabItems>
+                <TabViewItem Header="Book types">
+                    -->
+        <!--<TabViewItem.IconSource>
+                        <BitmapIconSource UriSource="/Assets/TabViewIcons/cmd.png" ShowAsMonochrome="False" />
+                    </TabViewItem.IconSource>-->
+        <!--
+                </TabViewItem>
+                <TabViewItem Header="Books">
+                    -->
+        <!--<TabViewItem.IconSource>
+                        <BitmapIconSource UriSource="/Assets/TabViewIcons/powershell.png" ShowAsMonochrome="False" />
+                    </TabViewItem.IconSource>-->
+        <!--
+                </TabViewItem>
+            </TabView.TabItems>
+
+        </TabView>-->
+    </Grid>
+</Page>

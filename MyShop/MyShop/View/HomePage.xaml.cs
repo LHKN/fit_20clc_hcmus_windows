@@ -45,12 +45,53 @@ namespace MyShop.View
             }
             Type pageType = typeof(RootPage); //init
             var selectedItem = (NavigationViewItem)args.SelectedItem;
-            if (selectedItem.Name == navItemBook.Name) { pageType = typeof(BookPage); }
+            if (selectedItem.Name == navItemBook.Name) { 
+                pageType = typeof(BookPage);
+            }
+            else if (selectedItem.Name == navItemAccount.Name) { 
+                pageType = typeof(AccountPage);
+            }
+            else if (selectedItem.Name == navItemDashboard.Name) { 
+                pageType = typeof(DashboardPage);
+            }
+            else if (selectedItem.Name == navItemOrderHistory.Name) { 
+                pageType = typeof(OrderHistoryPage);
+            }
+            else if (selectedItem.Name == navItemStatistic.Name) { 
+                pageType = typeof(StatisticPage);
+            }
+            else if (selectedItem.Name == navItemSetting.Name) { 
+                pageType = typeof(SettingPage);
+            }
 
-            if (pageType == typeof(BookPage) &&
-                homeViewModel.ChildPageNavigation.ViewModel.GetType() != pageType)
+            //if (homeViewModel.ChildPageNavigation.ViewModel.GetType() == typeof(DashboardViewModel))
             {
-                homeViewModel.ChildPageNavigation.ViewModel = new BookViewModel();
+                if (pageType == typeof(BookPage))
+                {
+                    homeViewModel.ChildPageNavigation.ViewModel = new BookViewModel();
+                }
+                else if (pageType == typeof(AccountPage))
+                {
+                    homeViewModel.ChildPageNavigation.ViewModel = new AccountViewModel();
+                }
+                else if (pageType == typeof(DashboardPage))
+                {
+                    homeViewModel.ChildPageNavigation.ViewModel = new DashboardViewModel();
+                }
+                else if (pageType == typeof(OrderHistoryPage))
+                {
+                    homeViewModel.ChildPageNavigation.ViewModel = new OrderHistoryViewModel();
+                }
+                else if (pageType == typeof(StatisticPage))
+                {
+                    homeViewModel.ChildPageNavigation.ViewModel = new StatisticViewModel();
+                }
+                else if (pageType == typeof(SettingPage))
+                {
+                    homeViewModel.ChildPageNavigation.ViewModel = new SettingViewModel();
+                }
+
+                _ = contentFrame.Navigate(pageType);
             }
         }
     }

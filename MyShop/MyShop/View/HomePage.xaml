@@ -100,17 +100,16 @@
                             IsBackButtonVisible="Collapsed"
                             SelectionChanged="nvHomePage_SelectionChanged">
 
-            
             <NavigationView.Header>
                 <Image Source="/Assets/logo_bookit.png"
                            HorizontalAlignment="Center"
                            MaxHeight="100"
-                       Margin="10,10,10,10"></Image>
+                       Margin="10,10,10,30"></Image>
             </NavigationView.Header>
             
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Dashboard" x:Name="navItemDashboard" Icon="SolidStar"/>
-                <NavigationViewItem Content="Statistic" x:Name="navItemStatistic" Icon="Shop" />
+                <NavigationViewItem Content="Statistics" x:Name="navItemStatistic" Icon="Shop" />
                 <NavigationViewItem Content="Book" x:Name="navItemBook" Icon="Library" />
                 <NavigationViewItem Content="Order History" x:Name="navItemOrderHistory" Icon="Tag" />
                 <NavigationViewItem Content="Account" x:Name="navItemAccount" Icon="Contact" />
