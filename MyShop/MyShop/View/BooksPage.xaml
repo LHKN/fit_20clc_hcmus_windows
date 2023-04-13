@@ -7,7 +7,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodel="using:MyShop.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:BooksViewModel}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -15,26 +15,28 @@
 
 
         <RelativePanel>
-            <StackPanel Orientation="Horizontal" Height="50" RelativePanel.AlignTopWithPanel="True">
+            <StackPanel x:Name="BookCommandStackPanel" Orientation="Horizontal" Height="50" RelativePanel.AlignTopWithPanel="True">
                 <AppBarButton x:Name="addButton" Icon="Add" Label="Add" />
                 <AppBarButton x:Name="deleteButton" Icon="Delete" Label="Delete" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <AppBarButton x:Name="updateButton" Icon="Edit" Label="Update" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </StackPanel>
 
-            <!--<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Padding="10, 10, 0, 0" Name="booksComboBox" >
+            <!--<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Padding="10, 10, 0, 0" Name="booksComboBox" 
+                      RelativePanel.AlignBottomWith="BookCommandStackPanel">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
-                            <Image RenderOptions.BitmapScalingMode="HighQuality" Margin="0, 0, 5, 0" Width="100" Height="100" 
+                            --><!--<Image  Margin="0, 0, 5, 0" Width="100" Height="100" 
                                Source="{Binding Image, Converter={StaticResource absoluteConverter}}"/>
                             <TextBlock TextWrapping="Wrap" MaxWidth="100">
-                            <Run Text="{Binding Title}" FontWeight="Bold" Foreground="Blue"/>
-                            -->
-            <!--<Run Text="{Binding Author}" Foreground="Red"/>
-                        
-                            <Run Text="{Binding Year}" Foreground="ForestGreen"/>-->
-            <!--
-                            </TextBlock>
+                                <Run Text="{Binding Title}" FontWeight="Bold" Foreground="Blue"/>
+                                <Run Text="{Binding Author}" Foreground="Red"/>
+                                <Run Text="{Binding Year}" Foreground="ForestGreen"/>
+                            </TextBlock>--><!--
+                            <TextBlock Text="SuperUltraBookImage"></TextBlock>
+                            <TextBlock Text="Title"></TextBlock>
+                            <TextBlock Text="Author"></TextBlock>
+                            <TextBlock Text="Year"></TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -44,26 +46,26 @@
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
                 <ListView.Resources>
-                    <ContextMenu x:Key="booksContextMenu">
-                        <MenuItem Header="View details" Click="MenuItem_Click">
-                            <MenuItem.Icon>
-                                <Image RenderOptions.BitmapScalingMode="HighQuality" 
-                                   Source="{Binding Image, Converter={StaticResource absoluteConverter}}"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="Delete" Click="deleteMenu_Click"/>
-                        <MenuItem Header="Edit" Click="editMenu_Click"/>
-                    </ContextMenu>
+                    <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
+                        <AppBarButton Label="Edit" Icon="Edit" ToolTipService.ToolTip="Save" Command="{Binding EditBookCommand}" />
+                        <AppBarButton Label="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" Command="{Binding DeleteBookCommand}"/>
+                    </CommandBarFlyout>
                 </ListView.Resources>
-                <ListView.ItemContainerStyle>
+                --><!--<ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="ContextMenu"
                             Value="{StaticResource booksContextMenu}"/>
-                        <EventSetter Event="MouseDoubleClick"
-                                 Handler="booksListView_MouseDoubleClick"/>
                     </Style>
-                </ListView.ItemContainerStyle>
+                </ListView.ItemContainerStyle>--><!--
             </ListView>-->
+            <GridView RelativePanel.AlignVerticalCenterWithPanel="True">
+                
+                <Button Content="Item1"></Button>
+                <Button Content="Item2"></Button>
+                <Button Content="Item3"></Button>
+                <Button Content="Item4"></Button>
+                <Button Content="Item5"></Button>
+            </GridView>
         </RelativePanel>
     </Grid>
 </Page>

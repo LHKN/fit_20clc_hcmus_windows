@@ -138,11 +138,6 @@ namespace MyShop
 
         //        usernameTextBox.Text = username;
         //        passwordBox.Password = password;
-
-        //        //auto press
-        //        ButtonAutomationPeer peer = new ButtonAutomationPeer(loginButton);
-        //        IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-        //        invokeProv.Invoke();
         //    }
         //}
 

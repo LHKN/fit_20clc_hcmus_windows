@@ -4,9 +4,11 @@ using MyShop.Repository;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -18,30 +20,64 @@ namespace MyShop.ViewModel
     public partial class LoginViewModel: ViewModelBase
     {
         //-> Fields
-        private string _username;
-        private string _password;
+        private Account _account;
         private string _errorMessage;
         private bool _isValidData;
+        private bool _isRememberAccount;
         private IAccountRepository _accountRepository;
 
         //-> Constructor
         public LoginViewModel()
         {
             _accountRepository = new AccountRepository();
+            Account = new Account();
+            LoadedCommand = new RelayCommand(ExecuteLoadedCommand);
             LoginCommand = new RelayCommand(ExecuteLoginCommand);
+            RememberAccountCommand = new RelayCommand<bool>(ExecuteRememberAccountCommand);
 
         }
 
         private async void ExecuteLoginCommand()
         {
-            var task = await _accountRepository.AuthenticateAccount(new System.Net.NetworkCredential(Username, Password));
+            if (IsRememberAccount)
+            {
+                //save to config
+                var sysconfig = System.Configuration.ConfigurationManager.OpenExeConfiguration(
+                    ConfigurationUserLevel.None);
+                sysconfig.AppSettings.Settings["Username"].Value = Account.Username;
+
+                // Encrypt password
+                var passwordInBytes = Encoding.UTF8.GetBytes(Account.Password);
+                var entropy = new byte[20];
+                using (var rng = RandomNumberGenerator.Create())
+                {
+                    rng.GetBytes(entropy);
+                }
+
+                var cypherText = ProtectedData.Protect(
+                    passwordInBytes,
+                    entropy,
+                    DataProtectionScope.CurrentUser
+                );
+
+                var passwordIn64 = Convert.ToBase64String(cypherText);
+                var entropyIn64 = Convert.ToBase64String(entropy);
+                sysconfig.AppSettings.Settings["Password"].Value = passwordIn64;
+                sysconfig.AppSettings.Settings["Entropy"].Value = entropyIn64;
+
+                sysconfig.Save(ConfigurationSaveMode.Full);
+                System.Configuration.ConfigurationManager.RefreshSection("appSettings");
+
+            }
+            var task = await _accountRepository.AuthenticateAccount(
+                new System.Net.NetworkCredential(Account.Username, Account.Password));
 
             bool isValidAccount = task;
 
             if (isValidAccount)
             {
                 Thread.CurrentPrincipal = new GenericPrincipal(
-                    new GenericIdentity(Username), null);
+                    new GenericIdentity(Account.Username), null);
                 ParentPageNavigation.ViewModel = new HomeViewModel();
             }
             else
@@ -51,25 +87,36 @@ namespace MyShop.ViewModel
 
         }
 
+        private void ExecuteLoadedCommand()
+        {
+            //get from local
+            string username = ConfigurationManager.AppSettings["Username"]!;
+            string passwordIn64 = ConfigurationManager.AppSettings["Password"];
+            string entropyIn64 = ConfigurationManager.AppSettings["Entropy"]!;
+
+            if (passwordIn64.Length != 0)
+            {
+                byte[] entropyInBytes = Convert.FromBase64String(entropyIn64);
+                byte[] cypherTextInBytes = Convert.FromBase64String(passwordIn64);
+
+                byte[] passwordInBytes = ProtectedData.Unprotect(cypherTextInBytes,
+                    entropyInBytes,
+                    DataProtectionScope.CurrentUser
+                );
+
+                string password = Encoding.UTF8.GetString(passwordInBytes);
+
+                Account.Username = username;
+                Account.Password = password;
+            }
+        }
+
+        public void ExecuteRememberAccountCommand(bool isChecked)
+        {
+            IsRememberAccount = isChecked;
+        }
+
         //-> getter, setter
-        public string Username
-        {
-            get => _username;
-            set
-            {
-                SetProperty(ref _username, value);
-                OnPropertyChanged(nameof(Username));
-            }
-        }
-        public string Password
-        {
-            get => _password;
-            set
-            {
-                SetProperty(ref _password, value);
-                OnPropertyChanged(nameof(Password));
-            }
-        }
         public string ErrorMessage
         {
             get => _errorMessage;
@@ -92,5 +139,9 @@ namespace MyShop.ViewModel
 
         //-> Commands
         public RelayCommand LoginCommand { get; }
+        public RelayCommand LoadedCommand { get; }
+        public RelayCommand<bool> RememberAccountCommand { get; }
+        public Account Account { get => _account; set => _account = value; }
+        public bool IsRememberAccount { get => _isRememberAccount; set => _isRememberAccount = value; }
     }
 }

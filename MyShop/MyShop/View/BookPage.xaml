@@ -33,7 +33,6 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Book Types" x:Name="navItemBookTypes" Icon="Priority"/>
                 <NavigationViewItem Content="Books" x:Name="navItemBooks" Icon="Library" HorizontalAlignment="Right" IsSelected="True"/>
-
             </NavigationView.MenuItems>
 
             <Frame x:Name="contentFrame"

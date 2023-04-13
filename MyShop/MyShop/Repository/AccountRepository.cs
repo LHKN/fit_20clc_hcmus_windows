@@ -20,6 +20,7 @@ namespace MyShop.Repository
         public async Task<bool> AuthenticateAccount(NetworkCredential credentical)
         {
             int role_id = 0;
+            bool isValidAccount = false;
             var connection = GetConnection();
 
             await Task.Run(() =>
@@ -43,12 +44,12 @@ namespace MyShop.Repository
                 {
                     role_id = (int)reader["role_id"];
                 }
-                if (role_id == 1) { return true; }
-                else return false;
-            }
-            return false;
-            
+                if (role_id == 1) { isValidAccount = true; }
+                else isValidAccount = false;
 
+                connection.Close();
+            }
+            return isValidAccount;
 
         }
 

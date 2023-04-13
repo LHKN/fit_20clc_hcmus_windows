@@ -8,12 +8,18 @@
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:viewmodel="using:MyShop.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:LoginViewModel}"
+    xmlns:viewmodel="using:MyShop.ViewModel" xmlns:ic="using:Microsoft.Xaml.Interactions.Core" xmlns:i="using:Microsoft.Xaml.Interactivity" d:DataContext="{d:DesignInstance Type=viewmodel:LoginViewModel}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" >
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+    <Grid MaxWidth="300">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
 
             <TextBlock Text="Login Account" 
                        FontWeight="SemiBold"
@@ -27,12 +33,12 @@
 
             <TextBox x:Name="usernameTextBox" 
                      PlaceholderText="Username"
-                     Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding Account.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <PasswordBox x:Name="passwordBox" 
                          PasswordRevealMode="Hidden" 
                          PlaceholderText="Password"
-                         Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                         Password="{Binding Account.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             
             <CheckBox Name="revealModeCheckBox" Content="Show password" IsChecked="False"
             Checked="RevealModeCheckbox_Changed" Unchecked="RevealModeCheckbox_Changed"/>
@@ -40,7 +46,9 @@
 
             <CheckBox VerticalAlignment="Center" 
                       Content="Keep me signed in"
-                      x:Name="keepLoginCheckBox"/>
+                      x:Name="keepLoginCheckBox"
+                      Command="{Binding RememberAccountCommand}"
+                      CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"/>
 
 
             <Button Content="SIGN IN"
