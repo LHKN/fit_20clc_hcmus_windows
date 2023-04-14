@@ -2,6 +2,7 @@
 using MyShop.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -38,7 +39,7 @@ namespace MyShop.Repository
                 command.Parameters.Add("@genre_id", SqlDbType.Int).Value = book.GerneId;
                 command.Parameters.Add("@price", SqlDbType.Decimal).Value = book.Price;
                 command.Parameters.Add("@quantity", SqlDbType.Int).Value = book.Quantity;
-                command.Parameters.Add("@published_date", SqlDbType.NVarChar).Value = book.PublishedDate;
+                command.Parameters.Add("@published_date", SqlDbType.DateTime).Value = book.PublishedDate;
                 int rowsAffected = command.ExecuteNonQuery();
 
                 if (rowsAffected > 0) { isSuccessful = true; }
@@ -86,23 +87,19 @@ namespace MyShop.Repository
             }
         }
 
-        public async Task<List<Book>> GetAll()
+        public async Task<ObservableCollection<Book>> GetAll()
         {
-            List<Book> books = null;
+            ObservableCollection<Book> books = new ObservableCollection<Book>();
             var connection = GetConnection();
 
             await Task.Run(() =>
             {
-                try
-                {
-                    connection.Open();
-                }
-                catch (Exception ex) { }
+                connection.Open();
             }).ConfigureAwait(false);
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "select id,title,author,description,genre_id,price,quantity,published_date from BOOK";
+                string sql = "select id,title,image,author,description,genre_id,price,quantity,publication_date from BOOK";
                 var command = new SqlCommand(sql, connection);
                 var reader = command.ExecuteReader();
 
@@ -116,7 +113,8 @@ namespace MyShop.Repository
                     int genre_id = Convert.ToInt32(reader["genre_id"]);
                     decimal price = Convert.ToDecimal(reader["price"]);
                     int quantity = Convert.ToInt32(reader["quantity"]);
-                    DateTime published_date = Convert.ToDateTime(reader["published_date"]);
+                    object obj = reader["publication_date"];
+                    DateTime published_date = obj == null || obj == DBNull.Value ? default(DateTime) : Convert.ToDateTime(obj);
 
                     books.Add(new Book
                     {
@@ -131,6 +129,7 @@ namespace MyShop.Repository
                         PublishedDate= published_date
                     });
                 }
+                reader.Close();
 
                 connection.Close();
             }

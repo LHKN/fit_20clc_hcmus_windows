@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,6 @@ namespace MyShop.Model
         void Remove(int id);
         Task<Book> GetById(int id);
         
-        Task<List<Book>> GetAll();
+        Task<ObservableCollection<Book>> GetAll();
     }
 }
