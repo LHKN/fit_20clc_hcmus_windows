@@ -26,8 +26,8 @@
             <NavigationView.Header>
                 <Image Source="/Assets/logo_bookit.png"
                            HorizontalAlignment="Center"
-                           MaxHeight="100"
-                       Margin="10,10,10,30"></Image>
+                           MaxHeight="50"
+                       Margin="10,0,10,20"></Image>
             </NavigationView.Header>
 
             <i:Interaction.Behaviors>
