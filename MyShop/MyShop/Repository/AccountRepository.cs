@@ -1,12 +1,16 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.VisualBasic.Logging;
 using MyShop.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace MyShop.Repository
 {
@@ -22,32 +26,72 @@ namespace MyShop.Repository
             int role_id = 0;
             bool isValidAccount = false;
             var connection = GetConnection();
-
+            string password, passwordIn64 = string.Empty, entropyIn64 = string.Empty;
             await Task.Run(() =>
             {
-                try
-                {
-                    connection.Open();
-                }
-                catch (Exception ex) { }
+                connection.Open();
             }).ConfigureAwait(false);
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "select role_id from ACCOUNT where username = @username and password = @password";
+                string sql = "select password, entropy, role_id from ACCOUNT where username = @username";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@username", SqlDbType.NVarChar).Value = credentical.UserName;
-                command.Parameters.Add("@password", SqlDbType.NVarChar).Value = credentical.Password;
-                SqlDataReader reader = command.ExecuteReader();
 
+                var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    role_id = (int)reader["role_id"];
+                    passwordIn64 = Convert.ToString(reader["password"]);
+                    entropyIn64 = Convert.ToString(reader["entropy"]);
+                    role_id = Convert.ToInt32(reader["role_id"]);
                 }
-                if (role_id == 1) { isValidAccount = true; }
+
+                //Decrypting..
+                byte[] entropyInBytes = Convert.FromBase64String(entropyIn64);
+                byte[] cypherTextInBytes = Convert.FromBase64String(passwordIn64);
+
+                byte[] passwordInBytes = ProtectedData.Unprotect(cypherTextInBytes,
+                    entropyInBytes,
+                    DataProtectionScope.CurrentUser
+                );
+
+                password = Encoding.UTF8.GetString(passwordInBytes);
+
+                if (role_id == 1 && password.Equals(credentical.Password))
+                {
+                    isValidAccount = true;
+                }
                 else isValidAccount = false;
 
+                // Code saving encrypted password (function similar to register)
+                //{
+                //    var passwordInBytes = Encoding.UTF8.GetBytes(credentical.Password);
+                //    var entropy = new byte[20];
+                //    using (var rng = RandomNumberGenerator.Create())
+                //    {
+                //        rng.GetBytes(entropy);
+                //    }
+
+                //    var cypherText = ProtectedData.Protect(
+                //        passwordInBytes,
+                //        entropy,
+                //        DataProtectionScope.CurrentUser
+                //    );
+
+                //    var passwordIn64 = Convert.ToBase64String(cypherText);
+                //    var entropyIn64 = Convert.ToBase64String(entropy);
+
+                
+                //    string sql = "update ACCOUNT set password=@password, entropy=@entropy where username=@username";
+                //    var command = new SqlCommand(sql, connection);
+                //    command.Parameters.Add("@username", SqlDbType.NVarChar).Value = credentical.UserName;
+                //    command.Parameters.Add("@password", SqlDbType.NVarChar).Value = passwordIn64;
+                //    command.Parameters.Add("@entropy", SqlDbType.NVarChar).Value = entropyIn64;
+                //    MessageBox.Show(command.ExecuteNonQuery().ToString());
+                //    isValidAccount = true;
+                //}
                 connection.Close();
+
             }
             return isValidAccount;
 
