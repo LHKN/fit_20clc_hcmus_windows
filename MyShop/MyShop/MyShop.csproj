@@ -22,6 +22,7 @@
     <None Remove="View\BookPage.xaml" />
     <None Remove="View\BooksPage.xaml" />
     <None Remove="View\BookTypePage.xaml" />
+    <None Remove="View\ContentDialogContent.xaml" />
     <None Remove="View\DashboardPage.xaml" />
     <None Remove="View\HomePage.xaml" />
     <None Remove="View\LoginView.xaml" />
@@ -39,6 +40,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221109.1" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
@@ -78,6 +80,11 @@
     <Content Update="Assets\Wide310x150Logo.scale-200.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\ContentDialogContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="View\BookTypePage.xaml">
