@@ -25,10 +25,6 @@ namespace MyShop.Services
             {typeof(StatisticViewModel), typeof(StatisticPage)},
             {typeof(BooksViewModel), typeof(BooksPage)},
             {typeof(BookTypeViewModel), typeof(BookTypePage)},
-<<<<<<< HEAD
-            {typeof(AddBookViewModel), typeof(AddBookPage) },
-            {typeof(EditBookViewModel), typeof(EditBookPage)},
-=======
             {typeof(DailyRevenueViewModel), typeof(DailyRevenuePage) },
             {typeof(WeeklyRevenueViewModel), typeof(WeeklyRevenuePage) },
             {typeof(MonthlyRevenueViewModel), typeof(MonthlyRevenuePage) },
@@ -37,8 +33,8 @@ namespace MyShop.Services
             {typeof(WeeklyProductViewModel), typeof(WeeklyProductPage) },
             {typeof(MonthlyProductViewModel), typeof(MonthlyProductPage) },
             {typeof(YearlyProductViewModel), typeof(YearlyProductPage) },
-           
->>>>>>> bcb6f031140599b2b5291bbae7cbd5cebb4164e1
+            {typeof(AddBookViewModel), typeof(AddBookPage) },
+            {typeof(EditBookViewModel), typeof(EditBookPage)},
             
             //add more page...
 
