@@ -27,11 +27,9 @@ namespace MyShop.View
     /// </summary>
     public sealed partial class OrderHistoryPage : Page
     {
-        OrderHistoryViewModel thisViewModel;
         public OrderHistoryPage()
         {
             this.InitializeComponent();
-            thisViewModel = new OrderHistoryViewModel();
         }
     }
 }

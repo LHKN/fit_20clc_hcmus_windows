@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,16 +9,16 @@ namespace MyShop.Model
 {
     public interface IBillRepository
     {
-        void Add(Bill bill);
-        void Edit(Bill bill);
-        void Remove(int id);
+        Task Add(Bill bill);
+        Task Edit(Bill bill);
+        Task Remove(int id);
         Task<Bill> GetById(int id);
 
-        // get by Date
-        Task<List<Bill>> GetAll(String date);
+        // filter by Date
+        Task<ObservableCollection<Bill>> GetAll(DateOnly? dateFrom, DateOnly? dateTo);
 
-        void AddBillDetail(int billId, BillDetail billDetail);
-        void EditBillDetail(int billId, BillDetail billDetail);
-        void RemoveBillDetail(int billId, int billDetailId);
+        Task AddBillDetail(BillDetail billDetail);
+        Task EditBillDetail(int billId, int bookId, BillDetail billDetail);
+        Task RemoveBillDetail(int billId, int bookId);
     }
 }

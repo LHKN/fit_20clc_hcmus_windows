@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using MyShop.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace MyShop.Repository
     class BillRepository : RepositoryBase, IBillRepository
     {
 
-        public async void Add(Bill bill)
+        public async Task Add(Bill bill)
         {
             bool isSuccessful = false;
             var connection = GetConnection();
@@ -34,7 +35,7 @@ namespace MyShop.Repository
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@id", SqlDbType.Int).Value = bill.Id;
                 command.Parameters.Add("@customer_id", SqlDbType.Int).Value = bill.CustomerId;
-                command.Parameters.Add("@total_price", SqlDbType.Decimal).Value = bill.TotalPrice;
+                command.Parameters.Add("@total_price", SqlDbType.Int).Value = bill.TotalPrice;
                 command.Parameters.Add("@transaction_date", SqlDbType.DateTime).Value = bill.TransactionDate;
                 int rowsAffected = command.ExecuteNonQuery();
 
@@ -45,7 +46,7 @@ namespace MyShop.Repository
             }
         }
 
-        public async void Edit(Bill bill)
+        public async Task Edit(Bill bill)
         {
             bool isSuccessful = false;
             var connection = GetConnection();
@@ -61,12 +62,12 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "update BILL set id=@id,customer_id=@customer_id,total_price=@total_price,transaction_date=@transaction_date" +
+                string sql = "update BILL set customer_id=@customer_id,total_price=@total_price,transaction_date=@transaction_date" +
                     "where id = @id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@id", SqlDbType.Int).Value = bill.Id;
                 command.Parameters.Add("@customer_id", SqlDbType.Int).Value = bill.CustomerId;
-                command.Parameters.Add("@total_price", SqlDbType.Decimal).Value = bill.TotalPrice;
+                command.Parameters.Add("@total_price", SqlDbType.Int).Value = bill.TotalPrice;
                 command.Parameters.Add("@transaction_date", SqlDbType.DateTime).Value = bill.TransactionDate;
                 int rowsAffected = command.ExecuteNonQuery();
 
@@ -77,7 +78,7 @@ namespace MyShop.Repository
             }
         }
 
-        public async void Remove(int id)
+        public async Task Remove(int id)
         {
             bool isSuccessful = false;
             var connection = GetConnection();
@@ -105,9 +106,9 @@ namespace MyShop.Repository
             }
         }
 
-        public async Task<List<Bill>> GetAll(String date)
+        public async Task<ObservableCollection<Bill>> GetAll(DateOnly? dateFrom, DateOnly? dateTo)
         {
-            List<Bill> billList = null;
+            ObservableCollection<Bill> billList = null;
             var connection = GetConnection();
 
             await Task.Run(() =>
@@ -124,7 +125,7 @@ namespace MyShop.Repository
                 string sql;
                 var command = new SqlCommand();
 
-                if (date.IsNullOrEmpty())
+                if (dateFrom == null || dateTo == null)
                 {
                     sql = "select id,customer_id,total_price,transaction_date from BILL";
                     command = new SqlCommand(sql, connection);
@@ -133,9 +134,10 @@ namespace MyShop.Repository
                 else
                 {
                     sql = "select id,customer_id,total_price,transaction_date from BILL" +
-                    "where transaction_date = @transaction_date";
+                    "where transaction_date between @date_from and @date_to";
                     command = new SqlCommand(sql, connection);
-                    command.Parameters.Add("@transaction_date", SqlDbType.DateTime).Value = date;
+                    command.Parameters.Add("@date_from", SqlDbType.DateTime).Value = dateFrom;
+                    command.Parameters.Add("@date_to", SqlDbType.DateTime).Value = dateTo;
                 }
 
                 var reader = command.ExecuteReader();
@@ -144,8 +146,10 @@ namespace MyShop.Repository
                 {
                     int id = Convert.ToInt32(reader["id"]);
                     int customerId = Convert.ToInt32(reader["customer_id"]);
-                    decimal totalPrice = Convert.ToDecimal(reader["total_price"]);
-                    DateTime transactionDate = Convert.ToDateTime(reader["transaction_date"]);
+                    int totalPrice = Convert.ToInt32(reader["total_price"]);
+
+                    object obj = reader["publication_date"];
+                    DateOnly transactionDate = obj == null || obj == DBNull.Value ? default(DateOnly) : DateOnly.FromDateTime (Convert.ToDateTime(obj));
 
                     billList.Add(new Bill
                     {
@@ -186,8 +190,10 @@ namespace MyShop.Repository
                 while (reader.Read())
                 {
                     int customerId = Convert.ToInt32(reader["customer_id"]);
-                    decimal totalPrice = Convert.ToDecimal(reader["total_price"]);
-                    DateTime transactionDate = Convert.ToDateTime(reader["transaction_date"]);
+                    int totalPrice = Convert.ToInt32(reader["total_price"]);
+
+                    object obj = reader["publication_date"];
+                    DateOnly transactionDate = obj == null || obj == DBNull.Value ? default(DateOnly) : DateOnly.FromDateTime(Convert.ToDateTime(obj));
 
                     newBill = new Bill
                     {
@@ -203,19 +209,97 @@ namespace MyShop.Repository
         }
 
 
-        public async void AddBillDetail(int billId, BillDetail billDetail)
+        public async Task AddBillDetail(BillDetail billDetail)
         {
+            bool isSuccessful = false;
+            var connection = GetConnection();
 
+            await Task.Run(() =>
+            {
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception ex) { }
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                string sql = "insert into DETAILED_BILL (bill_id,book_id,price,number)" + // revise this
+                    "values (@bill_id,@book_id,@price,@number)";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billDetail.BillId;
+                command.Parameters.Add("@book_id", SqlDbType.Int).Value = billDetail.BookId;
+                command.Parameters.Add("@price", SqlDbType.Int).Value = billDetail.Price;
+                command.Parameters.Add("@number", SqlDbType.Int).Value = billDetail.Number;
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0) { isSuccessful = true; }
+                else { isSuccessful = false; }
+
+                connection.Close();
+            }
         }
         
-        public async void EditBillDetail(int billId, BillDetail billDetail)
+        public async Task EditBillDetail(int billId, int bookId, BillDetail billDetail)
         {
+            bool isSuccessful = false;
+            var connection = GetConnection();
 
+            await Task.Run(() =>
+            {
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception ex) { }
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                string sql = "update DETAILED_BILL set price=@price,number=@number" +
+                    "where bill_id = @bill_id and book_id = @book_id";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billDetail.BillId;
+                command.Parameters.Add("@book_id", SqlDbType.Int).Value = billDetail.BookId;
+                command.Parameters.Add("@price", SqlDbType.Int).Value = billDetail.Price;
+                command.Parameters.Add("@number", SqlDbType.DateTime).Value = billDetail.Number;
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0) { isSuccessful = true; }
+                else { isSuccessful = false; }
+
+                connection.Close();
+            }
         }
         
-        public async void RemoveBillDetail(int billId, int billDetailId)
+        public async Task RemoveBillDetail(int billId, int bookId)
         {
+            bool isSuccessful = false;
+            var connection = GetConnection();
 
+            await Task.Run(() =>
+            {
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception ex) { }
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                string sql = "delete from BILL where bill_id=@bill_id and book_id = @book_id";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billId;
+                command.Parameters.Add("@book_id", SqlDbType.Int).Value = bookId;
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0) { isSuccessful = true; }
+                else { isSuccessful = false; }
+
+                connection.Close();
+            }
         }
     }
 }

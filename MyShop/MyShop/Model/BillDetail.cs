@@ -8,19 +8,19 @@ namespace MyShop.Model
 {
     public sealed class BillDetail
     {
-        private int _bill_id;
-        private int _book_id;
-        private decimal _price;
+        private int _billId;
+        private int _bookId;
+        private int _price;
         private int _number;
 
-        public int Bill_id { get => _bill_id; set => _bill_id = value; }
-        public int Book_id { get => _book_id; set => _book_id = value; }
-        public decimal Price { get => _price; set => _price = value; }
+        public int BillId { get => _billId; set => _billId = value; }
+        public int BookId { get => _bookId; set => _bookId = value; }
+        public int Price { get => _price; set => _price = value; }
         public int Number { get => _number; set => _number = value; }
 
         public int TotalPrice()
         {
-            return (int)(Math.Round(_price, 0) * _number);
+            return _price * _number;
         }
     }
 }

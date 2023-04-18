@@ -23,6 +23,10 @@
         </CommandBarFlyout>
     </Page.Resources>-->
 
+    <Page.DataContext>
+        <viewmodel:OrderHistoryViewModel x:Name="thisViewModel"/>
+    </Page.DataContext>
+
     <Grid Margin="20, 20, 20, 20">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -30,38 +34,62 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel x:Name="BookCommandStackPanel" Orientation="Horizontal" Height="50" RelativePanel.AlignTopWithPanel="True">
-            <AppBarButton x:Name="addButton" Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
-            <AppBarButton x:Name="deleteButton" Icon="Delete" Label="Delete" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding DeleteCommand}"/>
-            <AppBarButton x:Name="updateButton" Icon="Edit" Label="Update" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding EditCommand}"/>
+            <AppBarButton Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
+            <AppBarButton Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}"/>
+            <AppBarButton Icon="Edit" Label="Update" Command="{Binding EditCommand}"/>
         </StackPanel>
 
-        <CalendarDatePicker Grid.Column="1" PlaceholderText="Pick a date" Header="Filter Orders by Date" Date="{x:Bind thisViewModel.Date}" 
-                            x:Name="myCalendarDatePicker"
+        <CalendarDatePicker Grid.Column="1" PlaceholderText="Pick a date" Header="Filter Orders From Date" Date="{x:Bind thisViewModel.DateFrom}" 
+                            DateFormat = "{}{dayofweek.full}, {month.full} {day.integer}, {year.full}"/>
+        
+        <CalendarDatePicker Grid.Column="2" PlaceholderText="Pick a date" Header="To Date" Date="{x:Bind thisViewModel.DateTo}" 
                             DateFormat = "{}{dayofweek.full}, {month.full} {day.integer}, {year.full}"/>
 
-        <ListView Grid.Row="1" Grid.ColumnSpan="2" x:Name="dataListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="400" Height="400">
+        <ListView Grid.Row="1" Grid.ColumnSpan="2" 
+                  x:Name="dataListView" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  Width="400" Height="400"
+                  ItemsSource="{x:Bind thisViewModel.Bills}"
+                  SelectedIndex="{x:Bind thisViewModel.SelectedBillIndex}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-
-                    <!--<CommandBarFlyout></CommandBarFlyout>-->
                     <StackPanel Width="200" Height="100">
-                        <!--Create item here-->
-                        <TextBlock Text="{Binding Bill.ID}" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding Bill.Name}" Foreground="CadetBlue"/>
-                        <TextBlock Text="{Binding Bill.Quantity}" Foreground="CadetBlue"/>
-                        <TextBlock Text="{Binding Bill.Price}" Foreground="CadetBlue"/>
+                        <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
+                                <Run Text="{Binding ID}" FontWeight="Bold" Foreground="Blue"/>
+                        </TextBlock>
+                        <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
+                                <Run Text="{Binding CustomerId}" FontWeight="Bold" Foreground="CadetBlue"/>
+                        </TextBlock>
+                        <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
+                                <Run Text="{Binding TotalPrice}" FontWeight="Bold" Foreground="CadetBlue"/>
+                        </TextBlock>
+                        <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
+                                <Run Text="{Binding TransactionDate}" FontWeight="Bold" Foreground="CadetBlue"/>
+                        </TextBlock>
 
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
+
+            <ListView.Resources>
+                <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
+                    <AppBarButton Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
+                    <AppBarButton Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}"/>
+                    <AppBarButton Icon="Edit" Label="Update" Command="{Binding EditCommand}"/>
+                </CommandBarFlyout>
+            </ListView.Resources>
+            
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    
+                    <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                           MaximumRowsOrColumns="10"
+                           Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>

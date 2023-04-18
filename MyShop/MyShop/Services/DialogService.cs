@@ -73,5 +73,25 @@ namespace MyShop.Services
 
             return (result == ContentDialogResult.Primary);
         }
+
+        public static async Task ShowDialog(
+            this FrameworkElement element,
+            string title,
+            string content)
+        {
+            ContentDialog contentDialog = new ContentDialog()
+            {
+                Title = title,
+                CloseButtonText = "Cancel",
+                DefaultButton = ContentDialogButton.Close,
+                Content = content,
+
+                Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+                XamlRoot = element.XamlRoot,
+                RequestedTheme = element.ActualTheme,
+            };
+
+            await contentDialog.ShowAsync();
+        }
     }
 }
