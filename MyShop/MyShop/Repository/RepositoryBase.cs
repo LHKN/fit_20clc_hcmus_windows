@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace MyShop.Repository
 {
@@ -20,16 +21,15 @@ namespace MyShop.Repository
             var extconfig = new ConfigurationBuilder().AddUserSecrets<MainWindow>().Build();
             // Ý nghĩa: tìm assembly có lớp MainWindow chứa SecretID
 
-            var connectionString = extconfig.GetSection("DB")["ConnectionString"];
-            var username = extconfig.GetSection("DB")["Username"];
-            var password = extconfig.GetSection("DB")["Password"];
-            var database = extconfig.GetSection("DB")["Database"];
-            connectionString.Replace("@username", username);
-            connectionString.Replace("@password", password);
-            connectionString.Replace("@database", database);
+            string connectionString = extconfig.GetSection("DB")["ConnectionString"];
+            string username = extconfig.GetSection("DB")["Username"];
+            string password = extconfig.GetSection("DB")["Password"];
+            string database = extconfig.GetSection("DB")["Database"];
+            connectionString = connectionString.Replace("@username", username);
+            connectionString = connectionString.Replace("@password", password);
+            connectionString = connectionString.Replace("@database", database);
 
             _connectionString = connectionString;
-
         }
 
         protected SqlConnection GetConnection()

@@ -35,7 +35,7 @@
         <TextBlock Grid.Row="2" Text="Address"/>
         <TextBlock Grid.Row="2" Grid.Column="1" Text="My Address"/>
 
-        <AppBarButton x:Name="editButton" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" Icon="Edit" Label="Edit profile"/>
+        <AppBarButton x:Name="logOutButton" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" Icon="LeaveChat" Label="Log out"/>
 
     </Grid>
 </Page>

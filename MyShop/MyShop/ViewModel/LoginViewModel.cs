@@ -2,6 +2,7 @@
 using MyShop.Model;
 using MyShop.Repository;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -39,9 +40,25 @@ namespace MyShop.ViewModel
 
         private async void ExecuteLoginCommand()
         {
+            var task = await _accountRepository.AuthenticateAccount(
+                new System.Net.NetworkCredential(Account.Username, Account.Password));
+
+            bool isValidAccount = task;
+
+            if (isValidAccount)
+            {
+                Thread.CurrentPrincipal = new GenericPrincipal(
+                    new GenericIdentity(Account.Username), null);
+                ParentPageNavigation.ViewModel = new HomeViewModel();
+            }
+            else
+            {
+                ErrorMessage = "* Invalid username or password";
+            }
+
             if (IsRememberAccount)
             {
-                //save to config
+                //save to config for local login
                 var sysconfig = System.Configuration.ConfigurationManager.OpenExeConfiguration(
                     ConfigurationUserLevel.None);
                 sysconfig.AppSettings.Settings["Username"].Value = Account.Username;
@@ -62,27 +79,19 @@ namespace MyShop.ViewModel
 
                 var passwordIn64 = Convert.ToBase64String(cypherText);
                 var entropyIn64 = Convert.ToBase64String(entropy);
+
+                //MessageBox.Show("passwordInBytes: " + passwordInBytes.Length + "\n"
+                //                + "entropy: " + entropy.Length + "\n"
+                //                + "cypherText: " + cypherText.Length + "\n"
+                //                + "passwordIn64: " + passwordIn64.Length + "\n"
+                //                + "entropyIn64: " + entropyIn64.Length + "\n");
+
                 sysconfig.AppSettings.Settings["Password"].Value = passwordIn64;
                 sysconfig.AppSettings.Settings["Entropy"].Value = entropyIn64;
 
                 sysconfig.Save(ConfigurationSaveMode.Full);
                 System.Configuration.ConfigurationManager.RefreshSection("appSettings");
 
-            }
-            var task = await _accountRepository.AuthenticateAccount(
-                new System.Net.NetworkCredential(Account.Username, Account.Password));
-
-            bool isValidAccount = task;
-
-            if (isValidAccount)
-            {
-                Thread.CurrentPrincipal = new GenericPrincipal(
-                    new GenericIdentity(Account.Username), null);
-                ParentPageNavigation.ViewModel = new HomeViewModel();
-            }
-            else
-            {
-                ErrorMessage = "* Invalid username or password";
             }
 
         }

@@ -32,8 +32,6 @@ namespace MyShop.View
         {
             InitializeComponent();
             rootviewModel = new RootPageViewModel();
-
-
         }
     }
 }

@@ -7,28 +7,55 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodel="using:MyShop.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:OrderHistoryViewModel}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Margin="20, 20, 20, 20">
+    <!--<Page.Resources>
+        <CommandBarFlyout Placement="BottomEdgeAlignedRight" x:Name="CommandBarFlyout1">
+            <AppBarButton Label="Share" Icon="Share" ToolTipService.ToolTip="Share" Click="OnElementClicked" />
+            <AppBarButton Label="Save" Icon="Save" ToolTipService.ToolTip="Save" Click="OnElementClicked" />
+            <AppBarButton Label="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" Click="OnElementClicked" />
+            <CommandBarFlyout.SecondaryCommands>
+                <AppBarButton x:Name="ResizeButton1" Label="Resize" Click="OnElementClicked" />
+                <AppBarButton x:Name="MoveButton1" Label="Move" Click="OnElementClicked" />
+            </CommandBarFlyout.SecondaryCommands>
+        </CommandBarFlyout>
+    </Page.Resources>-->
 
-        <Button Grid.Row="3" Grid.Column="1" Content="Sort Options">
-            <Button.Flyout>
-                <MenuFlyout>
-                    <MenuFlyoutItem Text="Sort by Day" />
-                </MenuFlyout>
-            </Button.Flyout>
-        </Button>
-        
-        <ListView x:Name="dataListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="400" Height="400">
+    <Grid Margin="20, 20, 20, 20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel x:Name="BookCommandStackPanel" Orientation="Horizontal" Height="50" RelativePanel.AlignTopWithPanel="True">
+            <AppBarButton x:Name="addButton" Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
+            <AppBarButton x:Name="deleteButton" Icon="Delete" Label="Delete" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding DeleteCommand}"/>
+            <AppBarButton x:Name="updateButton" Icon="Edit" Label="Update" HorizontalAlignment="Left" VerticalAlignment="Center" Command="{Binding EditCommand}"/>
+        </StackPanel>
+
+        <CalendarDatePicker Grid.Column="1" PlaceholderText="Pick a date" Header="Filter Orders by Date" Date="{x:Bind thisViewModel.Date}" 
+                            x:Name="myCalendarDatePicker"
+                            DateFormat = "{}{dayofweek.full}, {month.full} {day.integer}, {year.full}"/>
+
+        <ListView Grid.Row="1" Grid.ColumnSpan="2" x:Name="dataListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="400" Height="400">
             <ListView.ItemTemplate>
                 <DataTemplate>
+
+                    <!--<CommandBarFlyout></CommandBarFlyout>-->
                     <StackPanel Width="200" Height="100">
                         <!--Create item here-->
-                        <TextBlock Text="{Binding ID}" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding Name}" Foreground="Red"/>
-                        
+                        <TextBlock Text="{Binding Bill.ID}" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Bill.Name}" Foreground="CadetBlue"/>
+                        <TextBlock Text="{Binding Bill.Quantity}" Foreground="CadetBlue"/>
+                        <TextBlock Text="{Binding Bill.Price}" Foreground="CadetBlue"/>
+
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
