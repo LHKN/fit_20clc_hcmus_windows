@@ -21,8 +21,8 @@ namespace MyShop.ViewModel
     class OrderHistoryViewModel : ViewModelBase
     {
         // Fields
-        private System.Nullable<DateTimeOffset> _date = DateTime.Now;
-        //private System.Nullable<DateTimeOffset> _date = new DateTime(2023, 4, 13);
+        private System.Nullable<DateTimeOffset> _dateFrom = new DateTime(2023, 4, 13);
+        private System.Nullable<DateTimeOffset> _dateTo = DateTime.Now;
 
         private ObservableCollection<Bill> _billList;
         private Dictionary<int, List<BillDetail>> _billDetailDict; //int <<billId>> respective to the bill's list of <<billDetail>>
