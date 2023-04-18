@@ -30,10 +30,9 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "insert into BILL (id,customer_id,total_price,transaction_date)" +
-                    "values (@id,@customer_id,@total_price,@transaction_date)";
+                string sql = "insert into BILL (customer_id,total_price,transaction_date)" +
+                    "values (@customer_id,@total_price,@transaction_date)";
                 var command = new SqlCommand(sql, connection);
-                command.Parameters.Add("@id", SqlDbType.Int).Value = bill.Id;
                 command.Parameters.Add("@customer_id", SqlDbType.Int).Value = bill.CustomerId;
                 command.Parameters.Add("@total_price", SqlDbType.Int).Value = bill.TotalPrice;
                 command.Parameters.Add("@transaction_date", SqlDbType.DateTime).Value = bill.TransactionDate;

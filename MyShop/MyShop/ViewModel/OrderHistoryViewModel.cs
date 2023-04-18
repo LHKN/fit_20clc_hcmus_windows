@@ -34,12 +34,15 @@ namespace MyShop.ViewModel
         // Constructor
         public OrderHistoryViewModel() {
             _billRepository = new BillRepository();
+            _billDetailDict = new Dictionary<int, List<BillDetail>>();
+
+            ExecuteGetAllCommand();
+
             //
             AddCommand = new AsyncRelayCommand(ExecuteCreateOrderCommand);
             DeleteCommand = new AsyncRelayCommand(ExecuteDeleteOrderCommand);
             EditCommand = new AsyncRelayCommand(ExecuteEditOrderCommand);            
             
-            GetAllCommand = new AsyncRelayCommand(ExecuteGetAllCommand);
             GetIdCommand = new AsyncRelayCommand(ExecuteGetByIdCommand);
         }
 
@@ -48,7 +51,7 @@ namespace MyShop.ViewModel
             //await App.MainRoot.ShowDialog("DEBUG", _date.ToString());
 
             Bill bill = new Bill();
-            //add bill values
+            // TODO: add bill values
 
             await _billRepository.Add(bill);
             await App.MainRoot.ShowDialog("Success", "New order is added!");
@@ -65,7 +68,21 @@ namespace MyShop.ViewModel
 
             if (confirmed == true)
             {
-                await _billRepository.Remove(SelectedBillIndex);
+                // remove from BILL
+                int key = _billList[SelectedBillIndex].Id;
+                await _billRepository.Remove(key);
+
+                // remove from DETAILTED_BILL
+                List<BillDetail> billDetail;
+                _billDetailDict.TryGetValue(key, out billDetail);
+                for (int i = 0;i < billDetail.Count; i++)
+                {
+                    await _billRepository.RemoveBillDetail(key, billDetail[i].BookId);
+                }
+
+                _billList.RemoveAt(SelectedBillIndex);
+                _billDetailDict.Remove(key);
+
                 await App.MainRoot.ShowDialog("Success", "Order is removed!");
             }
         }
@@ -79,7 +96,7 @@ namespace MyShop.ViewModel
             }
             Bill bill = _billList[SelectedBillIndex];
 
-            //update bill values and bill details
+            // TODO: update bill values and bill details
 
             await _billRepository.Edit(bill);
             await App.MainRoot.ShowDialog("Success", "Order is updated!");
@@ -88,20 +105,34 @@ namespace MyShop.ViewModel
         public async Task ExecuteGetAllCommand()
         {
             // get all from date to date
+            DateOnly dateOnlyFrom;
+            DateOnly dateOnlyTo;
+            var task = await _billRepository.GetAll(dateOnlyFrom, dateOnlyTo);
 
-            //DateOnly dateOnlyFrom;
-            //DateOnly dateOnlyTo;
-            //var task = await _billRepository.GetAll(dateOnlyFrom, dateOnlyTo);
+            Bills = task;
 
-            //Bills = task;
+            for (int i = 0; i < Bills.Count; i++)
+            {
+                List<BillDetail> temp = new List<BillDetail>
+                {
+                    // TODO: consider assign list here instead of init
+                    new BillDetail
+                    {
+                        BillId = Bills[i].Id,
+
+                        // bill detail here
+                    }
+                    //...
+                };
+
+                _billDetailDict.Add(Bills[i].Id, temp);
+            }
         }
 
         public async Task ExecuteGetByIdCommand()
         {
-            int id = 0;
-            //get value
-
-            await _billRepository.GetById(id);
+            var task = await _billRepository.GetById(_billList[SelectedBillIndex].Id);
+            //Bill bill = task;
         }
 
         // getter, setter
@@ -138,7 +169,6 @@ namespace MyShop.ViewModel
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand EditCommand { get; }        
-        public ICommand GetAllCommand { get; }
         public ICommand GetIdCommand { get; }
         public int SelectedBillIndex
         {

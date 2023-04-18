@@ -11,18 +11,6 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <!--<Page.Resources>
-        <CommandBarFlyout Placement="BottomEdgeAlignedRight" x:Name="CommandBarFlyout1">
-            <AppBarButton Label="Share" Icon="Share" ToolTipService.ToolTip="Share" Click="OnElementClicked" />
-            <AppBarButton Label="Save" Icon="Save" ToolTipService.ToolTip="Save" Click="OnElementClicked" />
-            <AppBarButton Label="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" Click="OnElementClicked" />
-            <CommandBarFlyout.SecondaryCommands>
-                <AppBarButton x:Name="ResizeButton1" Label="Resize" Click="OnElementClicked" />
-                <AppBarButton x:Name="MoveButton1" Label="Move" Click="OnElementClicked" />
-            </CommandBarFlyout.SecondaryCommands>
-        </CommandBarFlyout>
-    </Page.Resources>-->
-
     <Page.DataContext>
         <viewmodel:OrderHistoryViewModel x:Name="thisViewModel"/>
     </Page.DataContext>
