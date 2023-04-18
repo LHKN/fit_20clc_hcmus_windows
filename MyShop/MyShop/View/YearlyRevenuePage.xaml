@@ -1,0 +1,22 @@
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<Page
+    x:Class="MyShop.View.YearlyRevenuePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyShop.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel Padding="20" Orientation="Vertical">
+            <TextBlock Text="From" Padding="0,10,0,0"/>
+            <DatePicker DayFormat="{}{day.integer} {dayofweek.abbreviated}" DayVisible="False" MonthVisible="False" />
+            <TextBlock Text="To" Padding="0,20,0,0"/>
+            <DatePicker DayFormat="{}{day.integer} {dayofweek.abbreviated}" DayVisible="False"  MonthVisible="False"/>
+        </StackPanel>
+    </Grid>
+</Page>
