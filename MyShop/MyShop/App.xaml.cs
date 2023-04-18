@@ -19,6 +19,8 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using MyShop.View;
+using System.Windows.Forms;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -28,7 +30,7 @@ namespace MyShop
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    public partial class App : Application
+    public partial class App : Microsoft.UI.Xaml.Application
     {
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -50,9 +52,9 @@ namespace MyShop
             m_window.ExtendsContentIntoTitleBar= true;
             m_window.SetTitleBar(null);
             m_window.Activate();
+            MainRoot = m_window.Content as FrameworkElement;
         }
-
         private Window m_window;
-
+        public static FrameworkElement MainRoot { get; private set; }
     }
 }

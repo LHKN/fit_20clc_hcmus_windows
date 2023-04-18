@@ -79,7 +79,11 @@ namespace MyShop.Repository
                 command.Parameters.Add("@genre_id", SqlDbType.Int).Value = book.GerneId;
                 command.Parameters.Add("@price", SqlDbType.Int).Value = book.Price;
                 command.Parameters.Add("@quantity", SqlDbType.Int).Value = book.Quantity;
+<<<<<<< HEAD
                 command.Parameters.Add("@published_date", SqlDbType.Date).Value = book.PublishedDate;
+=======
+                command.Parameters.Add("@published_date", SqlDbType.DateTime).Value = book.PublishedDate;
+>>>>>>> bcb6f031140599b2b5291bbae7cbd5cebb4164e1
                 command.Parameters.Add("@id", SqlDbType.Int).Value = book.Id;
                 int rowsAffected = command.ExecuteNonQuery();
 
