@@ -17,7 +17,7 @@ namespace MyShop.Services
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        return DateOnly.FromDateTime(((DateTimeOffset)value).DateTime);
+        return DateOnly.FromDateTime(((DateTimeOffset)value).Date);
     }
 }
 }

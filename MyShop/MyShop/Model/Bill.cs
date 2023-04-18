@@ -9,6 +9,7 @@ namespace MyShop.Model
     public sealed class Bill
     {
         private int _id;
+        private int _customerId;
         private int _totalPrice;
         private DateOnly _transactionDate;
 

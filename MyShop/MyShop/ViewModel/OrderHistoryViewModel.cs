@@ -15,7 +15,7 @@ namespace MyShop.ViewModel
     {
         // Fields
         private System.Nullable<DateTimeOffset> _date = DateTime.Now;
-        //private System.Nullable<DateTimeOffset> _date = new DateTime(2023, 4, 13);
+        //private System.Nullable<DateTimeOffset> _date = new DateOnly(2023, 4, 13);
 
         private List<Bill> billList;
         private Dictionary<int, List<BillDetail>> billDetailDict; //int billId

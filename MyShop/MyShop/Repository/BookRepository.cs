@@ -37,17 +37,11 @@ namespace MyShop.Repository
                 command.Parameters.Add("@price", SqlDbType.Int).Value = book.Price;
                 command.Parameters.Add("@quantity", SqlDbType.Int).Value = book.Quantity;
                 command.Parameters.Add("@published_date", SqlDbType.Date).Value = book.PublishedDate;
-                try
-                {
-                    int rowsAffected = command.ExecuteNonQuery();
+                
+                int rowsAffected = command.ExecuteNonQuery();
 
-                    if (rowsAffected > 0) { isSuccessful = true; }
-                    else { isSuccessful = false; }
-                }
-                catch (SqlException exc) {
-                    string msg = exc.Message + "\n" + book.Title + "|" + book.Author + "|" + book.Description + "|" + book.Image + "|" + book.GerneId + "|" + book.Price + "|" + book.Quantity + "|" + book.PublishedDate;
-                    MessageBox.Show(msg);
-                }
+                if (rowsAffected > 0) { isSuccessful = true; }
+                else { isSuccessful = false; }
 
 
                 connection.Close();

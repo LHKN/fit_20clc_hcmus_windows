@@ -35,7 +35,7 @@ namespace MyShop.Repository
                 command.Parameters.Add("@id", SqlDbType.Int).Value = bill.Id;
                 command.Parameters.Add("@customer_id", SqlDbType.Int).Value = bill.CustomerId;
                 command.Parameters.Add("@total_price", SqlDbType.Decimal).Value = bill.TotalPrice;
-                command.Parameters.Add("@transaction_date", SqlDbType.DateTime).Value = bill.TransactionDate;
+                command.Parameters.Add("@transaction_date", SqlDbType.Date).Value = bill.TransactionDate;
                 int rowsAffected = command.ExecuteNonQuery();
 
                 if (rowsAffected > 0) { isSuccessful = true; }
@@ -67,7 +67,7 @@ namespace MyShop.Repository
                 command.Parameters.Add("@id", SqlDbType.Int).Value = bill.Id;
                 command.Parameters.Add("@customer_id", SqlDbType.Int).Value = bill.CustomerId;
                 command.Parameters.Add("@total_price", SqlDbType.Decimal).Value = bill.TotalPrice;
-                command.Parameters.Add("@transaction_date", SqlDbType.DateTime).Value = bill.TransactionDate;
+                command.Parameters.Add("@transaction_date", SqlDbType.Date).Value = bill.TransactionDate;
                 int rowsAffected = command.ExecuteNonQuery();
 
                 if (rowsAffected > 0) { isSuccessful = true; }
@@ -135,7 +135,7 @@ namespace MyShop.Repository
                     sql = "select id,customer_id,total_price,transaction_date from BILL" +
                     "where transaction_date = @transaction_date";
                     command = new SqlCommand(sql, connection);
-                    command.Parameters.Add("@transaction_date", SqlDbType.DateTime).Value = date;
+                    command.Parameters.Add("@transaction_date", SqlDbType.Date).Value = date;
                 }
 
                 var reader = command.ExecuteReader();
@@ -144,8 +144,8 @@ namespace MyShop.Repository
                 {
                     int id = Convert.ToInt32(reader["id"]);
                     int customerId = Convert.ToInt32(reader["customer_id"]);
-                    decimal totalPrice = Convert.ToDecimal(reader["total_price"]);
-                    DateTime transactionDate = Convert.ToDateTime(reader["transaction_date"]);
+                    int totalPrice = Convert.ToInt32(reader["total_price"]);
+                    DateOnly transactionDate = DateOnly.FromDateTime(Convert.ToDateTime(reader["transaction_date"]));
 
                     billList.Add(new Bill
                     {
@@ -186,8 +186,8 @@ namespace MyShop.Repository
                 while (reader.Read())
                 {
                     int customerId = Convert.ToInt32(reader["customer_id"]);
-                    decimal totalPrice = Convert.ToDecimal(reader["total_price"]);
-                    DateTime transactionDate = Convert.ToDateTime(reader["transaction_date"]);
+                    int totalPrice = Convert.ToInt32(reader["total_price"]);
+                    DateOnly transactionDate = DateOnly.FromDateTime(Convert.ToDateTime(reader["transaction_date"]));
 
                     newBill = new Bill
                     {
