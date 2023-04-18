@@ -33,7 +33,8 @@ namespace MyShop.Services
             {typeof(WeeklyProductViewModel), typeof(WeeklyProductPage) },
             {typeof(MonthlyProductViewModel), typeof(MonthlyProductPage) },
             {typeof(YearlyProductViewModel), typeof(YearlyProductPage) },
-           
+            {typeof(AddBookViewModel), typeof(AddBookPage) },
+            {typeof(EditBookViewModel), typeof(EditBookPage)},
             
             //add more page...
 

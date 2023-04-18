@@ -9,12 +9,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodel="using:MyShop.ViewModel" 
+    xmlns:services="using:MyShop.Services"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+>
 
     <Page.DataContext>
         <viewmodel:BooksViewModel x:Name="booksViewModel"/>
     </Page.DataContext>
+
+    <Page.Resources>
+        <services:RelativeToAbsoluteConverter x:Key="absoluteConverter"/>
+    </Page.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -22,13 +28,13 @@
             <RowDefinition Height="5*"></RowDefinition>
         </Grid.RowDefinitions>
 
-            <StackPanel x:Name="BookCommandStackPanel" 
+            <StackPanel x:Name="BookCommandStackPanel"  
                         Orientation="Horizontal" Height="50" 
                         RelativePanel.AlignTopWithPanel="True"
                         Grid.Row="0">
-                <AppBarButton x:Name="addButton" Icon="Add" Label="Add" />
-                <AppBarButton x:Name="deleteButton" Icon="Delete" Label="Delete" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <AppBarButton x:Name="updateButton" Icon="Edit" Label="Update" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <AppBarButton x:Name="addButton" Icon="Add" Label="Add" Command="{Binding AddBookCommand}"/>
+                <AppBarButton x:Name="deleteButton" Icon="Delete" Label="Delete" Command="{Binding DeleteBookCommand}"/>
+                <AppBarButton x:Name="updateButton" Icon="Edit" Label="Update" Command="{Binding EditBookCommand}"/>
             </StackPanel>
 
             <!--<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Padding="10, 10, 0, 0" Name="booksComboBox" 
@@ -74,17 +80,18 @@
             </ListView>-->
         <GridView     Grid.Row="1"
                       x:Name="bookContentGridView"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      ItemsSource="{x:Bind booksViewModel.Books }">
+                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                      ItemsSource="{x:Bind booksViewModel.Books}"
+                      SelectedItem="{Binding SelectedBook, Mode=TwoWay}">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical">
-                        <!--<Image  Margin="0, 0, 5, 0" Width="100" Height="100" 
-                               Source="{Binding Image, Converter={StaticResource absoluteConverter}}"/>-->
-                        <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
+                    <StackPanel Orientation="Vertical" Width="200" Height="280">
+                        <Image  Margin="0, 0, 5, 0" Width="100" Height="200" 
+                                Source="{Binding Image, Converter={StaticResource absoluteConverter}}"/>
+                        <TextBlock TextWrapping="Wrap" HorizontalTextAlignment="Center">
                                 <Run Text="{Binding Title}" FontWeight="Bold" Foreground="Blue"/>
                         </TextBlock>
-                        <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
+                        <TextBlock TextWrapping="Wrap" HorizontalTextAlignment="Center">
                                 <Run Text="{Binding Author}" Foreground="Red"/>
                         </TextBlock>
                         <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
@@ -109,6 +116,7 @@
                            Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
+            
 
         </GridView>
     </Grid>

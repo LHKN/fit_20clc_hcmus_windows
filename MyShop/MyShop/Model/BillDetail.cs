@@ -20,7 +20,7 @@ namespace MyShop.Model
 
         public int TotalPrice()
         {
-            return _price * _number;
+            return Price*Number;
         }
     }
 }
