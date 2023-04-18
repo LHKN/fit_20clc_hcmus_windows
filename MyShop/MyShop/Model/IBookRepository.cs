@@ -9,11 +9,12 @@ namespace MyShop.Model
 {
     public interface IBookRepository
     {
-        void Add(Book book);
-        void Edit(Book book);
-        void Remove(int id);
+        Task<bool> Add(Book book);
+        Task<bool> Edit(Book book);
+        Task<bool> Remove(int id);
         Task<Book> GetById(int id);
-        
         Task<ObservableCollection<Book>> GetAll();
+
+        Task<List<Genre>> GetGenres();
     }
 }

@@ -16,13 +16,18 @@
     <Content Remove="Assets\wp9381234.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\book_cover.jpg" />
+    <None Remove="Assets\logo_bookit.png" />
+    <None Remove="Assets\wp9381234.jpg" />
     <None Remove="Styles\ButtonStyles.xaml" />
     <None Remove="Styles\UIColors.xaml" />
     <None Remove="View\AccountPage.xaml" />
+    <None Remove="View\AddBookPage.xaml" />
     <None Remove="View\BookPage.xaml" />
     <None Remove="View\BooksPage.xaml" />
     <None Remove="View\BookTypePage.xaml" />
     <None Remove="View\DashboardPage.xaml" />
+    <None Remove="View\EditBookPage.xaml" />
     <None Remove="View\HomePage.xaml" />
     <None Remove="View\LoginView.xaml" />
     <None Remove="View\OrderHistoryPage.xaml" />
@@ -52,11 +57,6 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\wp9381234.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <Content Update="Assets\LockScreenLogo.scale-200.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -78,6 +78,24 @@
     <Content Update="Assets\Wide310x150Logo.scale-200.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Assets\book_cover.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\logo_bookit.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\AddBookPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\EditBookPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="View\BookTypePage.xaml">

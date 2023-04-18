@@ -16,6 +16,7 @@ namespace MyShop.ViewModel
 
         private ObservableCollection<Book> _books;
         private IBookRepository _bookRepository;
+        private Book _selectedBook;
         public BooksViewModel()
         {
             _bookRepository = new BookRepository();
@@ -25,28 +26,46 @@ namespace MyShop.ViewModel
             DeleteBookCommand = new RelayCommand(ExecuteDeleteBookCommand);
 
         }
-        private ICommand _editBookCommand { get; }
-        private ICommand _deleteBookCommand { get; }
-        private ICommand _addBookCommand { get; }
+        private RelayCommand _editBookCommand;
+        private RelayCommand _deleteBookCommand;
+        private RelayCommand _addBookCommand;
 
-        public ICommand EditBookCommand { get; }
-        public ICommand DeleteBookCommand { get; }
-        public ICommand AddBookCommand { get; }
         public ObservableCollection<Book> Books { get => _books; set => _books = value; }
+        public Book SelectedBook { get => _selectedBook; set => _selectedBook = value; }
+        public RelayCommand EditBookCommand { get => _editBookCommand; set => _editBookCommand = value; }
+        public RelayCommand DeleteBookCommand { get => _deleteBookCommand; set => _deleteBookCommand = value; }
+        public RelayCommand AddBookCommand { get => _addBookCommand; set => _addBookCommand = value; }
 
         public void ExecuteEditBookCommand()
         {
-
+            ParentPageNavigation.ViewModel = new EditBookViewModel(SelectedBook);
         }
 
-        public void ExecuteDeleteBookCommand()
+        public async void ExecuteDeleteBookCommand()
         {
+            //Message to user to delete or not
+            {
 
+            }
+
+            //Delete
+            {
+                var task = await _bookRepository.Remove(SelectedBook.Id);
+                if (task)
+                {
+                    //Success message
+                }
+                else
+                {
+                    //Failed message
+                }
+            }
+            
         }
 
         public void ExecuteAddBookCommand()
         {
-
+            ParentPageNavigation.ViewModel = new AddBookViewModel();
         }
         
         public async void ExecuteGetAllCommand()
