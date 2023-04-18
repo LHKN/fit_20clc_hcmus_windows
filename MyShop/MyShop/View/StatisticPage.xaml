@@ -7,24 +7,79 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core" xmlns:i="using:Microsoft.Xaml.Interactivity" 
+    xmlns:viewmodel="using:MyShop.ViewModel" 
+    d:DataContext="{d:DesignInstance Type=viewmodel:StatisticViewModel}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Margin="20, 20, 20, 20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>          
         </Grid.RowDefinitions>
 
-        <Button Grid.Column="1" Content="Sort Options">
+        <Grid Grid.Row="0">
+            <NavigationView x:Name="nvRevenuePage"
+                            PaneDisplayMode="Top"
+                            IsSettingsVisible="False"
+                            IsBackButtonVisible="Collapsed">
+
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="ItemInvoked">
+                        <core:EventTriggerBehavior.Actions>
+                            <core:InvokeCommandAction Command="{Binding RevenueItemInvokedCommand}" />
+                        </core:EventTriggerBehavior.Actions>
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+
+
+                <NavigationView.MenuItems>
+                    <NavigationViewItem Content="Daily" x:Name="navItemDailyRevenue" Icon="CalendarDay" IsSelected="True"/>
+                    <NavigationViewItem Content="Weekly" x:Name="navItemWeeklyRevenue" Icon="CalendarWeek"/>
+                    <NavigationViewItem Content="Monthly" x:Name="navItemMonthlyRevenue" Icon="Calendar"/>
+                    <NavigationViewItem Content="Yearly" x:Name="navItemYearlyRevenue" Icon="ThreeBars" HorizontalAlignment="Right" />
+                </NavigationView.MenuItems>
+
+                <Frame x:Name="RevenuecontentFrame"
+                   Content="{Binding RevenueChildPageNavigation.ViewModel,Converter={StaticResource ViewModelToView}}"/>
+            </NavigationView>
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <NavigationView x:Name="nvProductPage"
+                            PaneDisplayMode="Top"
+                            IsSettingsVisible="False"
+                            IsBackButtonVisible="Collapsed">
+
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="ItemInvoked">
+                        <core:EventTriggerBehavior.Actions>
+                            <core:InvokeCommandAction Command="{Binding ProductItemInvokedCommand}" />
+                        </core:EventTriggerBehavior.Actions>
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+
+
+                <NavigationView.MenuItems>
+                    <NavigationViewItem Content="Daily" x:Name="navItemDailyProduct" Icon="CalendarDay" IsSelected="True"/>
+                    <NavigationViewItem Content="Weekly" x:Name="navItemWeeklyProduct" Icon="CalendarWeek"/>
+                    <NavigationViewItem Content="Monthly" x:Name="navItemMonthlyProduct" Icon="Priority"/>
+                    <NavigationViewItem Content="Yearly" x:Name="navItemYearlyProduct" Icon="ThreeBars" HorizontalAlignment="Right" />
+                </NavigationView.MenuItems>
+
+                <Frame x:Name="ProductcontentFrame"
+                   Content="{Binding ProductChildPageNavigation.ViewModel,Converter={StaticResource ViewModelToView}}"/>
+            </NavigationView>
+
+        </Grid>
+
+        <!--<Button Grid.Column="1" Content="Sort Options">
             <Button.Flyout>
                 <MenuFlyout>
                     <MenuFlyoutSubItem Text="Sort by">
@@ -39,6 +94,28 @@
 
         <StackPanel>
             <TextBlock Text="Revenue and Profit"/>
+            <NavigationView x:Name="nvStatisticPage"
+                            PaneDisplayMode="Top"
+                            IsSettingsVisible="False"
+                            IsBackButtonVisible="Collapsed">
+
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="RevenueItemInvoked">
+                        <core:EventTriggerBehavior.Actions>
+                            <core:InvokeCommandAction Command="{Binding RevenueItemInvokedCommand}" />
+                        </core:EventTriggerBehavior.Actions>
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+
+
+                <NavigationView.MenuItems>
+                    <NavigationViewItem Content="Book Types" x:Name="navItemBookTypes" Icon="Priority"/>
+                    <NavigationViewItem Content="Books" x:Name="navItemBooks" Icon="Library" HorizontalAlignment="Right" IsSelected="True"/>
+                </NavigationView.MenuItems>
+
+                <Frame x:Name="contentFrame"
+                   Content="{Binding ChildPageNavigation.ViewModel,Converter={StaticResource ViewModelToView}}"/>
+            </NavigationView>
         </StackPanel>
 
         <Button Grid.Row="3" Grid.Column="1" Content="Sort Options">
@@ -57,6 +134,6 @@
         <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
             <TextBlock Text="Total number of sold books"/>
             
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </Page>

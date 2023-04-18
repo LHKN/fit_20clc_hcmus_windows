@@ -25,6 +25,15 @@ namespace MyShop.Services
             {typeof(StatisticViewModel), typeof(StatisticPage)},
             {typeof(BooksViewModel), typeof(BooksPage)},
             {typeof(BookTypeViewModel), typeof(BookTypePage)},
+            {typeof(DailyRevenueViewModel), typeof(DailyRevenuePage) },
+            {typeof(WeeklyRevenueViewModel), typeof(WeeklyRevenuePage) },
+            {typeof(MonthlyRevenueViewModel), typeof(MonthlyRevenuePage) },
+            {typeof(YearlyRevenueViewModel), typeof(YearlyRevenuePage) },
+            {typeof(DailyProductViewModel), typeof(DailyProductPage) },
+            {typeof(WeeklyProductViewModel), typeof(WeeklyProductPage) },
+            {typeof(MonthlyProductViewModel), typeof(MonthlyProductPage) },
+            {typeof(YearlyProductViewModel), typeof(YearlyProductPage) },
+           
             
             //add more page...
 

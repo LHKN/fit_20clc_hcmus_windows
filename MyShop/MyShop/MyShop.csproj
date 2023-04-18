@@ -22,13 +22,21 @@
     <None Remove="View\BookPage.xaml" />
     <None Remove="View\BooksPage.xaml" />
     <None Remove="View\BookTypePage.xaml" />
+    <None Remove="View\DailyProductPage.xaml" />
+    <None Remove="View\DailyRevenuePage.xaml" />
     <None Remove="View\DashboardPage.xaml" />
     <None Remove="View\HomePage.xaml" />
     <None Remove="View\LoginView.xaml" />
+    <None Remove="View\MonthlyProductPage.xaml" />
+    <None Remove="View\MonthlyRevenuePage.xaml" />
     <None Remove="View\OrderHistoryPage.xaml" />
     <None Remove="View\RootPage.xaml" />
     <None Remove="View\SettingPage.xaml" />
     <None Remove="View\StatisticPage.xaml" />
+    <None Remove="View\WeeklyProductPage.xaml" />
+    <None Remove="View\WeeklyRevenuePage.xaml" />
+    <None Remove="View\YearlyProductPage.xaml" />
+    <None Remove="View\YearlyRevenuePage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -78,6 +86,46 @@
     <Content Update="Assets\Wide310x150Logo.scale-200.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\YearlyProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\YearlyRevenuePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\MonthlyProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\MonthlyRevenuePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\WeeklyProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\WeeklyRevenuePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\DailyProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\DailyRevenuePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="View\BookTypePage.xaml">
