@@ -40,12 +40,13 @@ namespace MyShop.ViewModel
 
         private async void ExecuteLoginCommand()
         {
+            ErrorMessage = String.Empty;
             var task = await _accountRepository.AuthenticateAccount(
                 new System.Net.NetworkCredential(Account.Username, Account.Password));
 
-            bool isValidAccount = task;
+            string message = task;
 
-            if (isValidAccount)
+            if (message.Equals("TRUE"))
             {
                 Thread.CurrentPrincipal = new GenericPrincipal(
                     new GenericIdentity(Account.Username), null);
@@ -53,7 +54,7 @@ namespace MyShop.ViewModel
             }
             else
             {
-                ErrorMessage = "* Invalid username or password";
+                ErrorMessage = message;
             }
 
             if (IsRememberAccount)

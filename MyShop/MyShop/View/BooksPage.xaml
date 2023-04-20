@@ -9,8 +9,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodel="using:MyShop.ViewModel" 
-    xmlns:services="using:MyShop.Services" xmlns:interactivity="using:Microsoft.Xaml.Interactivity" xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:services="using:MyShop.Services"
+    xmlns:services="using:MyShop.Services" 
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:slider="using:Syncfusion.UI.Xaml.Sliders"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -40,20 +41,7 @@
                 <AppBarButton x:Name="deleteButton" Icon="Delete" Label="Delete" Command="{Binding DeleteBookCommand}"/>
                 <AppBarButton x:Name="updateButton" Icon="Edit" Label="Update" Command="{Binding EditBookCommand}"/>
 
-                <slider:SfRangeSlider 
-                    AutomationProperties.Name="Price Range"
-                    RangeStart="100000" RangeEnd="500000"
-                    Minimum="100000"
-                    Maximum="500000"
-                    StepFrequency="10000"
-                    TickOffset="5"
-                    TickPlacement="After"
-                    ShowTicks="True"
-                    ShowLabels="True"
-                    
-                    FontSize="10"
-                    Width="200"
-                    />
+                
             </StackPanel>
             <!--<AutoSuggestBox PlaceholderText="Type a book name"
                             TextChanged="Control2_TextChanged"
@@ -63,8 +51,23 @@
             <StackPanel RelativePanel.AlignRightWithPanel="True"
                         Orientation="Horizontal"
                         VerticalAlignment="Center">
-
+                
+                <slider:SfRangeSlider 
+                    RangeStart="{Binding StartPrice, Mode=TwoWay}" 
+                    RangeEnd="{Binding EndPrice, Mode=TwoWay}"
+                    Minimum="0"
+                    Maximum="500000"
+                    StepFrequency="10000"
+                    TickOffset="5"
+                    TickPlacement="After"
+                    ShowTicks="True"
+                    ShowLabels="True"
+                    FontSize="10"
+                    MaxWidth="200"
+                    Margin="0,0,10,0"/>
+                
                 <AutoSuggestBox PlaceholderText="Type a book name"
+                                VerticalContentAlignment="Center"
                                 QueryIcon="Find"
                                 Text="{Binding CurrentKeyword, Mode=TwoWay}">
                     <interactivity:Interaction.Behaviors>
@@ -75,11 +78,12 @@
                         </core:EventTriggerBehavior>
                     </interactivity:Interaction.Behaviors>
                 </AutoSuggestBox>
-                <ComboBox Grid.Row="3" Grid.Column="1" 
-                          ItemsSource="{Binding Genres}"
+                <ComboBox ItemsSource="{Binding Genres}"
                           DisplayMemberPath="Name"
                           SelectedValuePath="Id"
-                          SelectedValue="{Binding GenreId, Mode=TwoWay}"/>
+                          SelectedValue="{Binding GenreId, Mode=TwoWay}"
+                          Width="100"
+                          Height="50"/>
             </StackPanel>
 
 
