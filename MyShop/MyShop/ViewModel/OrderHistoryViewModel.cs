@@ -21,8 +21,8 @@ namespace MyShop.ViewModel
     class OrderHistoryViewModel : ViewModelBase
     {
         // Fields
-        private System.Nullable<DateTimeOffset> _date = DateTime.Now;
-        //private System.Nullable<DateTimeOffset> _date = new DateTime(2023, 4, 13);
+        private System.Nullable<DateTimeOffset> _dateFrom = new DateTime(2023, 4, 13);
+        private System.Nullable<DateTimeOffset> _dateTo = DateTime.Now;
 
         private ObservableCollection<Bill> _billList;
         private Dictionary<int, List<BillDetail>> _billDetailDict; //int <<billId>> respective to the bill's list of <<billDetail>>
@@ -39,25 +39,31 @@ namespace MyShop.ViewModel
             ExecuteGetAllCommand();
 
             //
-            AddCommand = new AsyncRelayCommand(ExecuteCreateOrderCommand);
-            DeleteCommand = new AsyncRelayCommand(ExecuteDeleteOrderCommand);
-            EditCommand = new AsyncRelayCommand(ExecuteEditOrderCommand);            
+            AddCommand = new RelayCommand(ExecuteCreateOrderCommand);
+            DeleteCommand = new RelayCommand(ExecuteDeleteOrderCommand);
+            EditCommand = new RelayCommand(ExecuteEditOrderCommand);            
             
-            GetIdCommand = new AsyncRelayCommand(ExecuteGetByIdCommand);
+            GetIdCommand = new RelayCommand(ExecuteGetByIdCommand);
         }
 
-        public async Task ExecuteCreateOrderCommand()//
+        public async void ExecuteCreateOrderCommand()//
         {
             //await App.MainRoot.ShowDialog("DEBUG", _date.ToString());
 
-            Bill bill = new Bill();
+            Bill bill = new Bill
+            {
+                CustomerId = 10,
+                TotalPrice = 100000,
+                TransactionDate = DateOnly.FromDateTime(DateTime.Now),
+            };
             // TODO: add bill values
 
             await _billRepository.Add(bill);
             await App.MainRoot.ShowDialog("Success", "New order is added!");
+
         }
 
-        public async Task ExecuteDeleteOrderCommand()
+        public async void ExecuteDeleteOrderCommand()
         {
             if (SelectedBillIndex == -1)
             {
@@ -87,7 +93,7 @@ namespace MyShop.ViewModel
             }
         }
 
-        public async Task ExecuteEditOrderCommand()
+        public async void ExecuteEditOrderCommand()
         {
             if (SelectedBillIndex == -1)
             {
@@ -102,7 +108,7 @@ namespace MyShop.ViewModel
             await App.MainRoot.ShowDialog("Success", "Order is updated!");
         }
 
-        public async Task ExecuteGetAllCommand()
+        public async void ExecuteGetAllCommand()
         {
             // get all from date to date
             DateOnly dateOnlyFrom;
@@ -129,7 +135,7 @@ namespace MyShop.ViewModel
             }
         }
 
-        public async Task ExecuteGetByIdCommand()
+        public async void ExecuteGetByIdCommand()
         {
             var task = await _billRepository.GetById(_billList[SelectedBillIndex].Id);
             //Bill bill = task;

@@ -47,7 +47,7 @@
                       ItemsSource="{Binding Genres}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="Id"
-                      SelectedValue="{Binding CurrentBook.GerneId, Mode=TwoWay}"/>
+                      SelectedValue="{Binding CurrentBook.GenreId, Mode=TwoWay}"/>
             <TextBlock Grid.Row="4" Text="Description" VerticalAlignment="Center"/>
             <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentBook.Description, Mode=TwoWay}"></TextBox>
             <TextBlock Grid.Row="5" Text="Publication Year" VerticalAlignment="Center"/>

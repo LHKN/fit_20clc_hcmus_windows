@@ -9,7 +9,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodel="using:MyShop.ViewModel" 
-    xmlns:services="using:MyShop.Services"
+    xmlns:services="using:MyShop.Services" xmlns:interactivity="using:Microsoft.Xaml.Interactivity" xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 >
@@ -20,22 +20,54 @@
 
     <Page.Resources>
         <services:RelativeToAbsoluteConverter x:Key="absoluteConverter"/>
+        <services:AutoSuggestQueryParameterConverter x:Key="argsConverter"/>
     </Page.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
+        <RelativePanel Grid.Row="0">
             <StackPanel x:Name="BookCommandStackPanel"  
                         Orientation="Horizontal" Height="50" 
-                        RelativePanel.AlignTopWithPanel="True"
-                        Grid.Row="0">
+                        RelativePanel.AlignLeftWithPanel="True">
                 <AppBarButton x:Name="addButton" Icon="Add" Label="Add" Command="{Binding AddBookCommand}"/>
                 <AppBarButton x:Name="deleteButton" Icon="Delete" Label="Delete" Command="{Binding DeleteBookCommand}"/>
                 <AppBarButton x:Name="updateButton" Icon="Edit" Label="Update" Command="{Binding EditBookCommand}"/>
             </StackPanel>
+            <!--<AutoSuggestBox PlaceholderText="Type a book name"
+                            TextChanged="Control2_TextChanged"
+                            QueryIcon="Find"
+                            QuerySubmitted="Control2_QuerySubmitted"
+                            SuggestionChosen="Control2_SuggestionChosen"/>-->
+            <StackPanel RelativePanel.AlignRightWithPanel="True"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+
+                <AutoSuggestBox PlaceholderText="Type a book name"
+                                QueryIcon="Find"
+                                Text="{Binding CurrentKeyword, Mode=TwoWay}">
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="QuerySubmitted">
+                            <core:InvokeCommandAction 
+                                Command="{Binding SearchCommand}"
+                                InputConverter="{StaticResource argsConverter}" />
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                </AutoSuggestBox>
+                <ComboBox Grid.Row="3" Grid.Column="1" 
+                          ItemsSource="{Binding Genres}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="Id"
+                          SelectedValue="{Binding GenreId, Mode=TwoWay}"/>
+            </StackPanel>
+
+
+        </RelativePanel>
+           
 
             <!--<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Padding="10, 10, 0, 0" Name="booksComboBox" 
                       RelativePanel.AlignBottomWith="BookCommandStackPanel">
@@ -81,8 +113,9 @@
         <GridView     Grid.Row="1"
                       x:Name="bookContentGridView"
                       ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                      ItemsSource="{x:Bind booksViewModel.Books}"
-                      SelectedItem="{Binding SelectedBook, Mode=TwoWay}">
+                      ItemsSource="{Binding DisplayBookCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding SelectedBook, Mode=TwoWay}"
+                      HorizontalAlignment="Center">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical" Width="200" Height="280">
@@ -97,17 +130,16 @@
                         <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
                                 <Run Text="{Binding PublishedDate}" Foreground="ForestGreen"/>
                         </TextBlock>
-                        
+
+                        <StackPanel.ContextFlyout>
+                            <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
+                                <AppBarButton Label="Edit" Icon="Edit" ToolTipService.ToolTip="Save" Command="{Binding EditBookCommand}" />
+                                <AppBarButton Label="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" Command="{Binding DeleteBookCommand}"/>
+                            </CommandBarFlyout>
+                        </StackPanel.ContextFlyout>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
-
-            <GridView.Resources>
-                <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
-                    <AppBarButton Label="Edit" Icon="Edit" ToolTipService.ToolTip="Save" Command="{Binding EditBookCommand}" />
-                    <AppBarButton Label="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" Command="{Binding DeleteBookCommand}"/>
-                </CommandBarFlyout>
-            </GridView.Resources>
 
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -117,7 +149,17 @@
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
             
-
         </GridView>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
+            <AppBarButton Label="Previous" Icon="Previous" Command="{Binding GoToPreviousPageCommand}"/>
+            <StackPanel>
+                <TextBlock HorizontalTextAlignment="Center" Text="{Binding PaginationMessage}"/>
+                <TextBlock HorizontalAlignment="Center">
+                    <Run Text="{Binding CurrentPage}"></Run>/<Run Text="{Binding TotalPages}"></Run>
+                </TextBlock>
+            </StackPanel>
+            <AppBarButton Label="Next" Icon="Next" Command="{Binding GoToNextPageCommand}"/>
+        </StackPanel>
+        
     </Grid>
 </Page>

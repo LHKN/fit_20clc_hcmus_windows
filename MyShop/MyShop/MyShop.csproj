@@ -98,13 +98,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="View\AddBookPage.xaml"/>
+    <Page Update="View\AddBookPage.xaml" />
     <Page Update="View\ContentDialogContent.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="View\EditBookPage.xaml"/>
+    <Page Update="View\EditBookPage.xaml" />
     <Page Update="View\YearlyProductPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
