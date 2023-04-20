@@ -28,8 +28,7 @@ namespace MyShop.ViewModel
         private Dictionary<int, List<BillDetail>> _billDetailDict; //int <<billId>> respective to the bill's list of <<billDetail>>
 
         private IBillRepository _billRepository;
-
-        //private int _selectedBillIndex = -1;        
+        
         private Bill _selectedBill;
 
         // Constructor
@@ -40,21 +39,21 @@ namespace MyShop.ViewModel
             ExecuteGetAllCommand();
 
             //
-            AddCommand = new AsyncRelayCommand(ExecuteCreateOrderCommand);
-            DeleteCommand = new AsyncRelayCommand(ExecuteDeleteOrderCommand);
-            EditCommand = new AsyncRelayCommand(ExecuteEditOrderCommand);            
+            AddCommand = new RelayCommand(ExecuteCreateOrderCommand);
+            DeleteCommand = new RelayCommand(ExecuteDeleteOrderCommand);
+            EditCommand = new RelayCommand(ExecuteEditOrderCommand);            
             
-            GetIdCommand = new AsyncRelayCommand(ExecuteGetByIdCommand);
+            GetIdCommand = new RelayCommand(ExecuteGetByIdCommand);
         }
 
-        public async Task ExecuteCreateOrderCommand()//
+        public async void ExecuteCreateOrderCommand()//
         {
             ParentPageNavigation.ViewModel = new AddOrderViewModel();
 
             //await App.MainRoot.ShowDialog("DEBUG", _date.ToString());
         }
 
-        public async Task ExecuteDeleteOrderCommand()
+        public async void ExecuteDeleteOrderCommand()
         {
             if (SelectedBill == null)
             {
@@ -84,7 +83,7 @@ namespace MyShop.ViewModel
             }
         }
 
-        public async Task ExecuteEditOrderCommand()
+        public async void ExecuteEditOrderCommand()
         {
             if (SelectedBill == null)
             {
@@ -95,7 +94,7 @@ namespace MyShop.ViewModel
             ParentPageNavigation.ViewModel = new EditOrderViewModel(SelectedBill);
         }
 
-        public async Task ExecuteGetAllCommand()
+        public async void ExecuteGetAllCommand()
         {
             // get all from date to date
             DateOnly dateOnlyFrom;
@@ -122,7 +121,7 @@ namespace MyShop.ViewModel
             }
         }
 
-        public async Task ExecuteGetByIdCommand()
+        public async void ExecuteGetByIdCommand()
         {
             var task = await _billRepository.GetById(SelectedBill.Id);
             //Bill bill = task;

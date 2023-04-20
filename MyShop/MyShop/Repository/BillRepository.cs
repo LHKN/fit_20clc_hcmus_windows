@@ -35,7 +35,7 @@ namespace MyShop.Repository
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@customer_id", SqlDbType.Int).Value = bill.CustomerId;
                 command.Parameters.Add("@total_price", SqlDbType.Int).Value = bill.TotalPrice;
-                command.Parameters.Add("@transaction_date", SqlDbType.DateTime).Value = bill.TransactionDate;
+                command.Parameters.Add("@transaction_date", SqlDbType.Date).Value = bill.TransactionDate;
                 int rowsAffected = command.ExecuteNonQuery();
 
                 if (rowsAffected > 0) { isSuccessful = true; }
@@ -107,7 +107,7 @@ namespace MyShop.Repository
 
         public async Task<ObservableCollection<Bill>> GetAll(DateOnly? dateFrom, DateOnly? dateTo)
         {
-            ObservableCollection<Bill> billList = null;
+            ObservableCollection<Bill> billList = new ObservableCollection<Bill>();
             var connection = GetConnection();
 
             await Task.Run(() =>
@@ -132,11 +132,11 @@ namespace MyShop.Repository
                 }
                 else
                 {
-                    sql = "select id,customer_id,total_price,transaction_date from BILL" +
+                    sql = "select id,customer_id,total_price,transaction_date from BILL " +
                     "where transaction_date between @date_from and @date_to";
                     command = new SqlCommand(sql, connection);
-                    command.Parameters.Add("@date_from", SqlDbType.DateTime).Value = dateFrom;
-                    command.Parameters.Add("@date_to", SqlDbType.DateTime).Value = dateTo;
+                    command.Parameters.Add("@date_from", SqlDbType.Date).Value = dateFrom;
+                    command.Parameters.Add("@date_to", SqlDbType.Date).Value = dateTo;
                 }
 
                 var reader = command.ExecuteReader();
@@ -147,8 +147,8 @@ namespace MyShop.Repository
                     int customerId = Convert.ToInt32(reader["customer_id"]);
                     int totalPrice = Convert.ToInt32(reader["total_price"]);
 
-                    object obj = reader["publication_date"];
-                    DateOnly transactionDate = obj == null || obj == DBNull.Value ? default(DateOnly) : DateOnly.FromDateTime (Convert.ToDateTime(obj));
+                    object obj = reader["transaction_date"];
+                    DateOnly transactionDate = obj == null || obj == DBNull.Value ? default(DateOnly) : DateOnly.FromDateTime(Convert.ToDateTime(obj));
 
                     billList.Add(new Bill
                     {
@@ -191,7 +191,7 @@ namespace MyShop.Repository
                     int customerId = Convert.ToInt32(reader["customer_id"]);
                     int totalPrice = Convert.ToInt32(reader["total_price"]);
 
-                    object obj = reader["publication_date"];
+                    object obj = reader["published_date"];
                     DateOnly transactionDate = obj == null || obj == DBNull.Value ? default(DateOnly) : DateOnly.FromDateTime(Convert.ToDateTime(obj));
 
                     newBill = new Bill

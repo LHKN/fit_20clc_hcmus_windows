@@ -15,7 +15,7 @@ namespace MyShop.Model
         private string _description;
         private DateOnly _publishedDate;
         private string _image;
-        private int _gerneId;
+        private int _genreId;
         private int _price;
         private int _quantity;
 
@@ -24,10 +24,10 @@ namespace MyShop.Model
         public string Author { get => _author; set => _author = value; }
         public string Description { get => _description; set => _description = value; }
         public DateOnly PublishedDate { get => _publishedDate; set => _publishedDate = value; }
-        public int GerneId { get => _gerneId; set => _gerneId = value; }
         public int Price { get => _price; set => _price = value; }
         public int Quantity { get => _quantity; set => _quantity = value; }
         public string Image { get => _image; set => _image = value; }
+        public int GenreId { get => _genreId; set => _genreId = value; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -40,7 +40,7 @@ namespace MyShop.Model
                 Author = Author,
                 Description = Description,
                 PublishedDate = PublishedDate,
-                GerneId = GerneId,
+                GenreId = GenreId,
                 Price = Price,
                 Quantity = Quantity,
                 Image = Image

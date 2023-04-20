@@ -1,13 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using MyShop.Model;
 using MyShop.Repository;
-using MyShop.Services;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace MyShop.ViewModel
@@ -15,27 +16,74 @@ namespace MyShop.ViewModel
     public class BooksViewModel: ViewModelBase
     {
 
-        private ObservableCollection<Book> _books;
+        private List<Book> _booksList;
+        private List<Book> _displayBooksList;
+        private List<Book> _resultBooksList;
+        private List<string> _resultBooksListTitle;
+        private ObservableCollection<Book> _displayBookCollection;
+        private List<Genre> _genres;
         private IBookRepository _bookRepository;
         private Book _selectedBook;
+        private string _paginationMessage;
+        private int _currentPage;
+        private int _rowsPerPage; //can be changed through setting
+        private int _totalItems;
+        private int _totalPages;
+        private int _startPrice;
+        private int _endPrice;
+        private int _genreId;
+        private string _currentKeyword = String.Empty;
         public BooksViewModel()
         {
             _bookRepository = new BookRepository();
+            DisplayBookCollection = new ObservableCollection<Book>();
+            //Can be changed
+            {
+                CurrentPage = 1;
+                RowsPerPage = 10;
+                StartPrice = 0;
+                EndPrice = Int32.MaxValue;
+                GenreId = 0;
+            }
             ExecuteGetAllCommand();
             EditBookCommand = new RelayCommand(ExecuteEditBookCommand);
             AddBookCommand = new RelayCommand(ExecuteAddBookCommand);
             DeleteBookCommand = new RelayCommand(ExecuteDeleteBookCommand);
+            GoToNextPageCommand = new RelayCommand(ExecuteGoToNextPageCommand);
+            GoToPreviousPageCommand = new RelayCommand(ExecuteGoToPreviousPageCommand);
+            SearchCommand = new RelayCommand<string>(ExecuteSearchCommand);
 
         }
+
         private RelayCommand _editBookCommand;
         private RelayCommand _deleteBookCommand;
         private RelayCommand _addBookCommand;
+        private RelayCommand _goToPreviousPageCommand;
+        private RelayCommand _goToNextPageCommand;
+        private RelayCommand<string> _searchCommand;
 
-        public ObservableCollection<Book> Books { get => _books; set => _books = value; }
         public Book SelectedBook { get => _selectedBook; set => _selectedBook = value; }
         public RelayCommand EditBookCommand { get => _editBookCommand; set => _editBookCommand = value; }
         public RelayCommand DeleteBookCommand { get => _deleteBookCommand; set => _deleteBookCommand = value; }
         public RelayCommand AddBookCommand { get => _addBookCommand; set => _addBookCommand = value; }
+        public RelayCommand GoToPreviousPageCommand { get => _goToPreviousPageCommand; set => _goToPreviousPageCommand = value; }
+        public RelayCommand GoToNextPageCommand { get => _goToNextPageCommand; set => _goToNextPageCommand = value; }
+        public string PaginationMessage { get => _paginationMessage; set => _paginationMessage = value; }
+        public int CurrentPage { get => _currentPage; set => _currentPage = value; }
+        public int RowsPerPage { get => _rowsPerPage; set => _rowsPerPage = value; }
+        public int TotalItems { get => _totalItems; set => _totalItems = value; }
+        public int TotalPages { get => _totalPages; set => _totalPages = value; }
+        public List<Book> DisplayBooksList { get => _displayBooksList; set => _displayBooksList = value; }
+        public List<Book> BooksList { get => _booksList; set => _booksList = value; }
+        public int StartPrice { get => _startPrice; set => _startPrice = value; }
+        public int EndPrice { get => _endPrice; set => _endPrice = value; }
+        public int GenreId { get => _genreId; set => _genreId = value; }
+        public string CurrentKeyword { get => _currentKeyword; set => _currentKeyword = value; }
+        public ObservableCollection<Book> DisplayBookCollection { get => _displayBookCollection; set => _displayBookCollection = value; }
+        public List<Genre> Genres { get => _genres; set => _genres = value; }
+        public RelayCommand<string> SearchCommand { get => _searchCommand; set => _searchCommand = value; }
+        public List<Book> ResultBooksList { get => _resultBooksList; set => _resultBooksList = value; }
+        public List<string> ResultBooksListTitle { get => _resultBooksListTitle; set => _resultBooksListTitle = value; }
 
         public void ExecuteEditBookCommand()
         {
@@ -70,6 +118,8 @@ namespace MyShop.ViewModel
                     await App.MainRoot.ShowDialog("Failure", "Removal unsuccessful...");
                 }
             }
+            UpdateDataSource();
+            UpdatePagingInfo();
             
         }
 
@@ -82,9 +132,52 @@ namespace MyShop.ViewModel
         
         public async void ExecuteGetAllCommand()
         {
-            var task = await _bookRepository.GetAll();
-            Books = task;
+            BooksList = await _bookRepository.GetAll();
+            Genres = await _bookRepository.GetGenres();
+            TotalItems = BooksList.Count;
+            UpdateDataSource();
+            UpdatePagingInfo();
         }
 
+        public void ExecuteGoToNextPageCommand()
+        {
+            if (CanExecuteGoToNextPageCommand()) CurrentPage += 1;
+            UpdateDataSource();
+            UpdatePagingInfo();
+        }
+
+        public void ExecuteGoToPreviousPageCommand()
+        {
+            if (CanExecuteGoToPreviousCommand()) CurrentPage -= 1;
+            UpdateDataSource();
+            UpdatePagingInfo();
+        }
+
+        public bool CanExecuteGoToNextPageCommand() { return CurrentPage < TotalPages; }
+        public bool CanExecuteGoToPreviousCommand() { return CurrentPage > 1; }
+
+        public void UpdatePagingInfo()
+        {
+            TotalPages = TotalItems / RowsPerPage +
+                  (TotalItems % RowsPerPage == 0 ? 0 : 1);
+            PaginationMessage = $"{DisplayBooksList.Count}/{TotalItems} books";
+        }
+
+        public void UpdateDataSource()
+        {
+            DisplayBookCollection.Clear();
+            ResultBooksList = _bookRepository.Filter(BooksList, StartPrice, EndPrice, CurrentKeyword, GenreId);
+            ResultBooksListTitle = ResultBooksList.Select(item => item.Title).ToList();
+            DisplayBooksList = ResultBooksList.Skip((CurrentPage - 1) * RowsPerPage).Take(RowsPerPage).ToList();
+            DisplayBooksList.ForEach(x => DisplayBookCollection.Add(x));
+            
+        }
+        private void ExecuteSearchCommand(string keyword)
+        {
+            CurrentPage = 1;
+            UpdateDataSource();
+            TotalItems = ResultBooksList.Count;
+            UpdatePagingInfo();
+        }
     }
 }

@@ -13,7 +13,6 @@ namespace MyShop.Repository
 {
     class BookRepository : RepositoryBase, IBookRepository
     {
-
         public async Task<bool> Add(Book book)
         {
             bool isSuccessful = false;
@@ -33,7 +32,7 @@ namespace MyShop.Repository
                 command.Parameters.Add("@author", SqlDbType.NVarChar).Value = book.Author;
                 command.Parameters.Add("@description", SqlDbType.NVarChar).Value = book.Description;
                 command.Parameters.Add("@image", SqlDbType.NVarChar).Value = book.Image;
-                command.Parameters.Add("@genre_id", SqlDbType.Int).Value = book.GerneId;
+                command.Parameters.Add("@genre_id", SqlDbType.Int).Value = book.GenreId;
                 command.Parameters.Add("@price", SqlDbType.Int).Value = book.Price;
                 command.Parameters.Add("@quantity", SqlDbType.Int).Value = book.Quantity;
                 command.Parameters.Add("@published_date", SqlDbType.Date).Value = book.PublishedDate;
@@ -69,7 +68,7 @@ namespace MyShop.Repository
                 command.Parameters.Add("@author", SqlDbType.NVarChar).Value = book.Author;
                 command.Parameters.Add("@description", SqlDbType.NVarChar).Value = book.Description;
                 command.Parameters.Add("@image", SqlDbType.NVarChar).Value = book.Image;
-                command.Parameters.Add("@genre_id", SqlDbType.Int).Value = book.GerneId;
+                command.Parameters.Add("@genre_id", SqlDbType.Int).Value = book.GenreId;
                 command.Parameters.Add("@price", SqlDbType.Int).Value = book.Price;
                 command.Parameters.Add("@quantity", SqlDbType.Int).Value = book.Quantity;
                 command.Parameters.Add("@published_date", SqlDbType.Date).Value = book.PublishedDate;
@@ -84,9 +83,22 @@ namespace MyShop.Repository
             return isSuccessful;
         }
 
-        public async Task<ObservableCollection<Book>> GetAll()
+        public List<Book> Filter(List<Book> booksList, int startPrice = 0, int endPrice = Int32.MaxValue, string keyword = "", int genre = 0)
         {
-            ObservableCollection<Book> books = new ObservableCollection<Book>();
+            // Sử dụng LINQ để thực hiện các điều kiện lọc trên danh sách sách
+            var filteredBooks = booksList.Where(book =>
+                book.Price >= startPrice &&
+                book.Price <= endPrice &&
+                (string.IsNullOrEmpty(keyword) || book.Title.ToLower().Contains(keyword.ToLower())) &&
+                (genre == 0 || book.GenreId == genre)
+            ).ToList();
+
+            return filteredBooks;
+        }
+
+        public async Task<List<Book>> GetAll()
+        {
+            List<Book> books = new List<Book>();
             var connection = GetConnection();
 
             await Task.Run(() =>
@@ -120,7 +132,7 @@ namespace MyShop.Repository
                         Author = author,
                         Description = description,
                         Image = image,
-                        GerneId = genre_id,
+                        GenreId = genre_id,
                         Price = price,
                         Quantity = quantity,
                         PublishedDate = published_date
@@ -169,7 +181,7 @@ namespace MyShop.Repository
                         Author = author,
                         Description = description,
                         Image = image,
-                        GerneId = genre_id,
+                        GenreId = genre_id,
                         Price = price,
                         Quantity = quantity,
                         PublishedDate = published_date

@@ -13,7 +13,9 @@ namespace MyShop.Model
         Task<bool> Edit(Book book);
         Task<bool> Remove(int id);
         Task<Book> GetById(int id);
-        Task<ObservableCollection<Book>> GetAll();
+        Task<List<Book>> GetAll();
+
+        List<Book> Filter(List<Book> booksList, int startPrice = 0, int endPrice = Int32.MaxValue, string keyword = "", int genre = 0);
 
         Task<List<Genre>> GetGenres();
     }

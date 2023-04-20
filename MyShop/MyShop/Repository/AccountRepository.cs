@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.VisualBasic.Logging;
 using MyShop.Model;
+using MyShop.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -29,7 +30,11 @@ namespace MyShop.Repository
             string password, passwordIn64 = string.Empty, entropyIn64 = string.Empty;
             await Task.Run(() =>
             {
-                connection.Open();
+                try
+                {
+                    connection.Open();
+                }
+                catch(Exception ex) { App.MainRoot.ShowDialog("Error", ex.Message); }
             }).ConfigureAwait(false);
 
             if (connection != null && connection.State == ConnectionState.Open)
