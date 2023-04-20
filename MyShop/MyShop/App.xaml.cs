@@ -38,6 +38,9 @@ namespace MyShop
         /// </summary>
         public App()
         {
+            //Register Syncfusion license
+            string license_key = "MTc4NTY1M0AzMjMxMmUzMTJlMzMzNW9Demd2Qlhwc2dDL0JFVDU0a0hkZzh3V2lVQ09pUW85L2JydmsvK0dOd2c9";
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(license_key);
             this.InitializeComponent();
         }
 

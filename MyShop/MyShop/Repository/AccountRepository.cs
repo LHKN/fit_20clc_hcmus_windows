@@ -22,10 +22,11 @@ namespace MyShop.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<bool> AuthenticateAccount(NetworkCredential credentical)
+        public async Task<string> AuthenticateAccount(NetworkCredential credentical)
         {
             int role_id = 0;
             bool isValidAccount = false;
+            string message = string.Empty;
             var connection = GetConnection();
             string password, passwordIn64 = string.Empty, entropyIn64 = string.Empty;
             await Task.Run(() =>
@@ -34,7 +35,7 @@ namespace MyShop.Repository
                 {
                     connection.Open();
                 }
-                catch(Exception ex) { App.MainRoot.ShowDialog("Error", ex.Message); }
+                catch(Exception ex) { message = "Connection timed out!"; }
             }).ConfigureAwait(false);
 
             if (connection != null && connection.State == ConnectionState.Open)
@@ -68,6 +69,8 @@ namespace MyShop.Repository
                 }
                 else isValidAccount = false;
 
+                message = isValidAccount ? "TRUE" : "* Invalid username or password!";
+
                 // Code saving encrypted password (function similar to register)
                 //{
                 //    var passwordInBytes = Encoding.UTF8.GetBytes(credentical.Password);
@@ -86,7 +89,7 @@ namespace MyShop.Repository
                 //    var passwordIn64 = Convert.ToBase64String(cypherText);
                 //    var entropyIn64 = Convert.ToBase64String(entropy);
 
-                
+
                 //    string sql = "update ACCOUNT set password=@password, entropy=@entropy where username=@username";
                 //    var command = new SqlCommand(sql, connection);
                 //    command.Parameters.Add("@username", SqlDbType.NVarChar).Value = credentical.UserName;
@@ -98,7 +101,8 @@ namespace MyShop.Repository
                 connection.Close();
 
             }
-            return isValidAccount;
+            
+            return message;
 
         }
 

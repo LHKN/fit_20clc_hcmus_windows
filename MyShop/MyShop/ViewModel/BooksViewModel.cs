@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using MyShop.Model;
 using MyShop.Repository;
+using MyShop.Services;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,9 @@ namespace MyShop.ViewModel
 {
     public class BooksViewModel: ViewModelBase
     {
-
         private List<Book> _booksList;
         private List<Book> _displayBooksList;
         private List<Book> _resultBooksList;
-        private List<string> _resultBooksListTitle;
         private ObservableCollection<Book> _displayBookCollection;
         private List<Genre> _genres;
         private IBookRepository _bookRepository;
@@ -41,8 +40,8 @@ namespace MyShop.ViewModel
             {
                 CurrentPage = 1;
                 RowsPerPage = 10;
-                StartPrice = 0;
-                EndPrice = Int32.MaxValue;
+                StartPrice = 100000;
+                EndPrice = 500000;
                 GenreId = 0;
             }
             ExecuteGetAllCommand();
@@ -83,8 +82,6 @@ namespace MyShop.ViewModel
         public List<Genre> Genres { get => _genres; set => _genres = value; }
         public RelayCommand<string> SearchCommand { get => _searchCommand; set => _searchCommand = value; }
         public List<Book> ResultBooksList { get => _resultBooksList; set => _resultBooksList = value; }
-        public List<string> ResultBooksListTitle { get => _resultBooksListTitle; set => _resultBooksListTitle = value; }
-
         public void ExecuteEditBookCommand()
         {
             if (SelectedBook == null)
@@ -167,7 +164,6 @@ namespace MyShop.ViewModel
         {
             DisplayBookCollection.Clear();
             ResultBooksList = _bookRepository.Filter(BooksList, StartPrice, EndPrice, CurrentKeyword, GenreId);
-            ResultBooksListTitle = ResultBooksList.Select(item => item.Title).ToList();
             DisplayBooksList = ResultBooksList.Skip((CurrentPage - 1) * RowsPerPage).Take(RowsPerPage).ToList();
             DisplayBooksList.ForEach(x => DisplayBookCollection.Add(x));
             

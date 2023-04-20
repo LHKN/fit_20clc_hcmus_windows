@@ -30,5 +30,10 @@ namespace MyShop.View
         {
             this.InitializeComponent();
         }
+
+        private void SfRangeSlider_RangeValueChanged(object sender, Syncfusion.UI.Xaml.Sliders.RangeValueChangedEventArgs e)
+        {
+
+        }
     }
 }
