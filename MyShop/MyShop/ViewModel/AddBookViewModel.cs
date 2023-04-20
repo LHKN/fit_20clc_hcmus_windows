@@ -8,6 +8,7 @@ using System;
 using System.Windows.Input;
 using System.Collections.Generic;
 using System.Linq;
+using MyShop.Services;
 
 namespace MyShop.ViewModel
 {
@@ -28,13 +29,13 @@ namespace MyShop.ViewModel
             //Create new book instance
             NewBook = new Book();
             //Loaded
-            ExecuteLoadedCommand();
+            PageLoaded();
             BrowseCommand = new RelayCommand(ExecuteBrowseCommand);
             BackCommand = new RelayCommand(ExecuteBackCommand);
             ConfirmCommand = new RelayCommand(ExecuteConfirmCommand);
         }
 
-        public async void ExecuteLoadedCommand()
+        public async void PageLoaded()
         {
             Genres = await _bookRepository.GetGenres();
         }
@@ -50,6 +51,7 @@ namespace MyShop.ViewModel
             {
                 ErrorMessage = "* Task failed!";
             }
+            await App.MainRoot.ShowDialog("Success", "Book is added!");
         }
         public void ExecuteBackCommand()
         {

@@ -32,7 +32,7 @@ namespace MyShop.ViewModel
         {
             _accountRepository = new AccountRepository();
             Account = new Account();
-            LoadedCommand = new RelayCommand(ExecuteLoadedCommand);
+            LoadedCommand = new RelayCommand(PageLoaded);
             LoginCommand = new RelayCommand(ExecuteLoginCommand);
             RememberAccountCommand = new RelayCommand<bool>(ExecuteRememberAccountCommand);
 
@@ -97,7 +97,7 @@ namespace MyShop.ViewModel
 
         }
 
-        private void ExecuteLoadedCommand()
+        private void PageLoaded()
         {
             //get from local
             string username = ConfigurationManager.AppSettings["Username"]!;

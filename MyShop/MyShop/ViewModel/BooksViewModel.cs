@@ -6,6 +6,7 @@ using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace MyShop.ViewModel
         private Book _selectedBook;
         private string _paginationMessage;
         private int _currentPage;
-        private int _rowsPerPage; //can be changed through setting
+        private int _itemsPerPage; //can be changed through setting
         private int _totalItems;
         private int _totalPages;
         private int _startPrice;
@@ -39,7 +40,7 @@ namespace MyShop.ViewModel
             //Can be changed
             {
                 CurrentPage = 1;
-                RowsPerPage = 10;
+                ItemsPerPage = Convert.ToInt32(ConfigurationManager.AppSettings["ItemsPerPage"]);
                 StartPrice = 100000;
                 EndPrice = 500000;
                 GenreId = 0;
@@ -69,7 +70,7 @@ namespace MyShop.ViewModel
         public RelayCommand GoToNextPageCommand { get => _goToNextPageCommand; set => _goToNextPageCommand = value; }
         public string PaginationMessage { get => _paginationMessage; set => _paginationMessage = value; }
         public int CurrentPage { get => _currentPage; set => _currentPage = value; }
-        public int RowsPerPage { get => _rowsPerPage; set => _rowsPerPage = value; }
+        public int ItemsPerPage { get => _itemsPerPage; set => _itemsPerPage = value; }
         public int TotalItems { get => _totalItems; set => _totalItems = value; }
         public int TotalPages { get => _totalPages; set => _totalPages = value; }
         public List<Book> DisplayBooksList { get => _displayBooksList; set => _displayBooksList = value; }
@@ -82,16 +83,14 @@ namespace MyShop.ViewModel
         public List<Genre> Genres { get => _genres; set => _genres = value; }
         public RelayCommand<string> SearchCommand { get => _searchCommand; set => _searchCommand = value; }
         public List<Book> ResultBooksList { get => _resultBooksList; set => _resultBooksList = value; }
-        public void ExecuteEditBookCommand()
+        public async void ExecuteEditBookCommand()
         {
             if (SelectedBook == null)
             {
-                App.MainRoot.ShowDialog("No selected item", "Please select an item first!");
+                await App.MainRoot.ShowDialog("No selected item", "Please select an item first!");
                 return;
             }
             ParentPageNavigation.ViewModel = new EditBookViewModel(SelectedBook);
-
-            App.MainRoot.ShowDialog("Success", "Book is updated!");
         }
 
         public async void ExecuteDeleteBookCommand()
@@ -123,8 +122,6 @@ namespace MyShop.ViewModel
         public void ExecuteAddBookCommand()
         {
             ParentPageNavigation.ViewModel = new AddBookViewModel();
-
-            App.MainRoot.ShowDialog("Success", "Book is added!");
         }
         
         public async void ExecuteGetAllCommand()
@@ -155,8 +152,8 @@ namespace MyShop.ViewModel
 
         public void UpdatePagingInfo()
         {
-            TotalPages = TotalItems / RowsPerPage +
-                  (TotalItems % RowsPerPage == 0 ? 0 : 1);
+            TotalPages = TotalItems / ItemsPerPage +
+                  (TotalItems % ItemsPerPage == 0 ? 0 : 1);
             PaginationMessage = $"{DisplayBooksList.Count}/{TotalItems} books";
         }
 
@@ -164,7 +161,7 @@ namespace MyShop.ViewModel
         {
             DisplayBookCollection.Clear();
             ResultBooksList = _bookRepository.Filter(BooksList, StartPrice, EndPrice, CurrentKeyword, GenreId);
-            DisplayBooksList = ResultBooksList.Skip((CurrentPage - 1) * RowsPerPage).Take(RowsPerPage).ToList();
+            DisplayBooksList = ResultBooksList.Skip((CurrentPage - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
             DisplayBooksList.ForEach(x => DisplayBookCollection.Add(x));
             
         }

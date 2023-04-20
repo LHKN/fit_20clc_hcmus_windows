@@ -33,9 +33,11 @@ namespace MyShop.ViewModel
         private RelayCommand _confirmCommand;
         private RelayCommand _browseCommand;
 
-        public async void ExecuteLoadedCommand()
+        public async void PageLoaded()
         {
-            Books = await _bookRepository.GetAll();
+            var task = await _bookRepository.GetAll();
+            Books = new ObservableCollection<Book>();
+            task.ForEach(book => Books.Add(book));
         }
 
         public async void ExecuteConfirmCommand()
@@ -86,7 +88,7 @@ namespace MyShop.ViewModel
 
             CurrentBill = currentBill;
 
-            ExecuteLoadedCommand();
+            PageLoaded();
             BrowseCommand = new RelayCommand(ExecuteBrowseCommand);
             BackCommand = new RelayCommand(ExecuteBackCommand);
             ConfirmCommand = new RelayCommand(ExecuteConfirmCommand);

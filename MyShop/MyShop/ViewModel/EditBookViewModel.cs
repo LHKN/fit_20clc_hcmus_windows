@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System;
+using MyShop.Services;
 
 namespace MyShop.ViewModel
 {
@@ -27,13 +28,13 @@ namespace MyShop.ViewModel
             //Get the book clone instance
             CurrentBook = currentBook;
             //Loaded
-            ExecuteLoadedCommand();
+            PageLoaded();
             BrowseCommand = new RelayCommand(ExecuteBrowseCommand);
             BackCommand = new RelayCommand(ExecuteBackCommand);
             ConfirmCommand = new RelayCommand(ExecuteConfirmCommand);
         }
 
-        public async void ExecuteLoadedCommand()
+        public async void PageLoaded()
         {
             Genres = await _bookRepository.GetGenres();
         }
@@ -49,6 +50,8 @@ namespace MyShop.ViewModel
             {
                 ErrorMessage = "* Task failed!";
             }
+
+            await App.MainRoot.ShowDialog("Success", "Book is updated!");
         }
         public void ExecuteBackCommand()
         {

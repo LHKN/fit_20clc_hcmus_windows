@@ -17,8 +17,8 @@
     
     <Grid Margin="20, 20, 20, 20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -27,24 +27,27 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Configure no. of books per page "/>
             <Slider
+                Grid.Row="0"
+                Header="Configure no. of books per page"
                 AutomationProperties.Name="Book number per page Slider"
                 TickFrequency="5"
-                TickPlacement="Outside"
+                TickPlacement="BottomRight"
                 SnapsTo="Ticks"
                 Minimum="5"
                 Maximum="20"
-                Width="200"
-                Padding="20"/>
-        </StackPanel>
+                Padding="20"
+                Value="{Binding ItemsPerPage, Mode=TwoWay}"/>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Padding="20">
             <ToggleSwitch Header="Open last closed page" OffContent="Disabled" OnContent="Enabled" IsOn="False" />
             <ProgressRing IsActive="{x:Bind thisViewModel.ToggleSwitchIsOn, Mode=OneWay}" Width="32"/>
         </StackPanel>
 
-        <AppBarButton HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="1" x:Name="saveButton" Icon="Save" Label="Save"/>
+        <AppBarButton HorizontalAlignment="Right" 
+                      VerticalAlignment="Bottom" 
+                      Grid.Row="2" Grid.Column="1" 
+                      x:Name="saveButton" Icon="Save" Label="Save"
+                      Command="{Binding SaveSettingCommand}"/>
     </Grid>
 </Page>
