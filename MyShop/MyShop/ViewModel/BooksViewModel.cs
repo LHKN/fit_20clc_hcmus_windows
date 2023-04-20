@@ -87,26 +87,35 @@ namespace MyShop.ViewModel
 
         public void ExecuteEditBookCommand()
         {
+            if (SelectedBook == null)
+            {
+                App.MainRoot.ShowDialog("No selected item", "Please select an item first!");
+                return;
+            }
             ParentPageNavigation.ViewModel = new EditBookViewModel(SelectedBook);
+
+            App.MainRoot.ShowDialog("Success", "Book is updated!");
         }
 
         public async void ExecuteDeleteBookCommand()
         {
-            //Message to user to delete or not
+            if (SelectedBook == null)
             {
-
+                await App.MainRoot.ShowDialog("No selected item", "Please select an item first!");
+                return;
             }
+            var confirmed = await App.MainRoot.ShowYesCancelDialog("Delete this item?", "Delete", "Cancel");
 
-            //Delete
+            if (confirmed == true)
             {
                 var task = await _bookRepository.Remove(SelectedBook.Id);
                 if (task)
                 {
-                    //Success message
+                    await App.MainRoot.ShowDialog("Success", "Book is removed!");
                 }
                 else
                 {
-                    //Failed message
+                    await App.MainRoot.ShowDialog("Failure", "Removal unsuccessful...");
                 }
             }
             UpdateDataSource();
@@ -117,6 +126,8 @@ namespace MyShop.ViewModel
         public void ExecuteAddBookCommand()
         {
             ParentPageNavigation.ViewModel = new AddBookViewModel();
+
+            App.MainRoot.ShowDialog("Success", "Book is added!");
         }
         
         public async void ExecuteGetAllCommand()
