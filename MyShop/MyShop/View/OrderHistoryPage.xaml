@@ -39,13 +39,15 @@
         <CalendarDatePicker Grid.Column="2" PlaceholderText="Pick a date" Header="To Date" Date="{x:Bind thisViewModel.DateTo}" 
                             DateFormat = "{}{dayofweek.full}, {month.full} {day.integer}, {year.full}"/>
 
-        <ListView Grid.Row="1" Grid.ColumnSpan="2" 
+        <GridView Grid.Row="1" Grid.ColumnSpan="2" 
                   x:Name="dataListView" 
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                   Width="400" Height="400"
                   ItemsSource="{x:Bind thisViewModel.Bills}"
-                  SelectedIndex="{x:Bind thisViewModel.SelectedBillIndex}">
-            <ListView.ItemTemplate>
+                  SelectedItem="{Binding SelectedBill, Mode=TwoWay}">
+
+                  <!--SelectedIndex="{x:Bind thisViewModel.SelectedBillIndex}"-->
+            <GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Width="200" Height="100">
                         <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
@@ -63,24 +65,24 @@
 
                     </StackPanel>
                 </DataTemplate>
-            </ListView.ItemTemplate>
+            </GridView.ItemTemplate>
 
-            <ListView.Resources>
+            <GridView.Resources>
                 <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
                     <AppBarButton Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
                     <AppBarButton Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}"/>
                     <AppBarButton Icon="Edit" Label="Update" Command="{Binding EditCommand}"/>
                 </CommandBarFlyout>
-            </ListView.Resources>
-            
-            <ListView.ItemsPanel>
+            </GridView.Resources>
+
+            <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
                            MaximumRowsOrColumns="10"
                            Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-        </ListView>
+            </GridView.ItemsPanel>
+        </GridView>
 
     </Grid>
 </Page>

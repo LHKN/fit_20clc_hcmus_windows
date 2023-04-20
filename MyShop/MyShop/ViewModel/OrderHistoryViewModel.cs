@@ -29,7 +29,8 @@ namespace MyShop.ViewModel
 
         private IBillRepository _billRepository;
 
-        private int _selectedBillIndex = -1;
+        //private int _selectedBillIndex = -1;        
+        private Bill _selectedBill;
 
         // Constructor
         public OrderHistoryViewModel() {
@@ -48,18 +49,14 @@ namespace MyShop.ViewModel
 
         public async Task ExecuteCreateOrderCommand()//
         {
+            ParentPageNavigation.ViewModel = new AddOrderViewModel();
+
             //await App.MainRoot.ShowDialog("DEBUG", _date.ToString());
-
-            Bill bill = new Bill();
-            // TODO: add bill values
-
-            await _billRepository.Add(bill);
-            await App.MainRoot.ShowDialog("Success", "New order is added!");
         }
 
         public async Task ExecuteDeleteOrderCommand()
         {
-            if (SelectedBillIndex == -1)
+            if (SelectedBill == null)
             {
                 await App.MainRoot.ShowDialog("No selected item", "Please select an item first!");
                 return;
@@ -69,7 +66,7 @@ namespace MyShop.ViewModel
             if (confirmed == true)
             {
                 // remove from BILL
-                int key = _billList[SelectedBillIndex].Id;
+                int key = SelectedBill.Id;
                 await _billRepository.Remove(key);
 
                 // remove from DETAILTED_BILL
@@ -80,7 +77,7 @@ namespace MyShop.ViewModel
                     await _billRepository.RemoveBillDetail(key, billDetail[i].BookId);
                 }
 
-                _billList.RemoveAt(SelectedBillIndex);
+                _billList.Remove(SelectedBill);
                 _billDetailDict.Remove(key);
 
                 await App.MainRoot.ShowDialog("Success", "Order is removed!");
@@ -89,17 +86,13 @@ namespace MyShop.ViewModel
 
         public async Task ExecuteEditOrderCommand()
         {
-            if (SelectedBillIndex == -1)
+            if (SelectedBill == null)
             {
                 await App.MainRoot.ShowDialog("No selected item", "Please select an item first!");
                 return;
             }
-            Bill bill = _billList[SelectedBillIndex];
 
-            // TODO: update bill values and bill details
-
-            await _billRepository.Edit(bill);
-            await App.MainRoot.ShowDialog("Success", "Order is updated!");
+            ParentPageNavigation.ViewModel = new EditOrderViewModel(SelectedBill);
         }
 
         public async Task ExecuteGetAllCommand()
@@ -131,7 +124,7 @@ namespace MyShop.ViewModel
 
         public async Task ExecuteGetByIdCommand()
         {
-            var task = await _billRepository.GetById(_billList[SelectedBillIndex].Id);
+            var task = await _billRepository.GetById(SelectedBill.Id);
             //Bill bill = task;
         }
 
@@ -164,24 +157,35 @@ namespace MyShop.ViewModel
             get => _billList; 
             set => _billList = value;
         }
+        //public int SelectedBillIndex
+        //{
+        //    get => _selectedBillIndex;
+        //    set
+        //    {
+        //        if (_selectedBillIndex == value)
+        //        {
+        //            return;
+        //        }
+        //        _selectedBillIndex = value;
+        //        OnPropertyChanged(nameof(SelectedBillIndex));
+        //    }
+        //}
+        public Bill SelectedBill
+        {
+            get => _selectedBill;
+            set
+            {
+                if (_selectedBill == value)
+                    return;
+                _selectedBill = value;
+                OnPropertyChanged(nameof(SelectedBill));
+            }
+        }
 
         //-> Commands
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand EditCommand { get; }        
         public ICommand GetIdCommand { get; }
-        public int SelectedBillIndex
-        {
-            get => _selectedBillIndex;
-            set
-            {
-                if (_selectedBillIndex == value)
-                {
-                    return;
-                }
-                _selectedBillIndex = value;
-                OnPropertyChanged(nameof(SelectedBillIndex));
-            }
-        }
     }
 }
