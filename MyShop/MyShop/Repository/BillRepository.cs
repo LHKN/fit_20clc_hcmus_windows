@@ -105,9 +105,9 @@ namespace MyShop.Repository
             }
         }
 
-        public async Task<ObservableCollection<Bill>> GetAll(DateOnly? dateFrom, DateOnly? dateTo)
+        public async Task<List<Bill>> GetAll(DateOnly? dateFrom, DateOnly? dateTo)
         {
-            ObservableCollection<Bill> billList = new ObservableCollection<Bill>();
+            List<Bill> billList = new List<Bill>();
             var connection = GetConnection();
 
             await Task.Run(() =>

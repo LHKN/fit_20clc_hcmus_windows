@@ -14,7 +14,7 @@ namespace MyShop.Model
         Task Remove(int id);
         Task<Bill> GetById(int id);
 
-        Task<ObservableCollection<Bill>> GetAll(DateOnly? dateFrom, DateOnly? dateTo);
+        Task<List<Bill>> GetAll(DateOnly? dateFrom, DateOnly? dateTo);
 
         Task AddBillDetail(BillDetail billDetail);
         Task EditBillDetail(int billId, int bookId, BillDetail billDetail);

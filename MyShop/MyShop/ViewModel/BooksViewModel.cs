@@ -36,8 +36,10 @@ namespace MyShop.ViewModel
         public BooksViewModel()
         {
             _bookRepository = new BookRepository();
+            DisplayBooksList = new List<Book>();
+            ResultBooksList = new List<Book>();
             DisplayBookCollection = new ObservableCollection<Book>();
-            //Can be changed
+            //Paging info
             {
                 CurrentPage = 1;
                 ItemsPerPage = Convert.ToInt32(ConfigurationManager.AppSettings["ItemsPerPage"]);
@@ -127,8 +129,10 @@ namespace MyShop.ViewModel
         public async void ExecuteGetAllCommand()
         {
             BooksList = await _bookRepository.GetAll();
+            BooksList.ForEach(item => ResultBooksList.Add(item));
             Genres = await _bookRepository.GetGenres();
             TotalItems = BooksList.Count;
+
             UpdateDataSource();
             UpdatePagingInfo();
         }
@@ -160,7 +164,7 @@ namespace MyShop.ViewModel
         public void UpdateDataSource()
         {
             DisplayBookCollection.Clear();
-            ResultBooksList = _bookRepository.Filter(BooksList, StartPrice, EndPrice, CurrentKeyword, GenreId);
+           
             DisplayBooksList = ResultBooksList.Skip((CurrentPage - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
             DisplayBooksList.ForEach(x => DisplayBookCollection.Add(x));
             
@@ -168,6 +172,7 @@ namespace MyShop.ViewModel
         private void ExecuteSearchCommand(string keyword)
         {
             CurrentPage = 1;
+            ResultBooksList = _bookRepository.Filter(BooksList, StartPrice, EndPrice, CurrentKeyword, GenreId);
             UpdateDataSource();
             TotalItems = ResultBooksList.Count;
             UpdatePagingInfo();

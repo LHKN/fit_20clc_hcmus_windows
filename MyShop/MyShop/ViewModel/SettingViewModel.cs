@@ -50,7 +50,7 @@ namespace MyShop.ViewModel
             sysconfig.Save(ConfigurationSaveMode.Full);
             ConfigurationManager.RefreshSection("appSettings");
 
-            await App.MainRoot.ShowDialog("Save", "Congratulations! Your changes have been successfully saved and applied. Your progress is now secured and ready for future adventures! Keep up the great work on your epic journey towards success!");
+            await App.MainRoot.ShowDialog("Save", "Your changes have been successfully saved and applied.");
         }
     }
 }

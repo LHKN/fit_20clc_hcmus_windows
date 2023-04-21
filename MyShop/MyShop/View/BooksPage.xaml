@@ -25,7 +25,7 @@
         <services:RelativeToAbsoluteConverter x:Key="absoluteConverter"/>
         <services:AutoSuggestQueryParameterConverter x:Key="argsConverter"/>
     </Page.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -33,26 +33,43 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <RelativePanel Grid.Row="0">
-            <StackPanel x:Name="BookCommandStackPanel"  
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel x:Name="BookCommandStackPanel"
+                        Grid.Row="0" Grid.Column="0"
                         Orientation="Horizontal" Height="50" 
                         RelativePanel.AlignLeftWithPanel="True">
-                <AppBarButton x:Name="addButton" Icon="Add" Label="Add" Command="{Binding AddBookCommand}"/>
-                <AppBarButton x:Name="deleteButton" Icon="Delete" Label="Delete" Command="{Binding DeleteBookCommand}"/>
-                <AppBarButton x:Name="updateButton" Icon="Edit" Label="Update" Command="{Binding EditBookCommand}"/>
+            <AppBarButton x:Name="addButton" Icon="Add" Label="Add" Command="{Binding AddBookCommand}"/>
+            <AppBarButton x:Name="deleteButton" Icon="Delete" Label="Delete" Command="{Binding DeleteBookCommand}"/>
+            <AppBarButton x:Name="updateButton" Icon="Edit" Label="Update" Command="{Binding EditBookCommand}"/>
 
-                
-            </StackPanel>
-            <!--<AutoSuggestBox PlaceholderText="Type a book name"
-                            TextChanged="Control2_TextChanged"
-                            QueryIcon="Find"
-                            QuerySubmitted="Control2_QuerySubmitted"
-                            SuggestionChosen="Control2_SuggestionChosen"/>-->
-            <StackPanel RelativePanel.AlignRightWithPanel="True"
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center">
-                
-                <slider:SfRangeSlider 
+
+        </StackPanel>
+
+        <StackPanel Grid.Column="2"
+              Grid.RowSpan="3"
+                    Margin="10">
+            <AutoSuggestBox Header="Search"
+                PlaceholderText="Type a book name"
+                                VerticalContentAlignment="Center"
+                                QueryIcon="Find"
+                                Text="{Binding CurrentKeyword, Mode=TwoWay}"
+                                Margin="0,10,0,30">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="QuerySubmitted">
+                        <core:InvokeCommandAction 
+                                Command="{Binding SearchCommand}"
+                                InputConverter="{StaticResource argsConverter}" />
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+            </AutoSuggestBox>
+            <StackPanel Margin="0,0,0,10">
+                <TextBlock Text="Price value"></TextBlock>
+                <slider:SfRangeSlider
                     RangeStart="{Binding StartPrice, Mode=TwoWay}" 
                     RangeEnd="{Binding EndPrice, Mode=TwoWay}"
                     Minimum="0"
@@ -63,47 +80,32 @@
                     ShowTicks="True"
                     ShowLabels="True"
                     FontSize="10"
-                    MaxWidth="200"
-                    Margin="0,0,10,0"/>
-                
-                <AutoSuggestBox PlaceholderText="Type a book name"
-                                VerticalContentAlignment="Center"
-                                QueryIcon="Find"
-                                Text="{Binding CurrentKeyword, Mode=TwoWay}">
-                    <interactivity:Interaction.Behaviors>
-                        <core:EventTriggerBehavior EventName="QuerySubmitted">
-                            <core:InvokeCommandAction 
-                                Command="{Binding SearchCommand}"
-                                InputConverter="{StaticResource argsConverter}" />
-                        </core:EventTriggerBehavior>
-                    </interactivity:Interaction.Behaviors>
-                </AutoSuggestBox>
-                <ComboBox ItemsSource="{Binding Genres}"
-                          DisplayMemberPath="Name"
-                          SelectedValuePath="Id"
-                          SelectedValue="{Binding GenreId, Mode=TwoWay}"
-                          Width="100"
-                          Height="50"/>
+                    Margin="0,0,0,20"/>
             </StackPanel>
+            <ComboBox Header="Category" 
+                      ItemsSource="{Binding Genres}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding GenreId, Mode=TwoWay}"
+                      Width="auto"
+                      PlaceholderText="Default"/>
+        </StackPanel>
 
 
-        </RelativePanel>
-           
-
-            <!--<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Padding="10, 10, 0, 0" Name="booksComboBox" 
+        <!--<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Padding="10, 10, 0, 0" Name="booksComboBox" 
                       RelativePanel.AlignBottomWith="BookCommandStackPanel">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
                             -->
-            <!--<Image  Margin="0, 0, 5, 0" Width="100" Height="100" 
+        <!--<Image  Margin="0, 0, 5, 0" Width="100" Height="100" 
                                Source="{Binding Image, Converter={StaticResource absoluteConverter}}"/>
                             <TextBlock TextWrapping="Wrap" MaxWidth="100">
                                 <Run Text="{Binding Title}" FontWeight="Bold" Foreground="Blue"/>
                                 <Run Text="{Binding Author}" Foreground="Red"/>
                                 <Run Text="{Binding Year}" Foreground="ForestGreen"/>
                             </TextBlock>-->
-            <!--
+        <!--
                             <TextBlock Text="SuperUltraBookImage"></TextBlock>
                             <TextBlock Text="Title"></TextBlock>
                             <TextBlock Text="Author"></TextBlock>
@@ -123,15 +125,17 @@
                     </CommandBarFlyout>
                 </ListView.Resources>
                 -->
-            <!--<ListView.ItemContainerStyle>
+        <!--<ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="ContextMenu"
                             Value="{StaticResource booksContextMenu}"/>
                     </Style>
                 </ListView.ItemContainerStyle>-->
-            <!--
+        <!--
             </ListView>-->
         <GridView     Grid.Row="1"
+                      Grid.ColumnSpan="2"
+                      Margin="0,10,0,0"
                       x:Name="bookContentGridView"
                       ScrollViewer.HorizontalScrollBarVisibility="Visible"
                       ItemsSource="{Binding DisplayBookCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -169,9 +173,9 @@
                            Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
-            
+
         </GridView>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center">
             <AppBarButton Label="Previous" Icon="Previous" Command="{Binding GoToPreviousPageCommand}"/>
             <StackPanel>
                 <TextBlock HorizontalTextAlignment="Center" Text="{Binding PaginationMessage}"/>
@@ -181,6 +185,6 @@
             </StackPanel>
             <AppBarButton Label="Next" Icon="Next" Command="{Binding GoToNextPageCommand}"/>
         </StackPanel>
-        
+
     </Grid>
 </Page>

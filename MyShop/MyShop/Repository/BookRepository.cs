@@ -48,6 +48,33 @@ namespace MyShop.Repository
             return isSuccessful;
         }
 
+        public async Task<bool> AddGenre(Genre genre)
+        {
+            bool isSuccessful = false;
+            var connection = GetConnection();
+
+            await Task.Run(() =>
+            {
+                connection.Open();
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                string sql = "insert into Genre (name) values (@name)";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@name", SqlDbType.NVarChar).Value = genre.Name;
+
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0) { isSuccessful = true; }
+                else { isSuccessful = false; }
+
+
+                connection.Close();
+            }
+            return isSuccessful;
+        }
+
         public async Task<bool> Edit(Book book)
         {
             bool isSuccessful = false;
@@ -73,6 +100,32 @@ namespace MyShop.Repository
                 command.Parameters.Add("@quantity", SqlDbType.Int).Value = book.Quantity;
                 command.Parameters.Add("@published_date", SqlDbType.Date).Value = book.PublishedDate;
                 command.Parameters.Add("@id", SqlDbType.Int).Value = book.Id;
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0) { isSuccessful = true; }
+                else { isSuccessful = false; }
+
+                connection.Close();
+            }
+            return isSuccessful;
+        }
+
+        public async Task<bool> EditGenre(Genre genre)
+        {
+            bool isSuccessful = false;
+            var connection = GetConnection();
+
+            await Task.Run(() =>
+            {
+                connection.Open();
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                string sql = "update GENRE set name=@name where id = @id";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@name", SqlDbType.NVarChar).Value = genre.Name;
+                command.Parameters.Add("@id", SqlDbType.Int).Value = genre.Id;
                 int rowsAffected = command.ExecuteNonQuery();
 
                 if (rowsAffected > 0) { isSuccessful = true; }
@@ -240,6 +293,31 @@ namespace MyShop.Repository
             if (connection != null && connection.State == ConnectionState.Open)
             {
                 string sql = "delete from BOOK where id = @id";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0) { isSuccessful = true; }
+                else { isSuccessful = false; }
+
+                connection.Close();
+            }
+            return isSuccessful;
+        }
+
+        public async Task<bool> RemoveGenre(int id)
+        {
+            bool isSuccessful = false;
+            var connection = GetConnection();
+
+            await Task.Run(() =>
+            {
+                connection.Open();
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                string sql = "delete from GENRE where id = @id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@id", SqlDbType.Int).Value = id;
                 int rowsAffected = command.ExecuteNonQuery();

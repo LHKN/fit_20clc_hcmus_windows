@@ -10,8 +10,11 @@ namespace MyShop.Model
     public interface IBookRepository
     {
         Task<bool> Add(Book book);
+        Task<bool> AddGenre(Genre genre);
         Task<bool> Edit(Book book);
+        Task<bool> EditGenre(Genre genre);
         Task<bool> Remove(int id);
+        Task<bool> RemoveGenre(int id);
         Task<Book> GetById(int id);
         Task<List<Book>> GetAll();
 

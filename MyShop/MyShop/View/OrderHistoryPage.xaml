@@ -7,82 +7,104 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodel="using:MyShop.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:OrderHistoryViewModel}"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:viewmodel="using:MyShop.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:OrderHistoryViewModel}"
+    xmlns:services="using:MyShop.Services"
+    
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.DataContext>
+    <!--<Page.DataContext>
         <viewmodel:OrderHistoryViewModel x:Name="thisViewModel"/>
-    </Page.DataContext>
+    </Page.DataContext>-->
+    <Page.Resources>
+        <services:TimeConverter x:Key="timeConverter"/>
+    </Page.Resources>
 
     <Grid Margin="20, 20, 20, 20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel x:Name="BookCommandStackPanel" Orientation="Horizontal" Height="50" RelativePanel.AlignTopWithPanel="True">
+        <StackPanel x:Name="BookCommandStackPanel" Orientation="Horizontal" RelativePanel.AlignTopWithPanel="True">
             <AppBarButton Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
             <AppBarButton Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}"/>
             <AppBarButton Icon="Edit" Label="Update" Command="{Binding EditCommand}"/>
         </StackPanel>
-
-        <CalendarDatePicker Grid.Column="1" PlaceholderText="Pick a date" Header="Filter Orders From Date" Date="{x:Bind thisViewModel.DateFrom}" 
+        
+        
+        <CalendarDatePicker Grid.Column="1" PlaceholderText="Pick a date" Header="Filter Orders From Date" 
+                            Date="{Binding DateFrom, Converter={StaticResource timeConverter}, Mode=TwoWay}" 
                             DateFormat = "{}{dayofweek.full}, {month.full} {day.integer}, {year.full}"/>
         
-        <CalendarDatePicker Grid.Column="2" PlaceholderText="Pick a date" Header="To Date" Date="{x:Bind thisViewModel.DateTo}" 
+        <CalendarDatePicker Grid.Column="2" PlaceholderText="Pick a date" Header="To Date" 
+                            Date="{Binding DateTo, Converter={StaticResource timeConverter}, Mode=TwoWay}" 
                             DateFormat = "{}{dayofweek.full}, {month.full} {day.integer}, {year.full}"/>
+        <AppBarButton Grid.Column="3" Icon="Find"  Label="Search" Command="{Binding SearchCommand}"/>
 
-        <GridView Grid.Row="1" Grid.ColumnSpan="2" 
+        <ListView Grid.Row="1" 
                   x:Name="dataListView" 
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                  Width="400" Height="400"
-                  ItemsSource="{x:Bind thisViewModel.Bills}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Margin="10,50,0,0"
+                  ItemsSource="{Binding DisplayBillList, Mode=TwoWay}"
                   SelectedItem="{Binding SelectedBill, Mode=TwoWay}">
 
                   <!--SelectedIndex="{x:Bind thisViewModel.SelectedBillIndex}"-->
-            <GridView.ItemTemplate>
+            <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Width="200" Height="100">
-                        <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
-                                <Run Text="{Binding ID}" FontWeight="Bold" Foreground="Blue"/>
+                        <TextBlock TextWrapping="WrapWholeWords" >
+                                ID: <Run Text="{Binding ID}" FontWeight="Bold" Foreground="Blue"/>
                         </TextBlock>
-                        <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
-                                <Run Text="{Binding CustomerId}" FontWeight="Bold" Foreground="CadetBlue"/>
+                        <TextBlock TextWrapping="WrapWholeWords" >
+                                Customer ID: <Run Text="{Binding CustomerId}" FontWeight="Bold" Foreground="CadetBlue"/>
                         </TextBlock>
-                        <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
-                                <Run Text="{Binding TotalPrice}" FontWeight="Bold" Foreground="CadetBlue"/>
+                        <TextBlock TextWrapping="WrapWholeWords" >
+                                Total price: <Run Text="{Binding TotalPrice}" FontWeight="Bold" Foreground="CadetBlue"/>
                         </TextBlock>
-                        <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
-                                <Run Text="{Binding TransactionDate}" FontWeight="Bold" Foreground="CadetBlue"/>
+                        <TextBlock TextWrapping="WrapWholeWords" >
+                                Transaction date: <Run Text="{Binding TransactionDate}" FontWeight="Bold" Foreground="CadetBlue"/>
                         </TextBlock>
 
                     </StackPanel>
                 </DataTemplate>
-            </GridView.ItemTemplate>
+            </ListView.ItemTemplate>
 
-            <GridView.Resources>
+            <ListView.Resources>
                 <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
                     <AppBarButton Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
                     <AppBarButton Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}"/>
                     <AppBarButton Icon="Edit" Label="Update" Command="{Binding EditCommand}"/>
                 </CommandBarFlyout>
-            </GridView.Resources>
+            </ListView.Resources>
 
-            <GridView.ItemsPanel>
+            <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-                           MaximumRowsOrColumns="10"
+                           MaximumRowsOrColumns="1"
                            Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
-        </GridView>
+            </ListView.ItemsPanel>
+        </ListView>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
+            <AppBarButton Label="Previous" Icon="Previous" Command="{Binding GoToPreviousPageCommand}"/>
+            <StackPanel>
+                <TextBlock HorizontalTextAlignment="Center" Text="{Binding PaginationMessage}"/>
+                <TextBlock HorizontalAlignment="Center">
+                    <Run Text="{Binding CurrentPage}"></Run>/<Run Text="{Binding TotalPages}"></Run>
+                </TextBlock>
+            </StackPanel>
+            <AppBarButton Label="Next" Icon="Next" Command="{Binding GoToNextPageCommand}"/>
+        </StackPanel>
 
     </Grid>
 </Page>
