@@ -31,7 +31,6 @@
                   ItemsSource="{Binding Genres, Mode=TwoWay}"
                   SelectedItem="{Binding SelectedGenre, Mode=TwoWay}">
 
-            <!--SelectedIndex="{x:Bind thisViewModel.SelectedBillIndex}"-->
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">

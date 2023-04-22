@@ -15,7 +15,7 @@ namespace MyShop.Model
         void Remove(int id);
         Account GetById(int id);
         Account GetByUsername(int id);
-        IEnumerable<Account> GetAll();
+        Task<List<Account>> GetCustomers();
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using Microsoft.VisualBasic.Logging;
 using MyShop.Model;
 using MyShop.Services;
@@ -111,9 +112,44 @@ namespace MyShop.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Account> GetAll()
+        public async Task<List<Account>> GetCustomers()
         {
-            throw new NotImplementedException();
+            List<Account> accounts = new List<Account>();
+            var connection = GetConnection();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception ex) { }
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                string sql = "select name, phone_number from ACCOUNT where role_id = @role_id";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@role_id", SqlDbType.Int).Value = 2;
+
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string name = Convert.ToString(reader["name"]);
+                    string phoneNumber = Convert.ToString(reader["phone_number"]);
+
+                    accounts.Add(new Account
+                    {
+                        Name = name,
+                        PhoneNumber = phoneNumber,
+                    });
+                }
+
+                connection.Close();
+            }
+
+            return accounts;
         }
 
         public Account GetById(int id)

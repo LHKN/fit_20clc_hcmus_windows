@@ -65,11 +65,31 @@ namespace MyShop.ViewModel
             GoToPreviousPageCommand = new RelayCommand(ExecuteGoToPreviousPageCommand);
         }
 
-        public async void ExecuteCreateOrderCommand()//
+        public async void ExecuteCreateOrderCommand()
         {
-            ParentPageNavigation.ViewModel = new AddOrderViewModel();
+            var task = await _billRepository.GetEmptyBillId();
+            int newId;
 
-            //await App.MainRoot.ShowDialog("DEBUG", _date.ToString());
+            if (task != null)
+            {
+                newId = task[0];
+            }
+            else
+            {
+                Bill newBill = new Bill
+                {
+                    TotalPrice = 0,
+                    TransactionDate = DateOnly.FromDateTime(DateTime.Now),
+                };
+                await _billRepository.Add(newBill);
+
+                task = await _billRepository.GetEmptyBillId();
+                newId = task[0];
+            }
+
+            ParentPageNavigation.ViewModel = new AddOrderViewModel(newId);
+
+            //await App.MainRoot.ShowDialog("DEBUG", TransactionDate.ToString());
         }
 
         public async void ExecuteDeleteOrderCommand()
@@ -122,17 +142,7 @@ namespace MyShop.ViewModel
 
             for (int i = 0; i < BillList.Count; i++)
             {
-                List<BillDetail> temp = new List<BillDetail>
-                {
-                    // TODO: consider assign list here instead of init
-                    new BillDetail
-                    {
-                        BillId = BillList[i].Id,
-
-                        // bill detail here
-                    }
-                    //...
-                };
+                List<BillDetail> temp = await _billRepository.GetBillDetailById(BillList[i].Id);
 
                 _billDetailDict.Add(BillList[i].Id, temp);
             }
@@ -178,19 +188,7 @@ namespace MyShop.ViewModel
             get => _displayBillList; 
             set => _displayBillList = value;
         }
-        //public int SelectedBillIndex
-        //{
-        //    get => _selectedBillIndex;
-        //    set
-        //    {
-        //        if (_selectedBillIndex == value)
-        //        {
-        //            return;
-        //        }
-        //        _selectedBillIndex = value;
-        //        OnPropertyChanged(nameof(SelectedBillIndex));
-        //    }
-        //}
+
         public Bill SelectedBill
         {
             get => _selectedBill;
@@ -260,17 +258,7 @@ namespace MyShop.ViewModel
 
             for (int i = 0; i < BillList.Count; i++)
             {
-                List<BillDetail> temp = new List<BillDetail>
-                {
-                    // TODO: consider assign list here instead of init
-                    new BillDetail
-                    {
-                        BillId = BillList[i].Id,
-
-                        // bill detail here
-                    }
-                    //...
-                };
+                List<BillDetail> temp = await _billRepository.GetBillDetailById(BillList[i].Id);
 
                 _billDetailDict.Add(BillList[i].Id, temp);
             }

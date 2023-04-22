@@ -15,7 +15,8 @@ namespace MyShop.Model
         Task<Bill> GetById(int id);
 
         Task<List<Bill>> GetAll(DateOnly? dateFrom, DateOnly? dateTo);
-
+        Task<List<int>> GetEmptyBillId();
+        Task<List<BillDetail>> GetBillDetailById(int billId);
         Task AddBillDetail(BillDetail billDetail);
         Task EditBillDetail(int billId, int bookId, BillDetail billDetail);
         Task RemoveBillDetail(int billId, int bookId);

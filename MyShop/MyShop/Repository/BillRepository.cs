@@ -8,6 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace MyShop.Repository
 {
@@ -207,6 +208,78 @@ namespace MyShop.Repository
             return newBill;
         }
 
+        public async Task<List<int>> GetEmptyBillId()
+        {
+            List<int> ids = new List<int>();
+            var connection = GetConnection();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception ex) { }
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                string sql = "select id from BILL" +
+                    "where total_price = @price and transaction_date = @date";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@price", SqlDbType.Int).Value = 0;
+                command.Parameters.Add("@date", SqlDbType.DateTime).Value = DateTime.Now;
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    int id = Convert.ToInt32(reader["id"]);
+                    ids.Add(id);
+                }
+                connection.Close();
+            }
+            return ids;
+        }
+
+        public async Task<List<BillDetail>> GetBillDetailById(int billId)
+        {
+            List<BillDetail> details = new List<BillDetail>();
+            var connection = GetConnection();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception ex) { }
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                string sql = "select price,number,book_id from DETAILED_BILL" +
+                    "where bill_id = @bill_id";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@id", SqlDbType.Int).Value = billId;
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    int bookId = Convert.ToInt32(reader["book_id"]);
+                    int price = Convert.ToInt32(reader["price"]);
+                    int number = Convert.ToInt32(reader["number"]);
+
+                    details.Add(new BillDetail
+                    {
+                        BillId = billId,
+                        BookId = bookId,
+                        Price = price,
+                        Number = number
+                    });
+                }
+                connection.Close();
+            }
+            return details;
+        }
 
         public async Task AddBillDetail(BillDetail billDetail)
         {
