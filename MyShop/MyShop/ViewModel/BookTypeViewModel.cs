@@ -38,13 +38,13 @@ namespace MyShop.ViewModel
         private async void ExecuteDeleteCommand()
         {
             var task = await _bookRepository.RemoveGenre(SelectedGenre.Id);
+
             UpdateDataSource();
         }
 
         private async void ExecuteAddCommand()
         {
-            int nextId = Genres.Count + 1;
-            var task = await _bookRepository.AddGenre(new Genre { Id = nextId, Name = "New Genre" }) ;
+            var task = await _bookRepository.AddGenre(new Genre { Name = "New Genre" }) ;
             UpdateDataSource();
 
         }

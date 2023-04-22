@@ -46,6 +46,17 @@
             <AppBarButton x:Name="addButton" Icon="Add" Label="Add" Command="{Binding AddBookCommand}"/>
             <AppBarButton x:Name="deleteButton" Icon="Delete" Label="Delete" Command="{Binding DeleteBookCommand}"/>
             <AppBarButton x:Name="updateButton" Icon="Edit" Label="Update" Command="{Binding EditBookCommand}"/>
+            <Button x:Name="importButton" Content="Import.." VerticalAlignment="Center">
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="CSV file (.csv)" Command="{Binding ImportByCSVCommand}" Icon="Page2"/>
+                        <MenuFlyoutItem Text="Excel (.xls/.xlsx)" Command="{Binding ImportByExcelCommand}" Icon="PreviewLink"/>
+                        <MenuFlyoutItem Text="Access (.accdb)" Command="{Binding ImportByAccessCommand}" Icon="SwitchApps"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+                
+            </Button>
+            
 
 
         </StackPanel>
@@ -88,51 +99,19 @@
                       SelectedValuePath="Id"
                       SelectedValue="{Binding GenreId, Mode=TwoWay}"
                       Width="auto"
+                      Margin="0,0,0,20"
                       PlaceholderText="Default"/>
+            <Button x:Name="refreshButton" Content="Reset">
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="By search" Command="{Binding ResetSearchCommand}" Icon="Find"/>
+                        <MenuFlyoutItem Text="By price" Command="{Binding ResetPriceCommand}" Icon="Calculator"/>
+                        <MenuFlyoutItem Text="By category" Command="{Binding ResetCategoryCommand}" Icon="Tag"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
         </StackPanel>
 
-
-        <!--<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Padding="10, 10, 0, 0" Name="booksComboBox" 
-                      RelativePanel.AlignBottomWith="BookCommandStackPanel">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            -->
-        <!--<Image  Margin="0, 0, 5, 0" Width="100" Height="100" 
-                               Source="{Binding Image, Converter={StaticResource absoluteConverter}}"/>
-                            <TextBlock TextWrapping="Wrap" MaxWidth="100">
-                                <Run Text="{Binding Title}" FontWeight="Bold" Foreground="Blue"/>
-                                <Run Text="{Binding Author}" Foreground="Red"/>
-                                <Run Text="{Binding Year}" Foreground="ForestGreen"/>
-                            </TextBlock>-->
-        <!--
-                            <TextBlock Text="SuperUltraBookImage"></TextBlock>
-                            <TextBlock Text="Title"></TextBlock>
-                            <TextBlock Text="Author"></TextBlock>
-                            <TextBlock Text="Year"></TextBlock>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.Resources>
-                    <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
-                        <AppBarButton Label="Edit" Icon="Edit" ToolTipService.ToolTip="Save" Command="{Binding EditBookCommand}" />
-                        <AppBarButton Label="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" Command="{Binding DeleteBookCommand}"/>
-                    </CommandBarFlyout>
-                </ListView.Resources>
-                -->
-        <!--<ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="ContextMenu"
-                            Value="{StaticResource booksContextMenu}"/>
-                    </Style>
-                </ListView.ItemContainerStyle>-->
-        <!--
-            </ListView>-->
         <GridView     Grid.Row="1"
                       Grid.ColumnSpan="2"
                       Margin="0,10,0,0"

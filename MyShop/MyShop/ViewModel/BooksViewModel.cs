@@ -54,7 +54,33 @@ namespace MyShop.ViewModel
             GoToNextPageCommand = new RelayCommand(ExecuteGoToNextPageCommand);
             GoToPreviousPageCommand = new RelayCommand(ExecuteGoToPreviousPageCommand);
             SearchCommand = new RelayCommand<string>(ExecuteSearchCommand);
+            ResetSearchCommand = new RelayCommand(ExecuteResetSearchCommand);
+            ResetPriceCommand = new RelayCommand(ExecuteResetPriceCommand);
+            ResetCategoryCommand = new RelayCommand(ExecuteResetCategoryCommand);
 
+
+        }
+
+        private void ExecuteResetCategoryCommand()
+        {
+            GenreId = 0; //Set by Default
+            UpdateDataSource();
+            UpdatePagingInfo();
+        }
+
+        private void ExecuteResetPriceCommand()
+        {
+            StartPrice = 0; //Set by Default
+            EndPrice = 500000;
+            UpdateDataSource();
+            UpdatePagingInfo();
+        }
+
+        private void ExecuteResetSearchCommand()
+        {
+            CurrentKeyword = "";
+            UpdateDataSource();
+            UpdatePagingInfo();
         }
 
         private RelayCommand _editBookCommand;
@@ -63,6 +89,10 @@ namespace MyShop.ViewModel
         private RelayCommand _goToPreviousPageCommand;
         private RelayCommand _goToNextPageCommand;
         private RelayCommand<string> _searchCommand;
+        private RelayCommand _resetSearchCommand;
+        private RelayCommand _resetPriceCommand;
+        private RelayCommand _resetCategoryCommand;
+
 
         public Book SelectedBook { get => _selectedBook; set => _selectedBook = value; }
         public RelayCommand EditBookCommand { get => _editBookCommand; set => _editBookCommand = value; }
@@ -85,6 +115,10 @@ namespace MyShop.ViewModel
         public List<Genre> Genres { get => _genres; set => _genres = value; }
         public RelayCommand<string> SearchCommand { get => _searchCommand; set => _searchCommand = value; }
         public List<Book> ResultBooksList { get => _resultBooksList; set => _resultBooksList = value; }
+        public RelayCommand ResetSearchCommand { get => _resetSearchCommand; set => _resetSearchCommand = value; }
+        public RelayCommand ResetPriceCommand { get => _resetPriceCommand; set => _resetPriceCommand = value; }
+        public RelayCommand ResetCategoryCommand { get => _resetCategoryCommand; set => _resetCategoryCommand = value; }
+
         public async void ExecuteEditBookCommand()
         {
             if (SelectedBook == null)
