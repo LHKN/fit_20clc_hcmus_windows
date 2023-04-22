@@ -63,7 +63,7 @@
                 <DataTemplate>
                     <StackPanel Width="200" Height="100">
                         <TextBlock TextWrapping="WrapWholeWords" >
-                                ID: <Run Text="{Binding ID}" FontWeight="Bold" Foreground="Blue"/>
+                                ID: <Run Text="{Binding Id}" FontWeight="Bold" Foreground="Blue"/>
                         </TextBlock>
                         <TextBlock TextWrapping="WrapWholeWords" >
                                 Customer ID: <Run Text="{Binding CustomerId}" FontWeight="Bold" Foreground="CadetBlue"/>

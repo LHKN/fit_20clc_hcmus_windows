@@ -35,7 +35,8 @@ namespace MyShop.ViewModel
         private Dictionary<int, List<BillDetail>> _billDetailDict; //int <<billId>> respective to the bill's list of <<billDetail>>
 
         private IBillRepository _billRepository;
-        
+        private IAccountRepository _accountRepository;
+
         private Bill _selectedBill;
 
         // Constructor
@@ -70,14 +71,18 @@ namespace MyShop.ViewModel
             var task = await _billRepository.GetEmptyBillId();
             int newId;
 
-            if (task != null)
+            if (task.Count > 0)
             {
                 newId = task[0];
             }
             else
             {
+                string username = ConfigurationManager.AppSettings["Username"]!;
+                Account customer = await _accountRepository.GetByUsername(username);
+
                 Bill newBill = new Bill
                 {
+                    CustomerId = customer.Id,
                     TotalPrice = 0,
                     TransactionDate = DateOnly.FromDateTime(DateTime.Now),
                 };
@@ -138,7 +143,6 @@ namespace MyShop.ViewModel
             // get all from date to date
             var task = await _billRepository.GetAll(DateFrom, DateTo);
             BillList = task;
-
 
             for (int i = 0; i < BillList.Count; i++)
             {

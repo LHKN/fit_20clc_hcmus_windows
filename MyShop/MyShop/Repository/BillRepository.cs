@@ -63,7 +63,7 @@ namespace MyShop.Repository
             if (connection != null && connection.State == ConnectionState.Open)
             {
                 string sql = "update BILL set customer_id=@customer_id,total_price=@total_price,transaction_date=@transaction_date" +
-                    "where id = @id";
+                    "where id=@id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@id", SqlDbType.Int).Value = bill.Id;
                 command.Parameters.Add("@customer_id", SqlDbType.Int).Value = bill.CustomerId;
@@ -94,7 +94,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "delete from BILL where id = @id";
+                string sql = "delete from BILL where id=@id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@id", SqlDbType.Int).Value = id;
                 int rowsAffected = command.ExecuteNonQuery();
@@ -183,7 +183,7 @@ namespace MyShop.Repository
             if (connection != null && connection.State == ConnectionState.Open)
             {
                 string sql = "select id,customer_id,total_price,transaction_date from BILL" +
-                    "where id = @id";
+                    "where id=@id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@id", SqlDbType.Int).Value = id;
                 var reader = command.ExecuteReader();
@@ -225,7 +225,7 @@ namespace MyShop.Repository
             if (connection != null && connection.State == ConnectionState.Open)
             {
                 string sql = "select id from BILL" +
-                    "where total_price = @price and transaction_date = @date";
+                    "where total_price=@price and transaction_date=@date";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@price", SqlDbType.Int).Value = 0;
                 command.Parameters.Add("@date", SqlDbType.DateTime).Value = DateTime.Now;
@@ -258,9 +258,9 @@ namespace MyShop.Repository
             if (connection != null && connection.State == ConnectionState.Open)
             {
                 string sql = "select price,number,book_id from DETAILED_BILL" +
-                    "where bill_id = @bill_id";
+                    "where bill_id=@bill_id";
                 var command = new SqlCommand(sql, connection);
-                command.Parameters.Add("@id", SqlDbType.Int).Value = billId;
+                command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billId;
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -361,7 +361,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "delete from BILL where bill_id=@bill_id and book_id = @book_id";
+                string sql = "delete from BILL where bill_id=@bill_id and book_id=@book_id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billId;
                 command.Parameters.Add("@book_id", SqlDbType.Int).Value = bookId;

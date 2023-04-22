@@ -128,7 +128,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "select name, phone_number from ACCOUNT where role_id = @role_id";
+                string sql = "select id, name, phone_number from ACCOUNT where role_id = @role_id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@role_id", SqlDbType.Int).Value = 2;
 
@@ -136,11 +136,13 @@ namespace MyShop.Repository
 
                 while (reader.Read())
                 {
+                    int id = Convert.ToInt32(reader["id"]);
                     string name = Convert.ToString(reader["name"]);
                     string phoneNumber = Convert.ToString(reader["phone_number"]);
 
                     accounts.Add(new Account
                     {
+                        Id = id,
                         Name = name,
                         PhoneNumber = phoneNumber,
                     });
@@ -157,9 +159,47 @@ namespace MyShop.Repository
             throw new NotImplementedException();
         }
 
-        public Account GetByUsername(int id)
+        public async Task<Account> GetByUsername(string username)
         {
-            throw new NotImplementedException();
+            Account account = new Account();
+            var connection = GetConnection();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception ex) { }
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+
+                string sql = "select id, name, phone_number from ACCOUNT where role_id = @role_id";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@role_id", SqlDbType.Int).Value = 2;
+
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    int id = Convert.ToInt32(reader["id"]);
+                    string name = Convert.ToString(reader["name"]);
+                    string phoneNumber = Convert.ToString(reader["phone_number"]);
+
+                    account = new Account
+                    {
+                        Id = id,
+                        Name = name,
+                        PhoneNumber = phoneNumber,
+                    };
+                }
+
+                connection.Close();
+            }
+
+            return account;
         }
 
         public void Remove(int id)
