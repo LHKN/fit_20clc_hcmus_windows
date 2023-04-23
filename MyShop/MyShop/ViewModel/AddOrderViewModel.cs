@@ -30,9 +30,11 @@ namespace MyShop.ViewModel
 
         private Account _selectedCustomer;
         private BillDetail _selectedBillDetail;
+        //private int _selectedBillDetailIndex;
 
         // test
         private Book _selectedBook;
+        private ObservableCollection<int> _selectedBookIds;
 
         // getter, setter
         public RelayCommand BackCommand { get => _backCommand; set => _backCommand = value; }
@@ -45,6 +47,7 @@ namespace MyShop.ViewModel
         public ObservableCollection<Book> Books { get => _books; set => _books = value; }
         public ObservableCollection<BillDetail> BillDetailList { get => _billDetailList; set => _billDetailList = value; }
         public ObservableCollection<Account> Customers { get => _customers; set => _customers = value; }
+        //public ObservableCollection<Book> SelectedBooks { get => _selectedBooks; set => _selectedBooks = value; }
         public Account SelectedCustomer { get => _selectedCustomer; set => _selectedCustomer = value; }
         public BillDetail SelectedBillDetail { get => _selectedBillDetail; set => _selectedBillDetail = value; }
         public Book SelectedBook 
@@ -52,15 +55,27 @@ namespace MyShop.ViewModel
             get => _selectedBook;
             set
             {
-                _selectedBook = value;
+                if (_selectedBookIds.Contains(value.Id))
+                {
+                    App.MainRoot.ShowDialog("Duplicate book", "This book already exists in the order! Please edit that...");
+                }
+                else
+                {
+                    _selectedBook = value;
 
-                SelectedBillDetail.BookId = SelectedBook.Id;
-                SelectedBillDetail.Price = SelectedBook.Price;
-                SelectedBillDetail.Number = 1;
+                    SelectedBillDetail.BookId = SelectedBook.Id;
+                    SelectedBillDetail.Price = SelectedBook.Price;
+                    SelectedBillDetail.Number = 1;
 
-                OnPropertyChanged(nameof(SelectedBook));
+                    _selectedBookIds.Add(SelectedBook.Id);
+
+                    OnPropertyChanged(nameof(SelectedBook));
+                }
             }
         }
+
+        //public int SelectedBillDetailIndex { get => _selectedBillDetailIndex; set => _selectedBillDetailIndex = value; }
+
 
         //-> Commands
         private RelayCommand _backCommand;
@@ -88,6 +103,7 @@ namespace MyShop.ViewModel
             // + totalprice
             BillDetail newBillDetail = new BillDetail
             {
+                BookId = SelectedBook.Id,
                 BillId = NewBill.Id,
                 Number = 0,
                 Price = 0,
@@ -114,19 +130,20 @@ namespace MyShop.ViewModel
 
         public async void ExecuteConfirmCommand()
         {
-            // TODO: add bill values (update total price)
+            // TODO: add bill values (update total price in real-time?)
 
             NewBill.CustomerId = SelectedCustomer.Id;
-            NewBill.TotalPrice = 10;
-
-            await _billRepository.Add(NewBill);
+            NewBill.TotalPrice = 0;
 
             // TODO: add bill details
 
             for (int i = 0; i<_billDetailList.Count; i++)
             {
+                NewBill.TotalPrice += _billDetailList[i].TotalPrice();
                 await _billRepository.AddBillDetail(_billDetailList[i]);
             }
+
+            await _billRepository.Edit(NewBill);
 
             //if (task)
             //{
@@ -170,14 +187,17 @@ namespace MyShop.ViewModel
 
             NewBill = task.Result;
 
+            BillDetailList = new ObservableCollection<BillDetail>();
+            _selectedBookIds = new ObservableCollection<int>();
+
             PageLoaded();
 
             //BrowseCommand = new RelayCommand(ExecuteBrowseCommand);
             BackCommand = new RelayCommand(ExecuteBackCommand);
             ConfirmCommand = new RelayCommand(ExecuteConfirmCommand);   
             
-            AddCommand = new RelayCommand(ExecuteBackCommand);
-            DeleteCommand = new RelayCommand(ExecuteConfirmCommand);
+            AddCommand = new RelayCommand(ExecuteAddCommand);
+            DeleteCommand = new RelayCommand(ExecuteDeleteCommand);
         }
 
     }

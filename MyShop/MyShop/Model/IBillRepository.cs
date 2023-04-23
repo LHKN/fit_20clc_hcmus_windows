@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MyShop.Model
@@ -17,8 +14,10 @@ namespace MyShop.Model
         Task<List<Bill>> GetAll(DateOnly? dateFrom, DateOnly? dateTo);
         Task<List<int>> GetEmptyBillId();
         Task<List<BillDetail>> GetBillDetailById(int billId);
+        Task<List<int>> GetBookIdsById(int billId);
+
         Task AddBillDetail(BillDetail billDetail);
-        Task EditBillDetail(int billId, int bookId, BillDetail billDetail);
+        Task EditBillDetail(BillDetail billDetail);
         Task RemoveBillDetail(int billId, int bookId);
     }
 }

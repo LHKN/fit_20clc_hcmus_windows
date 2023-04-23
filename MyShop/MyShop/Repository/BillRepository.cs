@@ -31,7 +31,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "insert into BILL (customer_id,total_price,transaction_date)" +
+                string sql = "insert into BILL (customer_id,total_price,transaction_date) " +
                     "values (@customer_id,@total_price,@transaction_date)";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@customer_id", SqlDbType.Int).Value = bill.CustomerId;
@@ -62,7 +62,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "update BILL set customer_id=@customer_id,total_price=@total_price,transaction_date=@transaction_date" +
+                string sql = "update BILL set customer_id=@customer_id,total_price=@total_price,transaction_date=@transaction_date " +
                     "where id=@id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@id", SqlDbType.Int).Value = bill.Id;
@@ -182,7 +182,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "select id,customer_id,total_price,transaction_date from BILL" +
+                string sql = "select id,customer_id,total_price,transaction_date from BILL " +
                     "where id=@id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@id", SqlDbType.Int).Value = id;
@@ -224,7 +224,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "select id from BILL" +
+                string sql = "select id from BILL " +
                     "where total_price=@price and transaction_date=@date";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@price", SqlDbType.Int).Value = 0;
@@ -257,7 +257,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "select price,number,book_id from DETAILED_BILL" +
+                string sql = "select price,number,book_id from DETAILED_BILL " +
                     "where bill_id=@bill_id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billId;
@@ -281,6 +281,37 @@ namespace MyShop.Repository
             return details;
         }
 
+        public async Task<List<int>> GetBookIdsById(int billId)
+        {
+            List<int> bookIds = new List<int>();
+            var connection = GetConnection();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception ex) { }
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                string sql = "select book_id from DETAILED_BILL " +
+                    "where bill_id=@bill_id";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billId;
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    int bookId = Convert.ToInt32(reader["book_id"]);
+                    bookIds.Add(bookId);
+                }
+                connection.Close();
+            }
+            return bookIds;
+        }
+
         public async Task AddBillDetail(BillDetail billDetail)
         {
             bool isSuccessful = false;
@@ -297,7 +328,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "insert into DETAILED_BILL (bill_id,book_id,price,number)" + // revise this
+                string sql = "insert into DETAILED_BILL (bill_id,book_id,price,number) " + // revise this
                     "values (@bill_id,@book_id,@price,@number)";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billDetail.BillId;
@@ -313,7 +344,7 @@ namespace MyShop.Repository
             }
         }
         
-        public async Task EditBillDetail(int billId, int bookId, BillDetail billDetail)
+        public async Task EditBillDetail(BillDetail billDetail)
         {
             bool isSuccessful = false;
             var connection = GetConnection();
@@ -329,7 +360,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "update DETAILED_BILL set price=@price,number=@number" +
+                string sql = "update DETAILED_BILL set price=@price,number=@number " +
                     "where bill_id = @bill_id and book_id = @book_id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billDetail.BillId;
