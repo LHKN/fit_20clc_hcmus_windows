@@ -22,6 +22,16 @@
             <AppBarButton x:Name="addButton" Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
             <AppBarButton x:Name="deleteButton" Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}"/>
             <AppBarButton x:Name="updateButton" Icon="Edit" Label="Update" Command="{Binding SaveCommand}"/>
+            <AppBarButton x:Name="importButton" Icon="ImportAll" 
+                          Label="Import"
+                          VerticalAlignment="Center">
+                <Button.Flyout>
+                    <MenuFlyout Placement="Right">
+                        <MenuFlyoutItem Text="Excel (.xls/.xlsx)" Command="{Binding ImportByExcelCommand}" Icon="PreviewLink"/>
+                        <MenuFlyoutItem Text="Access (.accdb)" Command="{Binding ImportByAccessCommand}" Icon="SwitchApps"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </AppBarButton>
         </StackPanel>
 
         <ListView Grid.Row="1" 

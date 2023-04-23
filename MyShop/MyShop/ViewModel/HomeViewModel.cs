@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
+using MyShop.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,11 @@ namespace MyShop.ViewModel
 {
     public class HomeViewModel : ViewModelBase
     {
-        public HomeViewModel() {
+        private Account _account;
+
+
+        public HomeViewModel(Account account) {
+            Account = account;
             ChildPageNavigation = new PageNavigation(new DashboardViewModel());
         }
 
@@ -45,7 +50,7 @@ namespace MyShop.ViewModel
             }
             else if (args.InvokedItem.ToString().Equals("Account")) 
             {
-                ChildPageNavigation.ViewModel = new AccountViewModel();
+                ChildPageNavigation.ViewModel = new AccountViewModel(Account);
             }
             else if (args.InvokedItem.ToString().Equals("Settings"))
             {
@@ -54,5 +59,6 @@ namespace MyShop.ViewModel
 
         }
         public PageNavigation ChildPageNavigation { get; set; }
+        public Account Account { get => _account; set => _account = value; }
     }
 }

@@ -224,7 +224,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "select id from BILL" +
+                string sql = "select id from BILL " +
                     "where total_price=@price and transaction_date=@date";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@price", SqlDbType.Int).Value = 0;
@@ -257,7 +257,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "select price,number,book_id from DETAILED_BILL" +
+                string sql = "select price,number,book_id from DETAILED_BILL " +
                     "where bill_id=@bill_id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billId;

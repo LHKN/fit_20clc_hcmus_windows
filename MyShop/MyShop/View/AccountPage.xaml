@@ -7,7 +7,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodel="using:MyShop.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AccountViewModel}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -23,19 +23,29 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Full Name"/>
-        <TextBlock Grid.Column="1" Text="My Full Name"/>
+        <TextBlock Text="Full Name" VerticalAlignment="Center"/>
+        <TextBox Grid.Column="1" 
+                 Text="{Binding Account.Name, Mode=TwoWay}"/>
 
-        <TextBlock Grid.Row="1" Text="Phone Number"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="My Phone Number"/>
+        <TextBlock Grid.Row="1" Text="Phone Number" 
+                   VerticalAlignment="Center"/>
+        <TextBox Grid.Row="1" Grid.Column="1" 
+                 Text="{Binding Account.PhoneNumber, Mode=TwoWay}"/>
 
-        <TextBlock Grid.Row="2" Text="Address"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="My Address"/>
-
-        <AppBarButton x:Name="logOutButton" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" Icon="LeaveChat" Label="Log out"/>
+        <TextBlock Grid.Row="2" Text="Address" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="2" Grid.Column="1" 
+                 Text="{Binding Account.Address, Mode=TwoWay}"/>
+        
+        <TextBlock Grid.Row="3" Text="Username" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Account.Username, Mode=TwoWay}"/>
+        
+        <AppBarButton x:Name="logOutButton" Grid.Row="5" Grid.ColumnSpan="2" 
+                      HorizontalAlignment="Right" Icon="LeaveChat" 
+                      Label="Log out"
+                      Command="{Binding LogoutCommand}"/>
 
     </Grid>
 </Page>

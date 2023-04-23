@@ -176,23 +176,28 @@ namespace MyShop.Repository
             if (connection != null && connection.State == ConnectionState.Open)
             {
 
-                string sql = "select id, name, phone_number from ACCOUNT where role_id = @role_id";
+                string sql = "select id, fullname, phone, address, role_id from ACCOUNT where username=@username";
                 var command = new SqlCommand(sql, connection);
-                command.Parameters.Add("@role_id", SqlDbType.Int).Value = 2;
+                command.Parameters.Add("@username", SqlDbType.NVarChar).Value = username;
 
                 var reader = command.ExecuteReader();
 
                 while (reader.Read())
                 {
                     int id = Convert.ToInt32(reader["id"]);
-                    string name = Convert.ToString(reader["name"]);
-                    string phoneNumber = Convert.ToString(reader["phone_number"]);
+                    string name = Convert.ToString(reader["fullname"]);
+                    string phoneNumber = Convert.ToString(reader["phone"]);
+                    string address = Convert.ToString(reader["address"]);
+                    int role_id = Convert.ToInt32(reader["role_id"]);
 
                     account = new Account
                     {
                         Id = id,
                         Name = name,
                         PhoneNumber = phoneNumber,
+                        Address = address,
+                        Username = username,
+                        Role = (Role)role_id
                     };
                 }
 
