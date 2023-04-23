@@ -8,14 +8,15 @@
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewmodel="using:MyShop.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AddOrderViewModel}"
+    xmlns:viewmodel="using:MyShop.ViewModel" 
+    d:DataContext="{d:DesignInstance Type=viewmodel:AddOrderViewModel}"
+    xmlns:services="using:MyShop.Services"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <!--<Page.DataContext>
-        <viewmodel:AddOrderViewModel x:Name="thisViewModel"/>
-    </Page.DataContext>-->
-    
+    <Page.Resources>
+        <services:BookIdToBookNameConverter x:Key="bookNameConverter"/>
+    </Page.Resources>
     <ScrollViewer>
         <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
@@ -25,10 +26,10 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -39,75 +40,88 @@
             <ComboBox Grid.Column="1" 
                       ItemsSource="{Binding Customers}"
                       DisplayMemberPath="Name"
-                      SelectedValuePath="Id"
                       SelectedValue="{Binding SelectedCustomer, Mode=TwoWay}"/>
-
+            
             <!--Display but not editable-->
             <TextBlock Grid.Row="1" Text="Total Price" VerticalAlignment="Center"/>
-            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding NewBill.TotalPrice}"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Text="{Binding NewBill.TotalPrice}"/>
             <TextBlock Grid.Row="2" Text="Transaction Date" VerticalAlignment="Center"/>
-            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding NewBill.TransactionDate}"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Text="{Binding NewBill.TransactionDate}"/>
             
-            <!--WIP-->
             <!--Choose book before adding-->
             <TextBlock Grid.Row="3" Text="Books" VerticalAlignment="Center"/>
             <ComboBox Grid.Row="3" Grid.Column="1" 
                                       ItemsSource="{Binding Books}"
-                                      DisplayMemberPath="Name"
-                                      SelectedValuePath="Id"
+                                      DisplayMemberPath="Title"
                                       SelectedValue="{Binding SelectedBook, Mode=TwoWay}"/>
             
-            <TextBlock Grid.Row="4" Text="Bill Details" VerticalAlignment="Center"/>
-            <GridView Grid.Row="4" Grid.ColumnSpan="2" 
+            <TextBlock Grid.Row="4" Text="Bill Details"/>
+            <ListView Grid.Row="5" Grid.ColumnSpan="2" 
                   x:Name="dataListView" 
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                  Width="400" Height="400"
+                  Width="200" Height="400"
+                  HorizontalAlignment="Left"
                   ItemsSource="{Binding BillDetailList, Mode=TwoWay}"
                   SelectedItem="{Binding SelectedBillDetail, Mode=TwoWay}">
-                <!--SelectedIndex="{Binding SelectedBillDetailIndex, Mode=TwoWay}">-->
 
-                <GridView.ItemTemplate>
+                <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Width="200" Height="100" Orientation="Horizontal">
-                            <!--<TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
-                                <Run Text="{Binding BillId}" FontWeight="Bold" Foreground="Blue"/>
-                            </TextBlock>-->
+                        <Grid Width="200" Height="100" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
                             
-                            <TextBlock TextWrapping="WrapWholeWords" HorizontalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Book ID"/>
+                            <TextBlock Grid.Column="1" TextWrapping="WrapWholeWords">
                                 <Run Text="{Binding BookId}" FontWeight="Bold" Foreground="CadetBlue"/>
+                                <!--Book: <Run Text="{Binding BookId, Converter={StaticResource bookNameConverter}}" FontWeight="Bold" Foreground="CadetBlue"/>-->
                             </TextBlock>
-                            <TextBlock TextWrapping="WrapWholeWords" HorizontalAlignment="Center">
-                                <Run Text="{Binding Price}" FontWeight="Bold" Foreground="CadetBlue"/>
-                            </TextBlock>
-                            <NumberBox Text="{Binding Number}" FontWeight="Bold" Foreground="CadetBlue"/>
 
-                        </StackPanel>
+                            <TextBlock Grid.Row="1" Text="Book Price"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" TextWrapping="WrapWholeWords" HorizontalAlignment="Left">
+                                    <Run Text="{Binding Price}" FontWeight="Bold" Foreground="CadetBlue"/>
+                            </TextBlock>
+
+                            <TextBlock Grid.Row="2" Text="Quantity "/>
+                            <NumberBox Grid.Row="2" Grid.Column="1" Text="{Binding Number, Mode=TwoWay}"
+                                           FontWeight="Bold" Foreground="CadetBlue"/>
+
+                        </Grid>
                     </DataTemplate>
-                </GridView.ItemTemplate>
+                </ListView.ItemTemplate>
 
-                <GridView.Resources>
+                <ListView.Resources>
                     <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
                         <AppBarButton Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}"/>
-                        <AppBarButton Icon="Edit" Label="Update" Command="{Binding EditCommand}"/>
+                        <!--<AppBarButton Icon="Edit" Label="Update" Command="{Binding EditCommand}"/>-->
                     </CommandBarFlyout>
-                </GridView.Resources>
+                </ListView.Resources>
 
-                <GridView.ItemsPanel>
+                <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-                           MaximumRowsOrColumns="10"
+                           MaximumRowsOrColumns="5"
                            Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-            </GridView>
+                </ListView.ItemsPanel>
+            </ListView>
 
-            <AppBarButton Grid.Row="5" Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
+            <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" >
+                <AppBarButton Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
+                <AppBarButton Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}"/>
+            </StackPanel>
 
-            <!--finished-->
-
-            <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Back" Margin="10,10,10,10" Command="{Binding BackCommand}"></Button>
-                <Button Content="Confirm" Margin="10,10,10,10" Command="{Binding ConfirmCommand}"></Button>
+            <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Back" Margin="10,10,10,10" Command="{Binding BackCommand}"/>
+                <Button Content="Confirm" Margin="10,10,10,10" Command="{Binding ConfirmCommand}"/>
             </StackPanel>
         </Grid>
 

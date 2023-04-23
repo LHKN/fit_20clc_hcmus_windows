@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace MyShop.Repository
 {
@@ -128,7 +129,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "select id, name, phone_number from ACCOUNT where role_id = @role_id";
+                string sql = "select id, fullname, phone from ACCOUNT where role_id = @role_id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@role_id", SqlDbType.Int).Value = 2;
 
@@ -137,8 +138,8 @@ namespace MyShop.Repository
                 while (reader.Read())
                 {
                     int id = Convert.ToInt32(reader["id"]);
-                    string name = Convert.ToString(reader["name"]);
-                    string phoneNumber = Convert.ToString(reader["phone_number"]);
+                    string name = Convert.ToString(reader["fullname"]);
+                    string phoneNumber = Convert.ToString(reader["phone"]);
 
                     accounts.Add(new Account
                     {
@@ -154,9 +155,50 @@ namespace MyShop.Repository
             return accounts;
         }
 
-        public Account GetById(int id)
+        public async Task<Account> GetById(int id)
         {
-            throw new NotImplementedException();
+            Account account = new Account();
+            var connection = GetConnection();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception ex) { }
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+
+                string sql = "select id, fullname, phone, address, role_id from ACCOUNT where id=@id";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string name = Convert.ToString(reader["fullname"]);
+                    string phoneNumber = Convert.ToString(reader["phone"]);
+                    string address = Convert.ToString(reader["address"]);
+                    int role_id = Convert.ToInt32(reader["role_id"]);
+
+                    account = new Account
+                    {
+                        Id = id,
+                        Name = name,
+                        PhoneNumber = phoneNumber,
+                        Address = address,
+                        Role = (Role)role_id
+                    };
+                }
+
+                connection.Close();
+            }
+
+            return account;
         }
 
         public async Task<Account> GetByUsername(string username)

@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Services.Store;
+using static System.Reflection.Metadata.BlobBuilder;
 using static System.Windows.Forms.AxHost;
 
 namespace MyShop.ViewModel
@@ -94,8 +95,6 @@ namespace MyShop.ViewModel
             }
 
             ParentPageNavigation.ViewModel = new AddOrderViewModel(newId);
-
-            //await App.MainRoot.ShowDialog("DEBUG", TransactionDate.ToString());
         }
 
         public async void ExecuteDeleteOrderCommand()
@@ -253,6 +252,7 @@ namespace MyShop.ViewModel
             result.ForEach(x => DisplayBillList.Add(x));
 
         }
+
         private async void ExecuteSearchCommand()
         {
             CurrentPage = 1;

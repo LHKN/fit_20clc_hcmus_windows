@@ -68,7 +68,7 @@ namespace MyShop.Repository
                 command.Parameters.Add("@id", SqlDbType.Int).Value = bill.Id;
                 command.Parameters.Add("@customer_id", SqlDbType.Int).Value = bill.CustomerId;
                 command.Parameters.Add("@total_price", SqlDbType.Int).Value = bill.TotalPrice;
-                command.Parameters.Add("@transaction_date", SqlDbType.DateTime).Value = bill.TransactionDate;
+                command.Parameters.Add("@transaction_date", SqlDbType.Date).Value = bill.TransactionDate;
                 int rowsAffected = command.ExecuteNonQuery();
 
                 if (rowsAffected > 0) { isSuccessful = true; }
@@ -192,7 +192,7 @@ namespace MyShop.Repository
                     int customerId = Convert.ToInt32(reader["customer_id"]);
                     int totalPrice = Convert.ToInt32(reader["total_price"]);
 
-                    object obj = reader["published_date"];
+                    object obj = reader["transaction_date"];
                     DateOnly transactionDate = obj == null || obj == DBNull.Value ? default(DateOnly) : DateOnly.FromDateTime(Convert.ToDateTime(obj));
 
                     newBill = new Bill
@@ -225,10 +225,9 @@ namespace MyShop.Repository
             if (connection != null && connection.State == ConnectionState.Open)
             {
                 string sql = "select id from BILL " +
-                    "where total_price=@price and transaction_date=@date";
+                    "where total_price=@total_price";
                 var command = new SqlCommand(sql, connection);
-                command.Parameters.Add("@price", SqlDbType.Int).Value = 0;
-                command.Parameters.Add("@date", SqlDbType.DateTime).Value = DateTime.Now;
+                command.Parameters.Add("@total_price", SqlDbType.Int).Value = 0;
                 var reader = command.ExecuteReader();
 
                 while (reader.Read())
@@ -366,7 +365,7 @@ namespace MyShop.Repository
                 command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billDetail.BillId;
                 command.Parameters.Add("@book_id", SqlDbType.Int).Value = billDetail.BookId;
                 command.Parameters.Add("@price", SqlDbType.Int).Value = billDetail.Price;
-                command.Parameters.Add("@number", SqlDbType.DateTime).Value = billDetail.Number;
+                command.Parameters.Add("@number", SqlDbType.Int).Value = billDetail.Number;
                 int rowsAffected = command.ExecuteNonQuery();
 
                 if (rowsAffected > 0) { isSuccessful = true; }

@@ -36,7 +36,7 @@ namespace MyShop.ViewModel
         // getter, setter
         public RelayCommand BackCommand { get => _backCommand; set => _backCommand = value; }
         public RelayCommand ConfirmCommand { get => _confirmCommand; set => _confirmCommand = value; }
-        public RelayCommand BrowseCommand { get => _browseCommand; set => _browseCommand = value; }
+        //public RelayCommand BrowseCommand { get => _browseCommand; set => _browseCommand = value; }
         public RelayCommand AddCommand { get => _addCommand; set => _addCommand = value; }
         public RelayCommand DeleteCommand { get => _deleteCommand; set => _deleteCommand = value; }
 
@@ -51,22 +51,8 @@ namespace MyShop.ViewModel
             get => _selectedBook;
             set
             {
-                if (_selectedBookIds.Contains(value.Id))
-                {
-                    App.MainRoot.ShowDialog("Duplicate book", "This book already exists in the order! Please edit that...");
-                }
-                else
-                {
-                    _selectedBook = value;
-
-                    SelectedBillDetail.BookId = SelectedBook.Id;
-                    SelectedBillDetail.Price = SelectedBook.Price;
-                    SelectedBillDetail.Number = 1;
-
-                    _selectedBookIds.Add(SelectedBook.Id);
-
-                    OnPropertyChanged(nameof(SelectedBook));
-                }
+                _selectedBook = value;
+                OnPropertyChanged(nameof(SelectedBook));
             }
         }
 
@@ -90,39 +76,61 @@ namespace MyShop.ViewModel
 
             var task3 = await _billRepository.GetBillDetailById(CurrentBill.Id);
             BillDetailList = new ObservableCollection<BillDetail>();
-            task3.ForEach(bill => BillDetailList.Add(bill));
+            task3.ForEach(bill => {
+                BillDetailList.Add(bill);
+                _selectedBookIds.Add(bill.BookId);
+            }
+            );
+
+            SelectedCustomer = await _accountRepository.GetById(CurrentBill.CustomerId);
         }
 
         // Edit bill details
-        public void ExecuteAddCommand()
+        public async void ExecuteAddCommand()
         {
-            // + totalprice
-            BillDetail newBillDetail = new BillDetail
+            if (SelectedBook == null)
             {
-                BookId = SelectedBook.Id,
-                BillId = CurrentBill.Id,
-                Number = 0,
-                Price = 0,
-            };
+                await App.MainRoot.ShowDialog("No selected book", "Please select the book you would like to add to the order!");
+                return;
+            }
+            if (_selectedBookIds.Contains(SelectedBook.Id))
+            {
+                await App.MainRoot.ShowDialog("Duplicate book", "This book already exists in the order! Please edit that...");
+            }
+            else
+            {
+                _selectedBookIds.Add(SelectedBook.Id);
 
-            BillDetailList.Add(newBillDetail);
+                // + totalprice
+                BillDetail newBillDetail = new BillDetail
+                {
+                    BookId = SelectedBook.Id,
+                    BillId = CurrentBill.Id,
+                    Number = 1,
+                    Price = SelectedBook.Price,
+                };
 
-            //await _billRepository.AddBillDetail(newBillDetail);
-            UpdateDataSource();
+                CurrentBill.TotalPrice += newBillDetail.TotalPrice();
+
+                BillDetailList.Add(newBillDetail);
+            }
         }
         public void ExecuteDeleteCommand()
         {
             // - totalprice
+            CurrentBill.TotalPrice -= SelectedBillDetail.TotalPrice();
 
             BillDetailList.Remove(SelectedBillDetail);
-
-            //await _billRepository.RemoveBillDetail(SelectedBillDetail.BillId, SelectedBillDetail.BookId);
-            UpdateDataSource();
         }
-
 
         public async void ExecuteConfirmCommand()
         {
+            if (SelectedCustomer == null)
+            {
+                await App.MainRoot.ShowDialog("No selected customer", "Please select the owner of this order!");
+                return;
+            }
+
             // TODO: add bill values (update total price in real-time?)
 
             CurrentBill.CustomerId = SelectedCustomer.Id;
@@ -158,6 +166,7 @@ namespace MyShop.ViewModel
             //    ErrorMessage = "* Task failed!";
             //}
             await App.MainRoot.ShowDialog("Success", "Order is updated!");
+            ExecuteBackCommand();
         }
 
         public void ExecuteBackCommand()
@@ -165,17 +174,10 @@ namespace MyShop.ViewModel
             ParentPageNavigation.ViewModel = new OrderHistoryViewModel();
         }
 
-        public void ExecuteBrowseCommand()
-        {
-            // browse book
-        }
-
-        public async void UpdateDataSource()
-        {
-            var task = await _billRepository.GetBillDetailById(CurrentBill.Id);
-            BillDetailList.Clear();
-            task.ForEach(billDetail => BillDetailList.Add(billDetail));
-        }
+        //public void ExecuteBrowseCommand()
+        //{
+        //    // browse book
+        //}
 
         // Constructor
         public EditOrderViewModel(Bill currentBill)
@@ -189,7 +191,7 @@ namespace MyShop.ViewModel
 
             PageLoaded();
 
-            BrowseCommand = new RelayCommand(ExecuteBrowseCommand);
+            //BrowseCommand = new RelayCommand(ExecuteBrowseCommand);
             BackCommand = new RelayCommand(ExecuteBackCommand);
             ConfirmCommand = new RelayCommand(ExecuteConfirmCommand);
 
