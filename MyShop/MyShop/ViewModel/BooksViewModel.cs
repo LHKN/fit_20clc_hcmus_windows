@@ -257,5 +257,12 @@ namespace MyShop.ViewModel
             TotalItems = ResultBooksList.Count;
             UpdatePagingInfo();
         }
+
+        public async Task<string> getBookName(int bookId)
+        {
+            var result = await _bookRepository.GetById(bookId);
+
+            return result.Title;
+        }
     }
 }
