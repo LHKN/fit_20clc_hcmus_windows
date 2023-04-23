@@ -26,49 +26,80 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!--<TextBlock Grid.Row="0" Text="{Binding ErrorMessage}"/>-->
-
-            <TextBlock Grid.Row="1" Text="Customer ID" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NewBill.CustomerId, Mode=TwoWay}"/>
-
-            <!--Display but not editable-->
-            <!--<TextBlock Grid.Row="2" Text="Total Price" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding NewBill.TotalPrice, Mode=TwoWay}"/>
-            <TextBlock Grid.Row="3" Text="Transaction Date" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding NewBill.TransactionDate, Mode=TwoWay}"/>-->
-
-            <!--WIP-->
-            <!--<TextBlock Grid.Row="4" Text="Books" VerticalAlignment="Center"/>
-            <ComboBox Grid.Row="4" Grid.Column="1" 
-                      ItemsSource="{Binding Books}"
+            <TextBlock Text="Customer ID" VerticalAlignment="Center"/>
+            <!--ComboBox of customers-->
+            <ComboBox Grid.Column="1" 
+                      ItemsSource="{Binding Customers}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="Id"
-                      SelectedValue="{Binding NewBook.GerneId, Mode=TwoWay}"/>-->
+                      SelectedValue="{Binding SelectedCustomer, Mode=TwoWay}"/>
 
+            <!--Display but not editable-->
+            <TextBlock Grid.Row="1" Text="Total Price" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding NewBill.TotalPrice}"/>
+            <TextBlock Grid.Row="2" Text="Transaction Date" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding NewBill.TransactionDate}"/>
 
-            <!--<TextBlock Grid.Row="6" Text="Book Image" VerticalAlignment="Center"/>
-            <StackPanel Grid.Row="6" Grid.Column="1">
-                <Image Width="150" Height="200">
-                    <Image.Source>
-                        <BitmapImage UriSource="{Binding NewBook.Image,Converter={StaticResource absoluteConverter}, Mode=TwoWay}"/>
-                    </Image.Source>
-                </Image>
+            <!--WIP-->
+            <!--Choose book before adding-->
+            <TextBlock Grid.Row="3" Text="Books" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="3" Grid.Column="1" 
+                                      ItemsSource="{Binding Books}"
+                                      DisplayMemberPath="Name"
+                                      SelectedValuePath="Id"
+                                      SelectedValue="{Binding SelectedBook, Mode=TwoWay}"/>
 
-                <Button Content="Browse" HorizontalAlignment="Center" Command="{Binding BrowseCommand}"></Button>
-            </StackPanel>
-            <TextBlock Grid.Row="7" Text="Price" VerticalAlignment="Center"/>
-            <NumberBox Grid.Row="7" Grid.Column="1" PlaceholderText="Price number (VND)" Minimum="0" Value="{Binding NewBook.Price, Mode=TwoWay}"/>
-            <TextBlock Grid.Row="8" Text="Quantity" VerticalAlignment="Center"/>
-            <NumberBox Grid.Row="8" Grid.Column="1" PlaceholderText="Quantity" Minimum="0" Value="{Binding NewBook.Quantity, Mode=TwoWay}"/>-->
+            <TextBlock Grid.Row="4" Text="Bill Details" VerticalAlignment="Center"/>
+            <GridView Grid.Row="4" Grid.ColumnSpan="2" 
+                  x:Name="dataListView" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  Width="400" Height="400"
+                  ItemsSource="{Binding BillDetailList, Mode=TwoWay}"
+                  SelectedItem="{Binding SelectedBillDetail, Mode=TwoWay}">
+                <!--ItemsSource="{x:Bind thisViewModel.BillDetailList, Mode=TwoWay}"
+                  SelectedItem="{Binding SelectedBillDetail, Mode=TwoWay}">-->
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Width="200" Height="100" Orientation="Horizontal">
+                            <!--<TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
+                                <Run Text="{Binding BillId}" FontWeight="Bold" Foreground="Blue"/>
+                            </TextBlock>-->
 
+                            <TextBlock TextWrapping="WrapWholeWords" HorizontalAlignment="Center">
+                                <Run Text="{Binding BookId}" FontWeight="Bold" Foreground="CadetBlue"/>
+                            </TextBlock>
+                            <TextBlock TextWrapping="WrapWholeWords" HorizontalAlignment="Center">
+                                <Run Text="{Binding Price}" FontWeight="Bold" Foreground="CadetBlue"/>
+                            </TextBlock>
+                            <NumberBox Text="{Binding Number}" FontWeight="Bold" Foreground="CadetBlue"/>
 
-            <StackPanel Grid.Row="9" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                        </StackPanel>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+
+                <GridView.Resources>
+                    <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
+                        <AppBarButton Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}"/>
+                        <AppBarButton Icon="Edit" Label="Update" Command="{Binding EditCommand}"/>
+                    </CommandBarFlyout>
+                </GridView.Resources>
+
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                           MaximumRowsOrColumns="10"
+                           Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
+
+            <AppBarButton Grid.Row="5" Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
+
+            <!--finished-->
+
+            <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="Back" Margin="10,10,10,10" Command="{Binding BackCommand}"></Button>
                 <Button Content="Confirm" Margin="10,10,10,10" Command="{Binding ConfirmCommand}"></Button>
             </StackPanel>
