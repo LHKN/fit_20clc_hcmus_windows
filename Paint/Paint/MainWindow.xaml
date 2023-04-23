@@ -1,12 +1,83 @@
-﻿<Window x:Class="Paint.MainWindow"
+﻿<Fluent:RibbonWindow x:Class="Paint.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         xmlns:local="clr-namespace:Paint"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MyPaint" Height="450" Width="800" Loaded="RibbonWindow_Loaded">
+    <DockPanel>
+        <Fluent:Ribbon Name="mainRibbon" DockPanel.Dock="Top">
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage Header="MyPaint">
+                    <Fluent:BackstageTabControl>
+                        <Fluent:BackstageTabItem Header="New">
+                            
+                        </Fluent:BackstageTabItem>
+                        
+                        <Fluent:BackstageTabItem Header="Open">
+                            
+                        </Fluent:BackstageTabItem>
 
-    </Grid>
-</Window>
+                        <Fluent:BackstageTabItem Header="Save">
+                            
+                        </Fluent:BackstageTabItem>
+
+                        <Fluent:BackstageTabItem Header="About">
+                            
+                        </Fluent:BackstageTabItem>
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+            <Fluent:RibbonTabItem Header="Master">
+                <Fluent:RibbonGroupBox Header="Clipboard">
+                    <Fluent:Button Header="Cut"/>
+                    <Fluent:Button Header="Copy"/>
+                    <Fluent:Button Header="Paste"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Image">
+                    <Fluent:Button Header="Add"/> <!--new picture to canvas-->
+                    <Fluent:Button Header="Select"/> <!--select a single element for editing again-->
+                    <Fluent:Button Header="Flip"/> <!--horizonal/vertical-->
+                    <Fluent:Button Header="Rotate"/> <!--90 degree to the right/left & 180 degree-->
+                    
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Tools">
+                    <Fluent:Button Header="Pencil"/>
+                    <Fluent:Button Header="Fill"/>
+                    <Fluent:Button Header="Text"/>
+                    <Fluent:Button Header="Eraser"/>
+                    <Fluent:Button Header="Color picker"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Stroke"> <!--dash, dot, dash dot dot-->
+                    <Fluent:Button Header="Type1"/> 
+                    <Fluent:Button Header="Type2"/>
+                    <Fluent:Button Header="Type3"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Size"> <!--pen width-->
+                    <Fluent:Button Header="Size1"/>
+                    <Fluent:Button Header="Size2"/>
+                    <Fluent:Button Header="Size3"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Shapes">
+                    <Fluent:Button Header="Line"/>
+                    <Fluent:Button Header="Rectangle"/>
+                    <Fluent:Button Header="Eclipse"/>
+                    <Fluent:Button Header="Triangle"/>
+                    <Fluent:Button Header="Right triangle"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Commands">
+                    <Fluent:Button Header="Undo"/>
+                    <Fluent:Button Header="Redo"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Colors">
+                    <Fluent:Button Header="Primary"/>
+                    <Fluent:Button Header="Secondary"/>
+                </Fluent:RibbonGroupBox>
+                
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+    </DockPanel>
+</Fluent:RibbonWindow>
