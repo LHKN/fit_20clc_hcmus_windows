@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Windows.Storage.Pickers;
+using Windows.Storage;
 
 namespace MyShop.ViewModel
 {
@@ -57,9 +59,47 @@ namespace MyShop.ViewModel
             ResetSearchCommand = new RelayCommand(ExecuteResetSearchCommand);
             ResetPriceCommand = new RelayCommand(ExecuteResetPriceCommand);
             ResetCategoryCommand = new RelayCommand(ExecuteResetCategoryCommand);
+            ImportByExcelCommand = new RelayCommand(ExecuteImportByExcelCommand);
+            ImportByAccessCommand = new RelayCommand(ExecuteImportByAccessCommand);
 
 
         }
+
+        private async void ExecuteImportByAccessCommand()
+        {
+            await App.MainRoot.ShowDialog("Warning", "This action can change the database");
+            var window = new Microsoft.UI.Xaml.Window();
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+            FileOpenPicker filePicker = new FileOpenPicker();
+            filePicker.ViewMode = PickerViewMode.Thumbnail;
+            filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            filePicker.FileTypeFilter.Add(".accdb");
+            WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
+            StorageFile file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+                //Read data from Excel file
+                BooksList = await new ImportDatabaseService().ReadBookDataFromExcelFile(file);
+
+        }
+
+        private async void ExecuteImportByExcelCommand()
+        {
+            await App.MainRoot.ShowDialog("Warning", "This action can change the database");
+            var window = new Microsoft.UI.Xaml.Window();
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+            FileOpenPicker filePicker = new FileOpenPicker();
+            filePicker.ViewMode = PickerViewMode.Thumbnail;
+            filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            filePicker.FileTypeFilter.Add(".xlsx");
+            filePicker.FileTypeFilter.Add(".xls");
+            WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
+            StorageFile file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+                //Read data from Excel file
+                BooksList = await new ImportDatabaseService().ReadBookDataFromExcelFile(file);
+
+        }
+
 
         private void ExecuteResetCategoryCommand()
         {
@@ -92,6 +132,8 @@ namespace MyShop.ViewModel
         private RelayCommand _resetSearchCommand;
         private RelayCommand _resetPriceCommand;
         private RelayCommand _resetCategoryCommand;
+        private RelayCommand _importByExcelCommand;
+        private RelayCommand _importByAccessCommand;
 
 
         public Book SelectedBook { get => _selectedBook; set => _selectedBook = value; }
@@ -118,6 +160,8 @@ namespace MyShop.ViewModel
         public RelayCommand ResetSearchCommand { get => _resetSearchCommand; set => _resetSearchCommand = value; }
         public RelayCommand ResetPriceCommand { get => _resetPriceCommand; set => _resetPriceCommand = value; }
         public RelayCommand ResetCategoryCommand { get => _resetCategoryCommand; set => _resetCategoryCommand = value; }
+        public RelayCommand ImportByExcelCommand { get => _importByExcelCommand; set => _importByExcelCommand = value; }
+        public RelayCommand ImportByAccessCommand { get => _importByAccessCommand; set => _importByAccessCommand = value; }
 
         public async void ExecuteEditBookCommand()
         {
@@ -173,14 +217,16 @@ namespace MyShop.ViewModel
 
         public void ExecuteGoToNextPageCommand()
         {
-            if (CanExecuteGoToNextPageCommand()) CurrentPage += 1;
+            if (!CanExecuteGoToNextPageCommand()) return;
+            CurrentPage += 1;
             UpdateDataSource();
             UpdatePagingInfo();
         }
 
         public void ExecuteGoToPreviousPageCommand()
         {
-            if (CanExecuteGoToPreviousCommand()) CurrentPage -= 1;
+            if (!CanExecuteGoToPreviousCommand()) return;
+            CurrentPage -= 1;
             UpdateDataSource();
             UpdatePagingInfo();
         }

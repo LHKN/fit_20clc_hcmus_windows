@@ -41,16 +41,17 @@ namespace MyShop.ViewModel
         private async void ExecuteLoginCommand()
         {
             ErrorMessage = String.Empty;
-            var task = await _accountRepository.AuthenticateAccount(
+            string message = await _accountRepository.AuthenticateAccount(
                 new System.Net.NetworkCredential(Account.Username, Account.Password));
 
-            string message = task;
 
             if (message.Equals("TRUE"))
             {
                 Thread.CurrentPrincipal = new GenericPrincipal(
                     new GenericIdentity(Account.Username), null);
-                ParentPageNavigation.ViewModel = new HomeViewModel();
+                string username = Account.Username;
+                var task = await _accountRepository.GetByUsername(username);
+                ParentPageNavigation.ViewModel = new HomeViewModel(task);
             }
             else
             {

@@ -9,6 +9,8 @@ using System.Windows.Input;
 using System.Collections.Generic;
 using System.Linq;
 using MyShop.Services;
+using Windows.Storage.Pickers;
+using Windows.Storage;
 
 namespace MyShop.ViewModel
 {
@@ -58,20 +60,24 @@ namespace MyShop.ViewModel
             ParentPageNavigation.ViewModel = new BooksViewModel();
         }
 
-        public void ExecuteBrowseCommand()
+        public async void ExecuteBrowseCommand()
         {
-            var screen = new OpenFileDialog();
-            screen.Filter = "All Images Files (*.png;*.jpeg;*.gif;*.jpg;*.bmp;*.tiff;*.tif)|*.png;*.jpeg;*.gif;*.jpg;*.bmp;*.tiff;*.tif" +
-            "|PNG Portable Network Graphics (*.png)|*.png" +
-            "|JPEG File Interchange Format (*.jpg *.jpeg *jfif)|*.jpg;*.jpeg;*.jfif" +
-            "|BMP Windows Bitmap (*.bmp)|*.bmp" +
-            "|TIF Tagged Imaged File Format (*.tif *.tiff)|*.tif;*.tiff" +
-            "|GIF Graphics Interchange Format (*.gif)|*.gif";
-            if (screen.ShowDialog() == DialogResult.OK)
+            var window = new Microsoft.UI.Xaml.Window();
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+            FileOpenPicker filePicker = new FileOpenPicker();
+            filePicker.ViewMode = PickerViewMode.Thumbnail;
+            string image_extensions = ".png;.jpeg;.gif;.jpg;.bmp;.tiff;.tif";
+            new List<string>(image_extensions.Split(";")).ForEach(item => filePicker.FileTypeFilter.Add(item));
+            StorageFile file = await filePicker.PickSingleFileAsync();
+            
+
+            WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
+
+            if (file != null)
             {
-                _selectedImage = new FileInfo(screen.FileName);
+                _selectedImage = new FileInfo(file.Path);
                 BookImageBitmap = new BitmapImage();
-                BookImageBitmap.UriSource = new Uri(screen.FileName, UriKind.Absolute);
+                BookImageBitmap.UriSource = new Uri(file.Path, UriKind.Absolute);
             }
 
             if (_selectedImage == null) { ErrorMessage = "* Invalid book cover image"; return; };

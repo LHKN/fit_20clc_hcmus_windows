@@ -42,6 +42,7 @@ namespace MyShop.ViewModel
         // Constructor
         public OrderHistoryViewModel() {
             _billRepository = new BillRepository();
+            _accountRepository = new AccountRepository();
             _billDetailDict = new Dictionary<int, List<BillDetail>>();
             BillList = new List<Bill>();
             DisplayBillList = new ObservableCollection<Bill>();
