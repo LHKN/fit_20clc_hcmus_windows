@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace MyShop.ViewModel
@@ -115,9 +116,15 @@ namespace MyShop.ViewModel
                 BillDetailList.Add(newBillDetail);
             }
         }
-        public void ExecuteDeleteCommand()
+        public async void ExecuteDeleteCommand()
         {
             // - totalprice
+            if (SelectedBillDetail == null)
+            {
+                await App.MainRoot.ShowDialog("No selected bill detail", "Please select the bill detail you would like to delete!");
+                return;
+            }
+
             CurrentBill.TotalPrice -= SelectedBillDetail.TotalPrice();
 
             BillDetailList.Remove(SelectedBillDetail);
@@ -137,21 +144,17 @@ namespace MyShop.ViewModel
             CurrentBill.TotalPrice = 0;
 
             // TODO: add bill details; resolve duplicate book insertions
+            List<int> bookIds = await _billRepository.GetBookIdsById(CurrentBill.Id);
+            for (int i = 0; i<bookIds.Count; i++)
+            {
+                await _billRepository.RemoveBillDetail(CurrentBill.Id, bookIds[i]);
+            }
 
             for (int i = 0; i < _billDetailList.Count; i++)
             {
                 CurrentBill.TotalPrice += _billDetailList[i].TotalPrice();
 
-                //book by bill id
-                List<int> bookIds = await _billRepository.GetBookIdsById(CurrentBill.Id);
-                if (bookIds.Contains(_billDetailList[i].BookId))
-                {
-                    await _billRepository.EditBillDetail(_billDetailList[i]);
-                }
-                else
-                {
-                    await _billRepository.AddBillDetail(_billDetailList[i]);
-                }
+                await _billRepository.AddBillDetail(_billDetailList[i]);
             }
 
             await _billRepository.Edit(CurrentBill);

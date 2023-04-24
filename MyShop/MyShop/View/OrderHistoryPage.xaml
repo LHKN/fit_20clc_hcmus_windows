@@ -95,6 +95,7 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
+
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
             <AppBarButton Label="Previous" Icon="Previous" Command="{Binding GoToPreviousPageCommand}"/>
             <StackPanel>
@@ -106,5 +107,58 @@
             <AppBarButton Label="Next" Icon="Next" Command="{Binding GoToNextPageCommand}"/>
         </StackPanel>
 
+        <ListView Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  Width="200" Height="400" Margin="0 50 0 0"
+                  HorizontalAlignment="Left"
+                  ItemsSource="{Binding SelectedBillDetailList, Mode=TwoWay}">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="200" Height="100" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Book ID" FontWeight="Light"/>
+                        <TextBlock Grid.Column="1" TextWrapping="WrapWholeWords">
+                                <Run Text="{Binding BookId}" FontWeight="Bold" Foreground="CadetBlue"/>
+                                <!--Book: <Run Text="{Binding BookId, Converter={StaticResource bookNameConverter}}" FontWeight="Bold" Foreground="CadetBlue"/>-->
+                        </TextBlock>
+
+                        <!--<TextBlock Grid.Column="1" Text="{Binding BookId, Converter={StaticResource bookNameConverter}}" FontWeight="Bold" Foreground="CadetBlue"/>-->
+
+                        <TextBlock Grid.Row="1" Text="Book Price" FontWeight="Light"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" TextWrapping="WrapWholeWords" HorizontalAlignment="Left">
+                                    <Run Text="{Binding Price}" FontWeight="Bold" Foreground="CadetBlue"/>
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="2" Text="Quantity" FontWeight="Light"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Number}"
+                                       FontWeight="Bold" Foreground="CadetBlue"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+            <ListView.Resources>
+
+            </ListView.Resources>
+
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                           MaximumRowsOrColumns="5"
+                           Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
     </Grid>
 </Page>

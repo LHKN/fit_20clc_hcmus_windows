@@ -14,6 +14,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Windows.Services.Store;
 using static System.Reflection.Metadata.BlobBuilder;
@@ -39,6 +40,7 @@ namespace MyShop.ViewModel
         private IAccountRepository _accountRepository;
 
         private Bill _selectedBill;
+        private List<BillDetail> _selectedBillDetailList;
 
         // Constructor
         public OrderHistoryViewModel() {
@@ -108,9 +110,7 @@ namespace MyShop.ViewModel
 
             if (confirmed == true)
             {
-                // remove from BILL
                 int key = SelectedBill.Id;
-                await _billRepository.Remove(key);
 
                 // remove from DETAILTED_BILL
                 List<BillDetail> billDetail;
@@ -120,8 +120,13 @@ namespace MyShop.ViewModel
                     await _billRepository.RemoveBillDetail(key, billDetail[i].BookId);
                 }
 
-                _displayBillList.Remove(SelectedBill);
                 _billDetailDict.Remove(key);
+                DisplayBillList.Remove(SelectedBill);
+
+                BillList.Remove(SelectedBill);
+
+                // remove from BILL
+                await _billRepository.Remove(key);
 
                 await App.MainRoot.ShowDialog("Success", "Order is removed!");
             }
@@ -200,7 +205,16 @@ namespace MyShop.ViewModel
             {
                 if (_selectedBill == value)
                     return;
+                else if (value == null)
+                {
+                    SelectedBillDetailList = null;
+                    return;
+                }
+
                 _selectedBill = value;
+                List<BillDetail> billDetail;
+                _billDetailDict.TryGetValue(value.Id, out billDetail);
+                SelectedBillDetailList = billDetail;
                 OnPropertyChanged(nameof(SelectedBill));
             }
         }
@@ -219,6 +233,7 @@ namespace MyShop.ViewModel
         public int TotalItems { get => _totalItems; set => _totalItems = value; }
         public int TotalPages { get => _totalPages; set => _totalPages = value; }
         public List<Bill> BillList { get => _billList; set => _billList = value; }
+        public List<BillDetail> SelectedBillDetailList { get => _selectedBillDetailList; set => _selectedBillDetailList = value; }
 
         public void ExecuteGoToNextPageCommand()
         {
@@ -255,21 +270,28 @@ namespace MyShop.ViewModel
 
         private async void ExecuteSearchCommand()
         {
-            CurrentPage = 1;
-            _billDetailDict.Clear();
-            var task = await _billRepository.GetAll(DateFrom, DateTo);
-            BillList = task;
-
-
-            for (int i = 0; i < BillList.Count; i++)
+            if (DateFrom <= DateTo)
             {
-                List<BillDetail> temp = await _billRepository.GetBillDetailById(BillList[i].Id);
+                CurrentPage = 1;
+                _billDetailDict.Clear();
+                var task = await _billRepository.GetAll(DateFrom, DateTo);
+                BillList = task;
 
-                _billDetailDict.Add(BillList[i].Id, temp);
+                for (int i = 0; i < BillList.Count; i++)
+                {
+                    List<BillDetail> temp = await _billRepository.GetBillDetailById(BillList[i].Id);
+
+                    _billDetailDict.Add(BillList[i].Id, temp);
+                }
+
+                UpdateDataSource();
+                TotalItems = BillList.Count;
+                UpdatePagingInfo();
             }
-            UpdateDataSource();
-            TotalItems = BillList.Count;
-            UpdatePagingInfo();
+            else
+            {
+                await App.MainRoot.ShowDialog("Please select correct dates", "Start date must be earlier or equal to end date!");
+            }
         }
     }
 }

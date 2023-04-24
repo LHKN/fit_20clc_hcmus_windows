@@ -102,9 +102,15 @@ namespace MyShop.ViewModel
             }
         }
 
-        public void ExecuteDeleteCommand()
+        public async void ExecuteDeleteCommand()
         {
             // - totalprice
+            if (SelectedBillDetail == null)
+            {
+                await App.MainRoot.ShowDialog("No selected bill detail", "Please select the bill detail you would like to delete!");
+                return;
+            }
+
             NewBill.TotalPrice -= SelectedBillDetail.TotalPrice();
 
             BillDetailList.Remove(SelectedBillDetail);
