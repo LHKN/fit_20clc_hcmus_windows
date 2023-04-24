@@ -25,6 +25,7 @@ namespace MyShop.ViewModel
     {
         public ObservableCollection<Tuple<int, DateTime>> ListOfWeeks { get; private set; }
 
+
         private IStatisticRepository _statisticRepository;
 
         public PlotModel WeeklyRevenueModel { get; private set; }
@@ -89,7 +90,6 @@ namespace MyShop.ViewModel
                 series.DataLabelsFormatter = p => $"{p.StackedValue.Share:P2}";
             });
 
-            
 
 
 
