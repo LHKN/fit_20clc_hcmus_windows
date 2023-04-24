@@ -84,13 +84,15 @@
                 <Fluent:RibbonGroupBox Header="Colors">
                     <Fluent:Button Header="Primary" Fluent:RibbonProperties.SizeDefinition="Middle"/>
                     <Fluent:Button Header="Secondary" Fluent:RibbonProperties.SizeDefinition="Middle"/>
-                    <Fluent:Button Header="Red" Fluent:RibbonProperties.SizeDefinition="Small" Background="Red"/>
-                    <Fluent:Button Header="Orange" Fluent:RibbonProperties.SizeDefinition="Small" Background="Orange"/>
-                    <Fluent:Button Header="Yellow" Fluent:RibbonProperties.SizeDefinition="Small" Background="Yellow"/>
-                    <Fluent:Button Header="Green" Fluent:RibbonProperties.SizeDefinition="Small" Background="Green"/>
-                    <Fluent:Button Header="Blue" Fluent:RibbonProperties.SizeDefinition="Small" Background="Blue"/>
-                    <Fluent:Button Header="Indigo" Fluent:RibbonProperties.SizeDefinition="Small" Background="Indigo"/>
-                    <Fluent:Button Header="Violet" Fluent:RibbonProperties.SizeDefinition="Small" Background="Violet"/>
+                    <Fluent:Button Name="redColor" Header="Red" Fluent:RibbonProperties.SizeDefinition="Small" Background="Red" Click="redColor_Click"/>
+                    <Fluent:Button Name="whiteColor" Header="White" Fluent:RibbonProperties.SizeDefinition="Small" Background="FloralWhite" Click="whiteColor_Click"/>
+                    <Fluent:Button Name="blackColor" Header="Black" Fluent:RibbonProperties.SizeDefinition="Small" Background="Black" Click="blackColor_Click"/>
+                    <Fluent:Button Name="orangeColor" Header="Orange" Fluent:RibbonProperties.SizeDefinition="Small" Background="Orange" Click="orangeColor_Click"/>
+                    <Fluent:Button Name="yellowColor" Header="Yellow" Fluent:RibbonProperties.SizeDefinition="Small" Background="Yellow" Click="yellowColor_Click"/>
+                    <Fluent:Button Name="greenColor" Header="Green" Fluent:RibbonProperties.SizeDefinition="Small" Background="Green" Click="greenColor_Click"/>
+                    <Fluent:Button Name="blueColor" Header="Blue" Fluent:RibbonProperties.SizeDefinition="Small" Background="Blue" Click="blueColor_Click"/>
+                    <Fluent:Button Name="indigoColor" Header="Indigo" Fluent:RibbonProperties.SizeDefinition="Small" Background="Indigo" Click="indigoColor_Click"/>
+                    <Fluent:Button Name="violetColor" Header="Violet" Fluent:RibbonProperties.SizeDefinition="Small" Background="Violet" Click="violetColor_Click"/>
                     
                 </Fluent:RibbonGroupBox>
                 
