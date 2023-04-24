@@ -8,15 +8,12 @@
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:viewmodel="using:MyShop.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:OrderHistoryViewModel}"
-    xmlns:services="using:MyShop.Services"
-    
+    xmlns:viewmodel="using:MyShop.ViewModel" 
+    d:DataContext="{d:DesignInstance Type=viewmodel:OrderHistoryViewModel}"
+    xmlns:services="using:MyShop.Services" 
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <!--<Page.DataContext>
-        <viewmodel:OrderHistoryViewModel x:Name="thisViewModel"/>
-    </Page.DataContext>-->
     <Page.Resources>
         <services:TimeConverter x:Key="timeConverter"/>
     </Page.Resources>
@@ -58,7 +55,6 @@
                   ItemsSource="{Binding DisplayBillList, Mode=TwoWay}"
                   SelectedItem="{Binding SelectedBill, Mode=TwoWay}">
 
-                  <!--SelectedIndex="{x:Bind thisViewModel.SelectedBillIndex}"-->
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Width="200" Height="100">
