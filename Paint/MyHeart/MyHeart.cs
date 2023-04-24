@@ -14,8 +14,8 @@ namespace MyHeart
         public Point Start { get; set; }
         public Point End { get; set; }
         public string Name => "Heart";
-        public Color ShapeColor { get; set; } = Colors.Transparent;
-        public int Thickness { get; set; } = -1;
+        public Color ShapeColor = Colors.Transparent;
+        public int Thickness = -1;
 
         public object Clone()
         {
@@ -37,8 +37,8 @@ namespace MyHeart
             // Create a Path object to represent the heart shape
             var path = new Path()
             {
-                Stroke = new SolidColorBrush(color),
-                StrokeThickness = thickness,
+                Stroke = new SolidColorBrush(ShapeColor),
+                StrokeThickness = Thickness,
             };
 
             var geometry = new PathGeometry();
