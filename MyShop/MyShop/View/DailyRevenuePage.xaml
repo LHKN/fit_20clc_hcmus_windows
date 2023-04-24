@@ -8,9 +8,10 @@
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:oxy="using:OxyPlot" xmlns:viewmodel="using:MyShop.ViewModel" 
+    xmlns:viewmodel="using:MyShop.ViewModel" 
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DataContext="{d:DesignInstance Type=viewmodel:DailyRevenueViewModel}"
@@ -53,9 +54,17 @@
 
         </StackPanel>
 
-        <oxy:PlotView Model="{x:Bind RevenueViewModel.DailyRevenueModel}" Grid.Column="1" HorizontalContentAlignment="Center"
-                     >
-        </oxy:PlotView>
+        <!--<oxy:PlotView Model="{x:Bind RevenueViewModel.DailyRevenueModel}" Grid.Column="1" HorizontalContentAlignment="Center"/>-->
+
+        <lvc:CartesianChart Grid.Column="1"
+            Series="{Binding DailyRevenueSeries}"
+            ZoomMode="X"
+
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}">
+
+        </lvc:CartesianChart>
+
 
     </Grid>
 </Page>
