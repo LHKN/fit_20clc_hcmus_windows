@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using MyShop.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyShop.Repository
 {
-    public class StatisticRepository: RepositoryBase
+    public class StatisticRepository: RepositoryBase, IStatisticRepository
     {
        public async Task<List<Tuple<DateTime, int>>> GetDailyStatistic(DateTime startDate, DateTime endDate)
         {

@@ -13,8 +13,8 @@ namespace RectangleAbility
         public Point End { get; set; }
 
         public string Name => "Rectangle";
-        public Color ShapeColor { get; set; } = Colors.Transparent;
-        public int Thickness { get; set; } = -1;
+        public Color ShapeColor = Colors.Transparent;
+        public int Thickness = -1;
 
         public void UpdateStart(Point p)
         {
@@ -40,8 +40,8 @@ namespace RectangleAbility
             {
                 Width = width,
                 Height = height,
-                Stroke = new SolidColorBrush(color),
-                StrokeThickness = thickness
+                Stroke = new SolidColorBrush(ShapeColor),
+                StrokeThickness = Thickness
             };
 
             Canvas.SetLeft(shape, left);

@@ -98,7 +98,6 @@ namespace Paint
         {
             if (String.IsNullOrEmpty(_selectedType)) { _isDrawing = false; return; }
             
-            
            _isDrawing = true;
             _start = e.GetPosition(actualCanvas);
 
@@ -166,12 +165,57 @@ namespace Paint
 
         private void undoCommand_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void redoCommand_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void redColor_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.Red;
+        }
+
+        private void whiteColor_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.White;
+        }
+
+        private void blackColor_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.Black;
+        }
+
+        private void orangeColor_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.Orange;
+        }
+
+        private void yellowColor_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.Yellow;
+        }
+
+        private void greenColor_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.Green;
+        }
+
+        private void blueColor_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.Blue;
+        }
+
+        private void indigoColor_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.Indigo;
+        }
+
+        private void violetColor_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedColor = Colors.Violet;
         }
     }
 }

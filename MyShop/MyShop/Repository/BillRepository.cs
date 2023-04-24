@@ -391,7 +391,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "delete from BILL where bill_id=@bill_id and book_id=@book_id";
+                string sql = "delete from DETAILED_BILL where bill_id=@bill_id and book_id=@book_id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billId;
                 command.Parameters.Add("@book_id", SqlDbType.Int).Value = bookId;
