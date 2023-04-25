@@ -41,6 +41,7 @@ namespace MyShop.ViewModel
 
         private Bill _selectedBill;
         private List<BillDetail> _selectedBillDetailList;
+        private string _selectedCustomer;
 
         // Constructor
         public OrderHistoryViewModel() {
@@ -215,6 +216,8 @@ namespace MyShop.ViewModel
                 List<BillDetail> billDetail;
                 _billDetailDict.TryGetValue(value.Id, out billDetail);
                 SelectedBillDetailList = billDetail;
+                SelectedCustomer = "Customer: " + getCustomerName(value.CustomerId);
+
                 OnPropertyChanged(nameof(SelectedBill));
             }
         }
@@ -234,6 +237,7 @@ namespace MyShop.ViewModel
         public int TotalPages { get => _totalPages; set => _totalPages = value; }
         public List<Bill> BillList { get => _billList; set => _billList = value; }
         public List<BillDetail> SelectedBillDetailList { get => _selectedBillDetailList; set => _selectedBillDetailList = value; }
+        public string SelectedCustomer { get => _selectedCustomer; set => _selectedCustomer = value; }
 
         public void ExecuteGoToNextPageCommand()
         {
@@ -292,6 +296,13 @@ namespace MyShop.ViewModel
             {
                 await App.MainRoot.ShowDialog("Please select correct dates", "Start date must be earlier or equal to end date!");
             }
+        }
+
+        private string getCustomerName(int id)
+        {
+            var task = _accountRepository.GetById(id);
+
+            return task.Result.Name;
         }
     }
 }
