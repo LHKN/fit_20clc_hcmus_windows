@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace MyShop.Repository
 {
@@ -320,6 +321,32 @@ namespace MyShop.Repository
                 string sql = "delete from GENRE where id = @id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0) { isSuccessful = true; }
+                else { isSuccessful = false; }
+
+                connection.Close();
+            }
+            return isSuccessful;
+        }
+
+        public async Task<bool> EditBookQuantity(int id, int quantity)
+        {
+            bool isSuccessful = false;
+            var connection = GetConnection();
+
+            await Task.Run(() =>
+            {
+                connection.Open();
+            }).ConfigureAwait(false);
+
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                string sql = "update BOOK set quantity=@quantity where id=@id";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                command.Parameters.Add("@quantity", SqlDbType.Int).Value = quantity;
                 int rowsAffected = command.ExecuteNonQuery();
 
                 if (rowsAffected > 0) { isSuccessful = true; }

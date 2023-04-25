@@ -14,9 +14,6 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
-        <services:BookIdToBookNameConverter x:Key="bookNameConverter"/>
-    </Page.Resources>
     <ScrollViewer>
         <Grid VerticalAlignment="Center" Margin="10,10,10,10">
             <Grid.ColumnDefinitions>
@@ -26,7 +23,7 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="40"/>
@@ -45,8 +42,9 @@
             <!--Display but not editable-->
             <TextBlock Grid.Row="1" Text="Total Price" VerticalAlignment="Center" FontWeight="Bold"/>
             <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
-                <TextBlock Text="{Binding CurrentBill.TotalPrice}"/>
-                <TextBlock Text=" VND"/>
+                <TextBlock VerticalAlignment="Center" Text="{Binding CurrentTotalPrice, Mode=TwoWay}"/>
+                <TextBlock VerticalAlignment="Center" Text=" VND"/>
+                <AppBarButton Icon="Refresh" Label="Refresh" Command="{Binding RefreshCommand}"/>
             </StackPanel>
             
             <TextBlock Grid.Row="2" Text="Transaction Date" VerticalAlignment="Center" FontWeight="Bold"/>
@@ -55,14 +53,14 @@
             <TextBlock Grid.Row="4" Text="Bill Details" FontWeight="Bold" VerticalAlignment="Center"/>
             <ListView Grid.Row="5" Grid.ColumnSpan="2" 
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                  Width="200" Height="400"
+                  Width="400" Height="400"
                   HorizontalAlignment="Left"
                   ItemsSource="{Binding BillDetailList, Mode=TwoWay}"
                   SelectedItem="{Binding SelectedBillDetail, Mode=TwoWay}">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Width="200" Height="100" VerticalAlignment="Center">
+                        <Grid Width="400" Height="100" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -75,13 +73,10 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Book ID" FontWeight="Light"/>
+                            <TextBlock Text="Book" FontWeight="Light"/>
                             <TextBlock Grid.Column="1" TextWrapping="WrapWholeWords">
-                                <Run Text="{Binding BookId}" FontWeight="Bold" Foreground="CadetBlue"/>
-                                <!--Book: <Run Text="{Binding BookId, Converter={StaticResource bookNameConverter}}" FontWeight="Bold" Foreground="CadetBlue"/>-->
+                                <Run Text="{Binding BookName}" FontWeight="Bold" Foreground="CadetBlue"/>
                             </TextBlock>
-
-                            <!--<TextBlock Grid.Column="1" Text="{Binding BookId, Converter={StaticResource bookNameConverter}}" FontWeight="Bold" Foreground="CadetBlue"/>-->
 
                             <TextBlock Grid.Row="1" Text="Book Price" FontWeight="Light"/>
                             <TextBlock Grid.Row="1" Grid.Column="1" TextWrapping="WrapWholeWords" HorizontalAlignment="Left">
@@ -89,7 +84,7 @@
                             </TextBlock>
 
                             <TextBlock Grid.Row="2" Text="Quantity" FontWeight="Light"/>
-                            <NumberBox Grid.Row="2" Grid.Column="1" Minimum="1" Text="{Binding Number, Mode=TwoWay}"
+                            <NumberBox Grid.Row="2" Grid.Column="1" Minimum="1" Maximum="{Binding BookQuantity}" Text="{Binding Number, Mode=TwoWay}"
                                        FontWeight="Bold" Foreground="CadetBlue"
                                        ValidationMode="InvalidInputOverwritten"/>
                         </Grid>
@@ -112,15 +107,15 @@
             </ListView>
 
             <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" >
-                <AppBarButton Icon="Add" Label="Add Detail" Command="{Binding AddCommand}"/>
-                <AppBarButton Icon="Delete" Label="Delete Detail" Command="{Binding DeleteCommand}"/>
-
                 <!--Choose book before adding-->
                 <TextBlock Text="Select Book " FontSize="13" VerticalAlignment="Center"/>
                 <ComboBox VerticalAlignment="Center" 
                                       ItemsSource="{Binding Books}"
                                       DisplayMemberPath="Title"
                                       SelectedValue="{Binding SelectedBook, Mode=TwoWay}"/>
+                
+                <AppBarButton Icon="Add" Label="Add Detail" Command="{Binding AddCommand}"/>
+                <AppBarButton Icon="Delete" Label="Delete Detail" Command="{Binding DeleteCommand}"/>
             </StackPanel>
             
             <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">

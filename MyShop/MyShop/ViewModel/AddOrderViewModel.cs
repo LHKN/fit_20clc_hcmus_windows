@@ -24,7 +24,7 @@ namespace MyShop.ViewModel
         private Account _selectedCustomer;
         private BillDetail _selectedBillDetail;
 
-        // test
+        private int _currentTotalPrice;
         private Book _selectedBook;
         private ObservableCollection<int> _selectedBookIds;
 
@@ -34,12 +34,12 @@ namespace MyShop.ViewModel
         //public RelayCommand BrowseCommand { get => _browseCommand; set => _browseCommand = value; }
         public RelayCommand AddCommand { get => _addCommand; set => _addCommand = value; }
         public RelayCommand DeleteCommand { get => _deleteCommand; set => _deleteCommand = value; }
+        public RelayCommand RefreshCommand { get => _refreshCommand; set => _refreshCommand = value; }
 
         public Bill NewBill { get => _newBill; set => _newBill = value; }
         public ObservableCollection<Book> Books { get => _books; set => _books = value; }
         public ObservableCollection<BillDetail> BillDetailList { get => _billDetailList; set => _billDetailList = value; }
         public ObservableCollection<Account> Customers { get => _customers; set => _customers = value; }
-        //public ObservableCollection<Book> SelectedBooks { get => _selectedBooks; set => _selectedBooks = value; }
         public Account SelectedCustomer { get => _selectedCustomer; set => _selectedCustomer = value; }
         public BillDetail SelectedBillDetail { get => _selectedBillDetail; set => _selectedBillDetail = value; }
         public Book SelectedBook 
@@ -51,6 +51,7 @@ namespace MyShop.ViewModel
                 OnPropertyChanged(nameof(SelectedBook));
             }
         }
+        public int CurrentTotalPrice { get => _currentTotalPrice; set => _currentTotalPrice = value; }
 
         //-> Commands
         private RelayCommand _backCommand;
@@ -59,6 +60,7 @@ namespace MyShop.ViewModel
         
         private RelayCommand _addCommand;
         private RelayCommand _deleteCommand;
+        private RelayCommand _refreshCommand;  
 
         public async void PageLoaded()
         {
@@ -92,11 +94,14 @@ namespace MyShop.ViewModel
                 {
                     BookId = SelectedBook.Id,
                     BillId = NewBill.Id,
+                    BookName = SelectedBook.Title,
+                    BookQuantity = SelectedBook.Quantity,
                     Number = 1,
                     Price = SelectedBook.Price,
                 };
 
-                NewBill.TotalPrice += newBillDetail.TotalPrice();
+                ExecuteRefreshCommand();
+                CurrentTotalPrice += newBillDetail.TotalPrice();
 
                 BillDetailList.Add(newBillDetail);
             }
@@ -111,9 +116,21 @@ namespace MyShop.ViewModel
                 return;
             }
 
-            NewBill.TotalPrice -= SelectedBillDetail.TotalPrice();
+            ExecuteRefreshCommand();
+            CurrentTotalPrice -= SelectedBillDetail.TotalPrice();
 
             BillDetailList.Remove(SelectedBillDetail);
+        }
+
+        public void ExecuteRefreshCommand()
+        {
+            CurrentTotalPrice = 0;
+
+            for (int i = 0; i < _billDetailList.Count; i++)
+            {
+                CurrentTotalPrice += _billDetailList[i].TotalPrice();
+            }
+
         }
 
         public async void ExecuteConfirmCommand()
@@ -124,17 +141,18 @@ namespace MyShop.ViewModel
                 return;
             }
 
-            // TODO: add bill values (update total price in real-time?)
-
+            // add bill values + update total price in real-time + update quantity
             NewBill.CustomerId = SelectedCustomer.Id;
-            NewBill.TotalPrice = 0;
+            ExecuteRefreshCommand();
 
-            // TODO: add bill details
+            NewBill.TotalPrice = CurrentTotalPrice;
 
+            // add bill details
             for (int i = 0; i<_billDetailList.Count; i++)
             {
-                NewBill.TotalPrice += _billDetailList[i].TotalPrice();
                 await _billRepository.AddBillDetail(_billDetailList[i]);
+
+                await _bookRepository.EditBookQuantity(_billDetailList[i].BookId, _billDetailList[i].BookQuantity - _billDetailList[i].Number);
             }
 
             await _billRepository.Edit(NewBill);
@@ -172,6 +190,7 @@ namespace MyShop.ViewModel
 
             BillDetailList = new ObservableCollection<BillDetail>();
             _selectedBookIds = new ObservableCollection<int>();
+            CurrentTotalPrice = 0;
 
             PageLoaded();
 
@@ -181,6 +200,7 @@ namespace MyShop.ViewModel
             
             AddCommand = new RelayCommand(ExecuteAddCommand);
             DeleteCommand = new RelayCommand(ExecuteDeleteCommand);
+            RefreshCommand = new RelayCommand(ExecuteRefreshCommand);
         }
 
     }

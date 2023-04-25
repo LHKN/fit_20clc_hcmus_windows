@@ -9,30 +9,77 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:viewmodel="using:MyShop.ViewModel" 
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    d:DataContext="{d:DesignInstance Type=viewmodel:WeeklyRevenueViewModel}"
+    >
+
+    <Page.DataContext>
+        <viewmodel:WeeklyRevenueViewModel x:Name="RevenueViewModel"/>
+    </Page.DataContext>
+
+    <i:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:EventTriggerBehavior.Actions>
+                <core:InvokeCommandAction Command="{Binding Load_page}" />
+            </core:EventTriggerBehavior.Actions>
+        </core:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <Grid>
-        <StackPanel Padding="20" Orientation="Vertical">
-            <TextBlock Text="Start week" Padding="0,10,0,0"/>
-            <DropDownButton Content="Pick a week">
-                <DropDownButton.Flyout>
-                    <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem Text="Send"/>
-                        <MenuFlyoutItem Text="Reply"/>
-                        <MenuFlyoutItem Text="Reply All"/>
-                    </MenuFlyout>
-                </DropDownButton.Flyout>
-            </DropDownButton>
-            <TextBlock Text="End week" Padding="0,20,0,0"/>
-            <DropDownButton Content="Pick a week">
-                <DropDownButton.Flyout>
-                    <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem Text="Send"/>
-                        <MenuFlyoutItem Text="Reply"/>
-                        <MenuFlyoutItem Text="Reply All"/>
-                    </MenuFlyout>
-                </DropDownButton.Flyout>
-            </DropDownButton>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel Padding="20" Orientation="Vertical" Grid.Column="0">
+            <TextBlock Text="Start week: week - start date" Padding="0,10,0,0"/>
+            <ComboBox x:Name="Start_Week" Text="Pick the start week" ItemsSource="{Binding ListOfWeeks, Mode=OneWay}" SelectedIndex="{Binding SelectedIndex_StartDate, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Item1, Mode=OneWay}"/>
+                            <TextBlock Text=" - "/>
+                            <TextBlock Text="{Binding Item2, Mode=OneWay}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="SelectionChanged">
+                        <core:EventTriggerBehavior.Actions>
+                            <core:InvokeCommandAction Command="{Binding OnSelectionChangedOfStartDate}" />
+                        </core:EventTriggerBehavior.Actions>
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </ComboBox>
+
+
+            <TextBlock Text="End week: Week - start date" Padding="0,10,0,0"/>
+            <ComboBox x:Name="End_Week" Text="Pick the start week" ItemsSource="{Binding ListOfWeeks, Mode=OneWay}" SelectedIndex="{Binding SelectedIndex_EndDate, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Item1, Mode=OneWay}"/>
+                            <TextBlock Text=" - "/>
+                            <TextBlock Text="{Binding Item2, Mode=OneWay}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="SelectionChanged">
+                        <core:EventTriggerBehavior.Actions>
+                            <core:InvokeCommandAction Command="{Binding OnSelectionChangedOfEndDate}" />
+                        </core:EventTriggerBehavior.Actions>
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </ComboBox>
         </StackPanel>
+
+
     </Grid>
 </Page>

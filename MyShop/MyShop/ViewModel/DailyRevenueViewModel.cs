@@ -1,10 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using MyShop.Repository;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -17,6 +16,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Windows.Foundation;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
+using LiveChartsCore.Defaults;
+using System.Collections.ObjectModel;
+using OxyPlot.Series;
+using Windows.Services.TargetedContent;
+using System.Globalization;
+using MyShop.Model;
 
 namespace MyShop.ViewModel
 {
@@ -25,12 +34,12 @@ namespace MyShop.ViewModel
 
         public DateTimeOffset StartDate { get; set; }
 
-
+      
         public DateTimeOffset EndDate { get; set; }
 
         public ICommand DateChangeCommand { get; set; }
 
-        private StatisticRepository _statisticRepository;
+        private IStatisticRepository _statisticRepository;
 
         /* public PlotModel DailyRevenueModel= new PlotModel
          {
@@ -61,21 +70,74 @@ namespace MyShop.ViewModel
              }
 
          };*/
-        public PlotModel DailyRevenueModel { get; set; }
+        //public PlotModel DailyRevenueModel { get; set; }
+
+        public List<ISeries> DailyRevenueSeries { get; set; } /*=
+        {
+            new LineSeries<double>
+            {
+                Values = new double[] { 2, 1, 3, 5, 3, 4, 6 },
+                Fill = null
+            }
+        };*/
+
+        public Axis[] XAxes { get; set; } =
+        {
+            new Axis
+            {
+                Name = "",
+                // Use the labels property for named or static labels 
+               Labels = null
+            }
+        };
+
+        public Axis[] YAxes { get; set; } =
+        {
+        new Axis
+        {
+            Name = "Revenue (VND)",
+            NamePadding = new LiveChartsCore.Drawing.Padding(0, 15),
+
+            LabelsPaint = new SolidColorPaint
+            {
+                Color = SKColors.Blue,
+                FontFamily = "Times New Roman",
+                SKFontStyle = new SKFontStyle(SKFontStyleWeight.ExtraBold, SKFontStyleWidth.Normal, SKFontStyleSlant.Italic)
+            },
+
+            // Use the Labeler property to give format to the axis values 
+            // Now the Y axis we will display it as currency
+            // LiveCharts provides some common formatters
+            // in this case we are using the currency formatter.
+            Labeler = (value) => value.ToString("C", CultureInfo.GetCultureInfo("vi-VN"))
+
+            // you could also build your own currency formatter
+            // for example:
+            // Labeler = (value) => value.ToString("C")
+
+            // But the one that LiveCharts provides creates shorter labels when
+            // the amount is in millions or trillions
+        }
+    };
 
         public DailyRevenueViewModel()
         {
-            DailyRevenueModel = new PlotModel
-            {
+            DailyRevenueSeries = new List<ISeries>();
 
-                Title = "Daily Revenue",
-                PlotAreaBorderColor = OxyColors.Transparent,
-                Axes =
+            DailyRevenueSeries.Add(new LineSeries<Tuple<DateTime, int>>
+            {
+                Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 2 },
+                Values = new List<Tuple<DateTime, int>>() { new Tuple<DateTime, int>(DateTime.Now, 1), new Tuple<DateTime, int>(DateTime.Now, 1), new Tuple<DateTime, int>(DateTime.Now, 1), new Tuple<DateTime, int>(DateTime.Now, 1), new Tuple<DateTime, int>(DateTime.Now, 1) },
+                
+                GeometryStroke = null,
+                GeometryFill = null,
+                Mapping = (taskItem, point) =>
                 {
-                    new LinearAxis { Position = AxisPosition.Bottom, Title = "Date",},
-                    new LinearAxis { Position = AxisPosition.Left, Title = "Revenue" },
+                    point.PrimaryValue = (int)taskItem.Item2;
+                    point.SecondaryValue = point.Context.Index;
                 },
-            };
+                TooltipLabelFormatter = point => $"{point.Model.Item1.ToShortDateString()} revenue: {point.PrimaryValue.ToString("C", CultureInfo.GetCultureInfo("vi-VN"))}"
+        }) ;
             StartDate = DateTimeOffset.Now;
             EndDate = DateTimeOffset.Now;
             _statisticRepository = new StatisticRepository();
@@ -85,26 +147,27 @@ namespace MyShop.ViewModel
         private async void DisplayChart()
         {
             var task = await _statisticRepository.GetDailyStatistic(StartDate.Date, EndDate.Date);
-            var series = new LineSeries()
+
+            var series = new LineSeries<Tuple<DateTime, int>>();
+/*            List<int> revenue = new List<int>();
+            task.ForEach(taskItem =>
             {
-                MarkerType = MarkerType.Circle,
+                revenue.Add(taskItem.Item2);
+            });*/
 
-            };
-
-
-            for (int i = 0; i < task.Count; i++)
+            series = (LineSeries<Tuple<DateTime, int>>)DailyRevenueSeries.ElementAt(0);
+            series.Values = task;
+/*            series.Mapping = (taskItem, point) =>
             {
-                series.Points.Add(new DataPoint(i + 1, task[i].Item2));
-            }
+                point.PrimaryValue = (int)taskItem.Item2;
+                //point.SecondaryValue = point.Context.Index;
+            };*/
+            /*series.TooltipLabelFormatter = point => $"{point.Model.Item1} revenue: {point.PrimaryValue:N2}M";*/
 
-            DailyRevenueModel.Series.Clear();
-            DailyRevenueModel.Series.Add(series);
-            /* LineSeries series = fromTupleToSeries(task);
-             DailyRevenueModel.Series.Add(series);*/
-            /* DailyRevenueModel.Axes.Clear();
-             DailyRevenueModel.Axes.Add(new LinearAxis { Maximum = 50000, Position = AxisPosition.Bottom, Title= "Date" });
-             DailyRevenueModel.Axes.Add(new LinearAxis {Position = AxisPosition.Left, Title= "Revenue" });*/
-            DailyRevenueModel.InvalidatePlot(true);
+            DailyRevenueSeries.Clear();
+            DailyRevenueSeries.Add(series);
+
+            XAxes[0].Name = $"Revenue from {StartDate.Date.ToShortDateString()} to {EndDate.Date.ToShortDateString()}";
 
         }
 
@@ -116,7 +179,7 @@ namespace MyShop.ViewModel
             }
         }
 
-        private LineSeries fromTupleToSeries(List<Tuple<DateTime, int>> tuples)
+        /*private LineSeries fromTupleToSeries(List<Tuple<DateTime, int>> tuples)
         {
             if (tuples == null)
             {
@@ -136,8 +199,9 @@ namespace MyShop.ViewModel
             }
 
             return series;
-        }
+        }*/
 
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }
 
