@@ -32,29 +32,99 @@
             </Fluent:Ribbon.Menu>
             <Fluent:RibbonTabItem Header="Master">
                 <Fluent:RibbonGroupBox Header="Clipboard">
-                    <Fluent:Button Header="Cut" Icon="Assets/scissors.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                    <Fluent:Button Header="Copy" Icon="Assets/copy.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                    <Fluent:Button Header="Paste" Icon="Assets/paste.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <Fluent:Button Header="Cut">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/scissors.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Copy">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/copy.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Paste">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/paste.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Image">
-                    <Fluent:SplitButton Header="Select" Icon="Assets/selection.png" RenderOptions.BitmapScalingMode="HighQuality"/> <!--select a single element for editing again-->
-                    <Fluent:Button Header="Add" Icon="Assets/image.png" RenderOptions.BitmapScalingMode="HighQuality" Fluent:RibbonProperties.SizeDefinition="Middle"/> <!--new picture to canvas-->
-                    <Fluent:SplitButton Header="Flip" Icon="Assets/flip.png" RenderOptions.BitmapScalingMode="HighQuality" Fluent:RibbonProperties.SizeDefinition="Middle"/> <!--horizonal/vertical-->
-                    <Fluent:SplitButton Header="Rotate" Icon="Assets/rotate.png" RenderOptions.BitmapScalingMode="HighQuality" Fluent:RibbonProperties.SizeDefinition="Middle"/> <!--90 degree to the right/left & 180 degree-->
-                    <Fluent:Button Header="Crop" Icon="Assets/crop.png" RenderOptions.BitmapScalingMode="HighQuality" Fluent:RibbonProperties.SizeDefinition="Middle"/> <!--crop the selected area-->
-                    <Fluent:Button Header="Resize" Icon="Assets/resize.png" RenderOptions.BitmapScalingMode="HighQuality" Fluent:RibbonProperties.SizeDefinition="Middle"/> <!--resize selection/whole page-->
+                    <Fluent:SplitButton Header="Select">
+                        <Fluent:SplitButton.Icon>
+                            <Image Source="Assets/selection.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:SplitButton.Icon>
+                    </Fluent:SplitButton>
+                    <!--select a single element for editing again-->
+                    <Fluent:Button Header="Add" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/image.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <!--new picture to canvas-->
+                    <Fluent:SplitButton Header="Flip" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:SplitButton.Icon>
+                            <Image Source="Assets/image.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:SplitButton.Icon>
+                    </Fluent:SplitButton>
+                    <!--horizonal/vertical-->
+                    <Fluent:SplitButton Header="Rotate" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:SplitButton.Icon>
+                            <Image Source="Assets/rotate.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:SplitButton.Icon>
+                    </Fluent:SplitButton>
+                    <!--90 degree to the right/left & 180 degree-->
+                    <Fluent:Button Header="Crop" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/crop.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <!--crop the selected area-->
+                    <Fluent:Button Header="Resize" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/resize.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <!--resize selection/whole page-->
                     
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Tools">
-                    <Fluent:Button Header="Pencil" Icon="Assets/pencil.png" RenderOptions.BitmapScalingMode="HighQuality" Fluent:RibbonProperties.SizeDefinition="Middle"/>
-                    <Fluent:Button Header="Fill" Icon="Assets/bucket.png" RenderOptions.BitmapScalingMode="HighQuality" Fluent:RibbonProperties.SizeDefinition="Middle"/>
-                    <Fluent:Button Header="Text" Icon="Assets/text.png" RenderOptions.BitmapScalingMode="HighQuality" Fluent:RibbonProperties.SizeDefinition="Middle"/>
-                    <Fluent:Button Header="Eraser" Icon="Assets/eraser.png" RenderOptions.BitmapScalingMode="HighQuality" Fluent:RibbonProperties.SizeDefinition="Middle"/>
-                    <Fluent:Button Header="Color picker" Icon="Assets/color-picker.png" RenderOptions.BitmapScalingMode="HighQuality" Fluent:RibbonProperties.SizeDefinition="Middle"/>
+                    <Fluent:Button Header="Pencil" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/pencil.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Fill" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/bucket.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Text" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/text.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Eraser" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/eraser.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Color picker" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/color-picker.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Stroke"> <!--dash, dot, dash dot dot-->
-                    <Fluent:Button Header="Dash" Icon="Assets/dash-line.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                    <Fluent:Button Header="Dot" Icon="Assets/dotted-line.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <Fluent:Button Header="Dash">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/dash-line.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Dot">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/dotted-line.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Size"> <!--pen width-->
                     <Fluent:SplitButton Header="Thickness">
@@ -71,20 +141,31 @@
                                          Click="brushSize_ExtraThick_Click"/>
                     </Fluent:SplitButton>
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Shapes" Name="shapesAbility">
+                <Fluent:RibbonGroupBox Header="Shapes">
+                    <UniformGrid Name="shapeAbilityGrid" Columns="4">
+                        
+                    </UniformGrid>
                         <!--add when loaded-->
                     
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Commands">
-                    <Fluent:Button Header="Undo" Name="undoCommand" Icon="Assets/undo.png" RenderOptions.BitmapScalingMode="HighQuality"
-                                   Click="undoCommand_Click"/>
-                    <Fluent:Button Header="Redo" Name="redoCommand" Icon="Assets/redo.png" RenderOptions.BitmapScalingMode="HighQuality"
-                                   Click="redoCommand_Click"/>
+                    <Fluent:Button Header="Undo" Name="undoCommand"
+                                   Click="undoCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/undo.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Redo" Name="redoCommand"
+                                   Click="redoCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/redo.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Colors">
-                    <Fluent:Button Header="Primary" Fluent:RibbonProperties.SizeDefinition="Middle"/>
-                    <Fluent:Button Header="Secondary" Fluent:RibbonProperties.SizeDefinition="Middle"/>
-                    <Fluent:Button Name="redColor" Header="Red" Fluent:RibbonProperties.SizeDefinition="Small" Background="Red" Click="redColor_Click"/>
+                    <Fluent:Button Name="primaryColor" Header="PColor" Fluent:RibbonProperties.SizeDefinition="Large" Background="Black"/>
+                    <Fluent:Button Name="secondaryColor" Header="SColor" Fluent:RibbonProperties.SizeDefinition="Large" Background="FloralWhite"/>
+                    <Fluent:Button Name="redColor" Header="Red" Fluent:RibbonProperties.SizeDefinition="Small" Background="Red" Click="redColor_Click" />
                     <Fluent:Button Name="whiteColor" Header="White" Fluent:RibbonProperties.SizeDefinition="Small" Background="FloralWhite" Click="whiteColor_Click"/>
                     <Fluent:Button Name="blackColor" Header="Black" Fluent:RibbonProperties.SizeDefinition="Small" Background="Black" Click="blackColor_Click"/>
                     <Fluent:Button Name="orangeColor" Header="Orange" Fluent:RibbonProperties.SizeDefinition="Small" Background="Orange" Click="orangeColor_Click"/>
