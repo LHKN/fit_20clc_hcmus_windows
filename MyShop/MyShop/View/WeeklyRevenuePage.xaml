@@ -11,7 +11,7 @@
     mc:Ignorable="d"
     xmlns:viewmodel="using:MyShop.ViewModel" 
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:i="using:Microsoft.Xaml.Interactivity" xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DataContext="{d:DesignInstance Type=viewmodel:WeeklyRevenueViewModel}"
     >
@@ -80,6 +80,14 @@
             </ComboBox>
         </StackPanel>
 
+        <lvc:CartesianChart Grid.Column="1"
+            Series="{Binding WeeklyRevenueSeries}"
+            ZoomMode="X"
+
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}">
+
+        </lvc:CartesianChart>
 
     </Grid>
 </Page>

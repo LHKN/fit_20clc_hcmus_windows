@@ -72,20 +72,13 @@ namespace MyShop.ViewModel
          };*/
         //public PlotModel DailyRevenueModel { get; set; }
 
-        public List<ISeries> DailyRevenueSeries { get; set; } /*=
-        {
-            new LineSeries<double>
-            {
-                Values = new double[] { 2, 1, 3, 5, 3, 4, 6 },
-                Fill = null
-            }
-        };*/
+        public List<ISeries> DailyRevenueSeries { get; set; }
 
         public Axis[] XAxes { get; set; } =
         {
             new Axis
             {
-                Name = "",
+                Name = "Date",
                 // Use the labels property for named or static labels 
                Labels = null
             }
@@ -169,6 +162,7 @@ namespace MyShop.ViewModel
 
             XAxes[0].Name = $"Revenue from {StartDate.Date.ToShortDateString()} to {EndDate.Date.ToShortDateString()}";
 
+            XAxes[0].Labels = null;
         }
 
         private void OnDateChange(CalendarDatePickerDateChangedEventArgs args)

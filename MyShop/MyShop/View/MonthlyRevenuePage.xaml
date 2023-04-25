@@ -7,7 +7,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:i="using:Microsoft.Xaml.Interactivity" xmlns:core="using:Microsoft.Xaml.Interactions.Core" xmlns:viewmodel="using:MyShop.ViewModel" xmlns:oxy="using:OxyPlot"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:i="using:Microsoft.Xaml.Interactivity" xmlns:core="using:Microsoft.Xaml.Interactions.Core" xmlns:viewmodel="using:MyShop.ViewModel" xmlns:oxy="using:OxyPlot" xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DataContext="{d:DesignInstance Type=viewmodel:MonthlyRevenueViewModel}">
@@ -48,7 +48,14 @@
             </DatePicker>
         </StackPanel>
 
-        <oxy:PlotView Model="{x:Bind RevenueViewModel.MonthlyRevenueModel}" Grid.Column="1" HorizontalContentAlignment="Center"/>
+        <lvc:CartesianChart Grid.Column="1"
+            Series="{Binding MonthlyRevenueSeries}"
+            ZoomMode="X"
+
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}">
+
+        </lvc:CartesianChart>
 
     </Grid>
 </Page>

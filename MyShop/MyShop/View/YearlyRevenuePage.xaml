@@ -9,7 +9,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity" xmlns:core="using:Microsoft.Xaml.Interactions.Core" 
-    xmlns:viewmodel="using:MyShop.ViewModel" xmlns:oxy="using:OxyPlot"
+    xmlns:viewmodel="using:MyShop.ViewModel"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DataContext="{d:DesignInstance Type=viewmodel:YearlyRevenueViewModel}">
@@ -51,7 +52,13 @@
             
         </StackPanel>
 
-        <oxy:PlotView Model="{x:Bind RevenueViewModel.YearlyRevenueModel}" Grid.Column="1" HorizontalContentAlignment="Center"/>
+        <lvc:CartesianChart Grid.Column="1"
+            Series="{Binding YearlyRevenueSeries}"
+            ZoomMode="X"
 
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}">
+        </lvc:CartesianChart>
+        
     </Grid>
 </Page>
