@@ -1,22 +1,13 @@
 ﻿using MyContract;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Paint
 {
@@ -69,12 +60,13 @@ namespace Paint
 
             foreach (var ability in _abilities)
             {
-                var button = new Fluent.Button()
+                var button = new Fluent.ToggleButton()
                 {
                     Header = ability.Value.Name,
                     Content = ability.Value.Name,
                     Tag = ability.Value.Name,
                     Icon = _icons[ability.Value.Name],
+                    GroupName = "Abilities"
                 };
 
                 button.Click += ability_Click;
@@ -86,7 +78,7 @@ namespace Paint
 
         private void ability_Click(object sender, RoutedEventArgs e)
         {
-            var button = (Fluent.Button)sender;
+            var button = (Fluent.ToggleButton)sender;
             string name = (string)button.Tag;
             _selectedType = name;
         }
