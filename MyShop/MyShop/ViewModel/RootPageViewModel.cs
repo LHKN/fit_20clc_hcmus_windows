@@ -11,7 +11,7 @@ namespace MyShop.ViewModel
     {
         public RootPageViewModel()
         {
-            ChildPageNavigation = new PageNavigation(new HomeViewModel());
+            ChildPageNavigation = new PageNavigation(new LoginViewModel());
         }
         public PageNavigation ChildPageNavigation { get; }
     }

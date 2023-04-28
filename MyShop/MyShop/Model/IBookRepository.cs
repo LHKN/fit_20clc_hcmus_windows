@@ -21,5 +21,6 @@ namespace MyShop.Model
         List<Book> Filter(List<Book> booksList, int startPrice = 0, int endPrice = Int32.MaxValue, string keyword = "", int genre = 0);
 
         Task<List<Genre>> GetGenres();
+        Task<bool> EditBookQuantity(int id, int quantity);
     }
 }

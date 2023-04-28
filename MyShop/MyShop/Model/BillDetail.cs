@@ -18,6 +18,9 @@ namespace MyShop.Model
         public int Price { get => _price; set => _price = value; }
         public int Number { get => _number; set => _number = value; }
 
+        public string BookName { get; set; }
+        public int BookQuantity { get; set; }
+
         public int TotalPrice()
         {
             return Price*Number;

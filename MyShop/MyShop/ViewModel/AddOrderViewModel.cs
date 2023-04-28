@@ -94,6 +94,8 @@ namespace MyShop.ViewModel
                 {
                     BookId = SelectedBook.Id,
                     BillId = NewBill.Id,
+                    BookName = SelectedBook.Title,
+                    BookQuantity = SelectedBook.Quantity,
                     Number = 1,
                     Price = SelectedBook.Price,
                 };
@@ -139,7 +141,7 @@ namespace MyShop.ViewModel
                 return;
             }
 
-            // add bill values + update total price in real-time
+            // add bill values + update total price in real-time + update quantity
             NewBill.CustomerId = SelectedCustomer.Id;
             ExecuteRefreshCommand();
 
@@ -149,6 +151,8 @@ namespace MyShop.ViewModel
             for (int i = 0; i<_billDetailList.Count; i++)
             {
                 await _billRepository.AddBillDetail(_billDetailList[i]);
+
+                await _bookRepository.EditBookQuantity(_billDetailList[i].BookId, _billDetailList[i].BookQuantity - _billDetailList[i].Number);
             }
 
             await _billRepository.Edit(NewBill);

@@ -256,8 +256,8 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "select price,number,book_id from DETAILED_BILL " +
-                    "where bill_id=@bill_id";
+                string sql = "select db.price,db.number,db.book_id,b.quantity,b.title from DETAILED_BILL as db join BOOK as b on db.book_id=b.id " +
+                    "where db.bill_id=@bill_id";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@bill_id", SqlDbType.Int).Value = billId;
                 var reader = command.ExecuteReader();
@@ -267,12 +267,17 @@ namespace MyShop.Repository
                     int price = Convert.ToInt32(reader["price"]);
                     int number = Convert.ToInt32(reader["number"]);
 
+                    int quantity = Convert.ToInt32(reader["quantity"]);
+                    string title = Convert.ToString(reader["title"]);
+
                     details.Add(new BillDetail
                     {
                         BillId = billId,
                         BookId = bookId,
                         Price = price,
-                        Number = number
+                        Number = number,
+                        BookQuantity = quantity,
+                        BookName = title
                     });
                 }
                 connection.Close();

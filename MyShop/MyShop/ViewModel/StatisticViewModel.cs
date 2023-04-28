@@ -38,7 +38,7 @@ namespace MyShop.ViewModel
             }
             else if (args.InvokedItem.ToString().Equals("Yearly"))
             {
-                RevenueChildPageNavigation.ViewModel = new YearlyProductViewModel();
+                RevenueChildPageNavigation.ViewModel = new YearlyRevenueViewModel();
             }
 
         }
