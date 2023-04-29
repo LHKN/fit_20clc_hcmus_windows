@@ -48,14 +48,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0-preview2" />
     <PackageReference Include="EPPlus" Version="6.2.2" />
     <PackageReference Include="H.OxyPlot.WinUI" Version="0.9.30" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WinUI" Version="2.0.0-beta.701" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0-preview1.23109.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0-preview.3.23174.8" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230331000" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.25346-preview" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />

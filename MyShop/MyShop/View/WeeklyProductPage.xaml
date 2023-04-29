@@ -14,10 +14,10 @@
     xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    d:DataContext="{d:DesignInstance Type=viewmodel:DailyProductViewModel}">
+    d:DataContext="{d:DesignInstance Type=viewmodel:WeeklyProductViewModel}">
 
     <Page.DataContext>
-        <viewmodel:WeeklyProductViewModel x:Name="RevenueViewModel"/>
+        <viewmodel:WeeklyProductViewModel x:Name="ProductViewModel"/>
     </Page.DataContext>
 
     <i:Interaction.Behaviors>
@@ -30,9 +30,8 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="6*"/>
             <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
 
 
@@ -81,10 +80,11 @@
             </ComboBox>
         </StackPanel>
 
-        <lvc:PieChart Grid.Column="2"
-            Series="{Binding TopBestSellerSeries}"
-            Title="{Binding TopBestSellerTitle}">
-        </lvc:PieChart>
-
+        <lvc:CartesianChart Grid.Column="1"
+            Series="{Binding WeeklyProductSeries}"
+            ZoomMode="X"
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}">
+        </lvc:CartesianChart>
     </Grid>
 </Page>

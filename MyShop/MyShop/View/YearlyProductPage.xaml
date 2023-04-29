@@ -8,15 +8,57 @@
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity" xmlns:core="using:Microsoft.Xaml.Interactions.Core" 
+    xmlns:viewmodel="using:MyShop.ViewModel"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    d:DataContext="{d:DesignInstance Type=viewmodel:YearlyProductViewModel}">
+
+    <Page.DataContext>
+        <viewmodel:YearlyProductViewModel x:Name="ProductViewModel"/>
+    </Page.DataContext>
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="8*"/>
+        </Grid.ColumnDefinitions>
+
+
         <StackPanel Padding="20" Orientation="Vertical">
             <TextBlock Text="From" Padding="0,10,0,0"/>
-            <DatePicker DayFormat="{}{day.integer} {dayofweek.abbreviated}" DayVisible="False" MonthVisible="False" />
+            <DatePicker DayFormat="{}{day.integer} {dayofweek.abbreviated}" DayVisible="False" MonthVisible="False" Date="{Binding StartDate, Mode=TwoWay}">
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="DateChanged">
+                        <core:EventTriggerBehavior.Actions>
+                            <core:InvokeCommandAction Command="{Binding StartDateChangeCommand}" />
+                        </core:EventTriggerBehavior.Actions>
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </DatePicker>
+
+
             <TextBlock Text="To" Padding="0,20,0,0"/>
-            <DatePicker DayFormat="{}{day.integer} {dayofweek.abbreviated}" DayVisible="False"  MonthVisible="False"/>
+            <DatePicker DayFormat="{}{day.integer} {dayofweek.abbreviated}" DayVisible="False"  MonthVisible="False" Date="{Binding EndDate, Mode=TwoWay}">
+                <i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="DateChanged">
+                        <core:EventTriggerBehavior.Actions>
+                            <core:InvokeCommandAction Command="{Binding EndDateChangeCommand}" />
+                        </core:EventTriggerBehavior.Actions>
+                    </core:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </DatePicker>
+
         </StackPanel>
+
+        <lvc:CartesianChart Grid.Column="1"
+            Series="{Binding YearlyProductSeries}"
+            ZoomMode="X"
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}">
+
+        </lvc:CartesianChart>
     </Grid>
 </Page>
+
