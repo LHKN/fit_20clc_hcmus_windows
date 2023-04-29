@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -88,6 +89,7 @@ namespace Paint
         string _selectedType = "";
         Color _selectedColor = Colors.Black;
         int _selectedThickness = 1; //By default
+        DoubleCollection _selectedStroke;
 
         Point _start;
         Point _end;
@@ -100,7 +102,7 @@ namespace Paint
 
             foreach (var shape in _shapes)
             {
-                UIElement oldShape = shape.Draw(_selectedColor, _selectedThickness);
+                UIElement oldShape = shape.Draw(_selectedColor, _selectedThickness, _selectedStroke);
                 actualCanvas.Children.Add(oldShape);
             }
         }
@@ -141,7 +143,7 @@ namespace Paint
                 _end = e.GetPosition(actualCanvas);
                 _prototype?.UpdateEnd(_end);
 
-                UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness);
+                UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke);
                 actualCanvas.Children.Add(newShape);
             }
         }
@@ -260,6 +262,29 @@ namespace Paint
         {
             _selectedColor = Colors.Violet;
             primaryColor.Background = new SolidColorBrush(_selectedColor);
+        }
+
+        private void strokeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = strokeComboBox.SelectedIndex;
+
+            switch (index)
+            {
+                case 0:
+                    _selectedStroke = new DoubleCollection();
+                    break;
+                case 1:
+                    _selectedStroke = new DoubleCollection() { 4, 2, 1, 2, 1, 2 };
+                    break;
+                case 2:
+                    _selectedStroke = new DoubleCollection() { 1, 2 };
+                    break;
+                case 3:
+                    _selectedStroke = new DoubleCollection() { 6, 2 };
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

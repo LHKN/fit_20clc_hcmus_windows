@@ -15,6 +15,7 @@ namespace LineAbility
 
         public Color ShapeColor = Colors.Transparent;
         public int Thickness = -1;
+        private DoubleCollection? Stroke;
 
         public void UpdateStart(Point p)
         {
@@ -25,11 +26,12 @@ namespace LineAbility
             End = p;
         }
 
-        public UIElement Draw(Color color, int thickness)
+        public UIElement Draw(Color color, int thickness, DoubleCollection stroke)
         {
             //handle color and thickness of redraw shape, only assign once
             if (ShapeColor == Colors.Transparent) { ShapeColor = color; }
             if (Thickness == -1) { Thickness = thickness; }
+            if (Stroke == null) { Stroke = stroke; }
 
             return new Line()
             {
@@ -38,7 +40,8 @@ namespace LineAbility
                 X2 = End.X,
                 Y2 = End.Y,
                 Stroke = new SolidColorBrush(ShapeColor),
-                StrokeThickness = Thickness
+                StrokeThickness = Thickness,
+                StrokeDashArray = Stroke
             };
         }
 
