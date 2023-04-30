@@ -49,7 +49,12 @@
                       SelectedValuePath="Id"
                       SelectedValue="{Binding CurrentBook.GenreId, Mode=TwoWay}"/>
             <TextBlock Grid.Row="4" Text="Description" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentBook.Description, Mode=TwoWay}"></TextBox>
+            <ScrollViewer  Grid.Row="4" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                <TextBox Height="200" 
+                         AcceptsReturn="True" 
+                         TextWrapping="Wrap"
+                         Text="{Binding CurrentBook.Description, Mode=TwoWay}"></TextBox>
+            </ScrollViewer>
             <TextBlock Grid.Row="5" Text="Publication Year" VerticalAlignment="Center"/>
             <CalendarDatePicker Grid.Row="5" Grid.Column="1" PlaceholderText="Select a Date" 
                                 Date="{Binding CurrentBook.PublishedDate, Converter={StaticResource timeConverter}, Mode=TwoWay}"/>

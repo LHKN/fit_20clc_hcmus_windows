@@ -20,6 +20,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -44,9 +45,24 @@
             <ProgressRing IsActive="{x:Bind thisViewModel.ToggleSwitchIsOn, Mode=OneWay}" Width="32"/>
         </StackPanel>
 
+        <StackPanel Grid.Row="2" Padding="20">
+            <TextBlock Text="Restore original data"/>
+            <Button x:Name="importButton" 
+                    Content="Import"
+                    Margin="0,10,10,10">
+                <Button.Flyout>
+                    <MenuFlyout Placement="Right">
+                        <MenuFlyoutItem Text="Excel (.xls/.xlsx)" Command="{Binding ImportByExcelCommand}" Icon="PreviewLink"/>
+                        <MenuFlyoutItem Text="Access (.accdb)" Command="{Binding ImportByAccessCommand}" Icon="SwitchApps"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+        </StackPanel>
+        
+        
         <AppBarButton HorizontalAlignment="Right" 
                       VerticalAlignment="Bottom" 
-                      Grid.Row="2" Grid.Column="1" 
+                      Grid.Row="3" Grid.Column="1" 
                       x:Name="saveButton" Icon="Save" Label="Save"
                       Command="{Binding SaveSettingCommand}"/>
     </Grid>

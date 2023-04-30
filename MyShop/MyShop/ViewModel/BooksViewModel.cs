@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Windows.Storage.Pickers;
 using Windows.Storage;
+using System.IO;
 
 namespace MyShop.ViewModel
 {
@@ -59,44 +60,7 @@ namespace MyShop.ViewModel
             ResetSearchCommand = new RelayCommand(ExecuteResetSearchCommand);
             ResetPriceCommand = new RelayCommand(ExecuteResetPriceCommand);
             ResetCategoryCommand = new RelayCommand(ExecuteResetCategoryCommand);
-            ImportByExcelCommand = new RelayCommand(ExecuteImportByExcelCommand);
-            ImportByAccessCommand = new RelayCommand(ExecuteImportByAccessCommand);
 
-
-        }
-
-        private async void ExecuteImportByAccessCommand()
-        {
-            await App.MainRoot.ShowDialog("Warning", "This action can change the database");
-            var window = new Microsoft.UI.Xaml.Window();
-            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
-            FileOpenPicker filePicker = new FileOpenPicker();
-            filePicker.ViewMode = PickerViewMode.Thumbnail;
-            filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-            filePicker.FileTypeFilter.Add(".accdb");
-            WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
-            StorageFile file = await filePicker.PickSingleFileAsync();
-            if (file != null)
-                //Read data from Excel file
-                BooksList = await new ImportDatabaseService().ReadBookDataFromExcelFile(file);
-
-        }
-
-        private async void ExecuteImportByExcelCommand()
-        {
-            await App.MainRoot.ShowDialog("Warning", "This action can change the database");
-            var window = new Microsoft.UI.Xaml.Window();
-            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
-            FileOpenPicker filePicker = new FileOpenPicker();
-            filePicker.ViewMode = PickerViewMode.Thumbnail;
-            filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-            filePicker.FileTypeFilter.Add(".xlsx");
-            filePicker.FileTypeFilter.Add(".xls");
-            WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
-            StorageFile file = await filePicker.PickSingleFileAsync();
-            if (file != null)
-                //Read data from Excel file
-                BooksList = await new ImportDatabaseService().ReadBookDataFromExcelFile(file);
 
         }
 
@@ -159,9 +123,7 @@ namespace MyShop.ViewModel
         public List<Book> ResultBooksList { get => _resultBooksList; set => _resultBooksList = value; }
         public RelayCommand ResetSearchCommand { get => _resetSearchCommand; set => _resetSearchCommand = value; }
         public RelayCommand ResetPriceCommand { get => _resetPriceCommand; set => _resetPriceCommand = value; }
-        public RelayCommand ResetCategoryCommand { get => _resetCategoryCommand; set => _resetCategoryCommand = value; }
-        public RelayCommand ImportByExcelCommand { get => _importByExcelCommand; set => _importByExcelCommand = value; }
-        public RelayCommand ImportByAccessCommand { get => _importByAccessCommand; set => _importByAccessCommand = value; }
+        public RelayCommand ResetCategoryCommand { get => _resetCategoryCommand; set => _resetCategoryCommand = value; } 
 
         public async void ExecuteEditBookCommand()
         {
@@ -258,11 +220,5 @@ namespace MyShop.ViewModel
             UpdatePagingInfo();
         }
 
-        public async Task<string> getBookName(int bookId)
-        {
-            var result = await _bookRepository.GetById(bookId);
-
-            return result.Title;
-        }
     }
 }
