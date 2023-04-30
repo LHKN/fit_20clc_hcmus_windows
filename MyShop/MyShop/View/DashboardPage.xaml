@@ -1,4 +1,4 @@
-<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+﻿<!-- Copyright (c) Microsoft Corporation and Contributors. -->
 <!-- Licensed under the MIT License. -->
 
 <Page
@@ -8,47 +8,239 @@
     xmlns:local="using:MyShop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI" xmlns:viewmodel="using:MyShop.ViewModel"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:i="using:Microsoft.Xaml.Interactivity" 
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"  
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    d:DataContext="{d:DesignInstance Type=viewmodel:DashboardViewModel}">
 
+    <Page.DataContext>
+        <viewmodel:DashboardViewModel x:Name="RevenueViewModel"/>
+    </Page.DataContext>
+    
+    <i:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="Loaded">
+            <core:EventTriggerBehavior.Actions>
+                <core:InvokeCommandAction Command="{Binding Load_page}" />
+            </core:EventTriggerBehavior.Actions>
+        </core:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+    
     <Grid Margin="20, 20, 20, 20">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="0">
-            <TextBlock Text="Number of selling books: "/>
-            <TextBlock Text="999" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+            <Border Background="#4e73df" 
+                    Width="200" 
+                    Height="80" 
+                    Padding="10" 
+                    CornerRadius="10"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" >
+
+                <TextBlock  
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"
+                   Foreground="White">
+                    <Run Text="REVENUE (MONTHLY)"/>
+                    <LineBreak/>
+                    <Run Text="{Binding MonthlyRevenue, Mode=OneWay}" FontSize="22" FontWeight="Bold" >
+                        
+                    </Run>
+                </TextBlock>
+            </Border>
         </StackPanel>
 
         <StackPanel Grid.Column="1">
-            <TextBlock Text="Number of new orders: "/>
-            <TextBlock Text="999" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+            <Border Background="#1cc88a" 
+                    Width="200" 
+                    Height="80" 
+                    Padding="10" 
+                    CornerRadius="10"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" >
+
+                <TextBlock  
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"
+                   Foreground="White">
+                    <Run Text="REVENUE (WEEKLY)"/>
+                    <LineBreak/>
+                    <Run Text="{Binding WeeklyRevenue, Mode=OneWay}" FontSize="22" FontWeight="Bold" >
+                        
+                    </Run>
+                </TextBlock>
+            </Border>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-            <TextBlock Text="Top 5 running out of stock"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="2">
+            <Border Background="#36b9cc" 
+                    Width="200" 
+                    Height="80"  
+                    CornerRadius="10"
+                    Padding="10"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" >
 
-                <TextBlock Text="Item1"></TextBlock>
-                <TextBlock Grid.Column="1" Text="Item2"></TextBlock>
-                <TextBlock Grid.Column="2" Text="Item3"></TextBlock>
-                <TextBlock Grid.Column="3" Text="Item4"></TextBlock>
-                <TextBlock Grid.Column="4" Text="Item5"></TextBlock>
-            </Grid>
+                <TextBlock  
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"
+                   Foreground="White">
+                    <Run Text="SOLD BOOKS (WEEKLY)" />
+                    <LineBreak/>
+                    <Run Text="{Binding NumberOfSoldBook, Mode=OneWay}" FontSize="22" FontWeight="Bold" >
+                        
+                    </Run>
+                </TextBlock>
+            </Border>
         </StackPanel>
+
+        <StackPanel Grid.Column="3">
+            <Border Background="#de3f62" 
+                    Width="200" 
+                    Height="80"                    
+                    CornerRadius="10"
+                     Padding="10"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" >
+
+                <TextBlock  
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"
+                   Foreground="White">
+                    <Run Text="ORDERS (WEEKLY)"/>
+                    <LineBreak/>
+                    <Run Text="{Binding NumberOfOrder, Mode=OneWay}" FontSize="22" FontWeight="Bold"/>
+                </TextBlock>
+            </Border>
+
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <Border BorderBrush="LightGray" 
+                    BorderThickness="1"
+                    
+                    Padding="10" 
+                    CornerRadius="10"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" >
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Margin="0,0,0,1" Text="TOP 5 BOOKS RUNNING OUT OF STOCK"
+                       HorizontalAlignment="Center"
+                       FontWeight="Bold"/>
+               
+            <StackPanel Width="300">
+                <TextBox x:Name="FilterByName" Width="300" Margin="0,0,0,8"
+	                        HorizontalAlignment="Center" 
+                         PlaceholderText="Search..." Text="{Binding filterContent, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                         >
+                    <i:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="TextChanged">
+                            <core:EventTriggerBehavior.Actions>
+                                <core:InvokeCommandAction Command="{Binding OnFilterChanged}" 
+                                                     />
+                            </core:EventTriggerBehavior.Actions>
+                        </core:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
+
+            </StackPanel>
+
+            <ListView
+                x:Name="FilteredListView"
+                ItemsSource="{Binding BookQuantityList, Mode=OneWay}"
+                Margin="10,0,0,0"
+                SelectionMode="Single"
+                MaxHeight="138"
+                MaxWidth="700"
+                MinWidth="500"
+                >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Width="600"  Orientation="Horizontal">
+                            <TextBlock   Text="{Binding Name}"  Margin="0,0,10,0"/>
+                            <TextBlock Padding="0,0,10,0"  Text="{Binding Quantity}" />
+                            <TextBlock >
+                                <Run Text="{Binding Status}"  FontWeight="Bold" Foreground="{Binding ColorStatus}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                           MaximumRowsOrColumns="5"
+                           Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        <Border Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"
+            BorderBrush="LightGray" 
+                    BorderThickness="1"
+                   
+                    MaxWidth="700"
+                    MinWidth="450"
+                    Height="220"
+                    CornerRadius="10"
+                    HorizontalAlignment="Center" 
+                    >
+            <lvc:CartesianChart Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" 
+                                
+                Series="{Binding TopWeeklyBestSellerSeries}"
+                XAxes="{Binding XAxes}"
+                YAxes="{Binding YAxes}"
+                TooltipPosition="Center">
+            </lvc:CartesianChart>
+
+
+        </Border>
+        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+            BorderBrush="LightGray" 
+                    BorderThickness="1"
+                    Width="456"
+                Height="220"
+                    
+                    CornerRadius="10"
+                    HorizontalAlignment="Center" 
+                    >
+        <lvc:PieChart 
+            Series="{Binding TopMonthlyBestSellerSeries}"
+            Title="{Binding TopMonthlyBestSellerTitle}">
+        </lvc:PieChart>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"
+            BorderBrush="LightGray" 
+                    BorderThickness="1"
+                    Width="450"
+                Height="220"
+                    
+                    CornerRadius="10"
+                    HorizontalAlignment="Center" 
+                    >
+        <lvc:CartesianChart 
+            Series="{Binding TopYearlyBestSellerSeries}"
+            ZoomMode="X"
+            XAxes="{Binding YearlyXAxes}"
+            YAxes="{Binding YearlyYAxes}">
+
+        </lvc:CartesianChart>
+        </Border>
         
     </Grid>
 </Page>

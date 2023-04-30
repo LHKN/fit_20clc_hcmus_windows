@@ -16,17 +16,19 @@ namespace MyHeart
         public string Name => "Heart";
         public Color ShapeColor = Colors.Transparent;
         public int Thickness = -1;
+        private DoubleCollection? Stroke;
 
         public object Clone()
         {
             return MemberwiseClone();
         }
 
-        public UIElement Draw(Color color, int thickness)
+        public UIElement Draw(Color color, int thickness, DoubleCollection stroke)
         {
             //handle color and thickness of redraw shape, only assign once
             if (ShapeColor == Colors.Transparent) { ShapeColor = color; }
             if (Thickness == -1) { Thickness = thickness; }
+            if (Stroke == null) { Stroke = stroke; }
 
             double width = Math.Abs(End.X - Start.X);
             double height = Math.Abs(End.Y - Start.Y);
@@ -39,6 +41,7 @@ namespace MyHeart
             {
                 Stroke = new SolidColorBrush(ShapeColor),
                 StrokeThickness = Thickness,
+                StrokeDashArray = Stroke
             };
 
             var geometry = new PathGeometry();

@@ -327,7 +327,7 @@ begin
 declare @currentWeekOffSet INT = 0;
 declare @startDate DATE = (select min(bill.transaction_date) from BILL as bill)
 declare @maxWeek INT = (select weeks.*
-from (select DATEDIFF(DAY, min(bill.transaction_date), max(bill.transaction_date))/7 as 'tong_tuan'
+from (select CEILING(DATEDIFF(DAY, min(bill.transaction_date), GETDATE())/7.0) as 'tong_tuan'
 from BILL as bill) as weeks)
 
 declare @weekTable table(weekID INT, startDateOfWeek DATE)

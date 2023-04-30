@@ -30,5 +30,7 @@ namespace MyShop.View
         {
             this.InitializeComponent();
         }
+
+
     }
 }

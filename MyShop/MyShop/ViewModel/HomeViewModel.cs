@@ -16,8 +16,13 @@ namespace MyShop.ViewModel
         private Account _account;
 
 
-        public HomeViewModel(Account account) {
-            Account = account;
+        //public HomeViewModel(Account account) {
+        //    Account = account;
+        //    ChildPageNavigation = new PageNavigation(new DashboardViewModel());
+        //}
+        public HomeViewModel()
+        {
+            //Account = account;
             ChildPageNavigation = new PageNavigation(new DashboardViewModel());
         }
 

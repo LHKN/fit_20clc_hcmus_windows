@@ -4,6 +4,7 @@ using System.Windows.Media;
 using System.Windows;
 using MyContract;
 using System.Windows.Shapes;
+using System.Windows.Ink;
 
 namespace RectangleAbility
 {
@@ -15,6 +16,7 @@ namespace RectangleAbility
         public string Name => "Rectangle";
         public Color ShapeColor = Colors.Transparent;
         public int Thickness = -1;
+        private DoubleCollection? Stroke;
 
         public void UpdateStart(Point p)
         {
@@ -25,11 +27,12 @@ namespace RectangleAbility
             End = p;
         }
 
-        public UIElement Draw(Color color, int thickness)
+        public UIElement Draw(Color color, int thickness, DoubleCollection stroke)
         {
             //handle color and thickness of redraw shape, only assign once
             if (ShapeColor == Colors.Transparent) { ShapeColor = color; }
             if (Thickness == -1) { Thickness = thickness; }
+            if (Stroke == null) { Stroke = stroke; }
 
             double width = Math.Abs(End.X - Start.X);
             double height = Math.Abs(End.Y - Start.Y);
@@ -41,7 +44,8 @@ namespace RectangleAbility
                 Width = width,
                 Height = height,
                 Stroke = new SolidColorBrush(ShapeColor),
-                StrokeThickness = Thickness
+                StrokeThickness = Thickness,
+                StrokeDashArray = Stroke
             };
 
             Canvas.SetLeft(shape, left);
