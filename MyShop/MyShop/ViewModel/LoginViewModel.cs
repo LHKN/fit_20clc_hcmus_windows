@@ -35,7 +35,13 @@ namespace MyShop.ViewModel
             LoadedCommand = new RelayCommand(PageLoaded);
             LoginCommand = new RelayCommand(ExecuteLoginCommand);
             RememberAccountCommand = new RelayCommand<bool>(ExecuteRememberAccountCommand);
+            ResetCommand = new RelayCommand(ExecuteResetCommand);
 
+        }
+
+        private void ExecuteResetCommand()
+        {
+            ParentPageNavigation.ViewModel = new RegisterViewModel();
         }
 
         private async void ExecuteLoginCommand()
@@ -151,6 +157,7 @@ namespace MyShop.ViewModel
         //-> Commands
         public RelayCommand LoginCommand { get; }
         public RelayCommand LoadedCommand { get; }
+        public RelayCommand ResetCommand { get; }
         public RelayCommand<bool> RememberAccountCommand { get; }
         public Account Account { get => _account; set => _account = value; }
         public bool IsRememberAccount { get => _isRememberAccount; set => _isRememberAccount = value; }

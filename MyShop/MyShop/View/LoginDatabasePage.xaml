@@ -1,0 +1,53 @@
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<Page
+    x:Class="MyShop.View.LoginDatabasePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyShop.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodel="using:MyShop.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:LoginDatabaseViewModel}"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid MaxWidth="300">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+
+            <TextBlock Text="Database Login" 
+                       FontWeight="SemiBold"
+                       FontSize="25"
+                       TextAlignment="Center"></TextBlock>
+
+            <TextBlock Text="{Binding ErrorMessage}"
+                       TextWrapping="WrapWholeWords"
+                       TextAlignment="Center"
+                       FontSize="10"></TextBlock>
+
+            <TextBox x:Name="usernameTextBox" 
+                     PlaceholderText="Username"
+                     Text="{Binding DbUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <PasswordBox x:Name="passwordBox" 
+                         PasswordRevealMode="Hidden" 
+                         PlaceholderText="Password"
+                         Password="{Binding DbPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <CheckBox Name="revealModeCheckBox" Content="Show password" IsChecked="False"
+            Checked="RevealModeCheckbox_Changed" Unchecked="RevealModeCheckbox_Changed"/>
+
+            <Button Content="SIGN IN"
+                    Command="{Binding LoginCommand}"
+                    HorizontalAlignment="Stretch"
+                    x:Name="loginButton">
+
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10">
+                        </Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -34,10 +34,12 @@
     <None Remove="View\EditBookPage.xaml" />
     <None Remove="View\EditOrderPage.xaml" />
     <None Remove="View\HomePage.xaml" />
+    <None Remove="View\LoginDatabasePage.xaml" />
     <None Remove="View\LoginView.xaml" />
     <None Remove="View\MonthlyProductPage.xaml" />
     <None Remove="View\MonthlyRevenuePage.xaml" />
     <None Remove="View\OrderHistoryPage.xaml" />
+    <None Remove="View\RegisterPage.xaml" />
     <None Remove="View\RootPage.xaml" />
     <None Remove="View\SettingPage.xaml" />
     <None Remove="View\StatisticPage.xaml" />
@@ -60,6 +62,7 @@
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     <PackageReference Include="Syncfusion.Sliders.WinUI" Version="21.1.41" />
+    <PackageReference Include="System.Data.OleDb" Version="7.0.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
@@ -101,6 +104,16 @@
     <Content Update="Assets\logo_bookit.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\RegisterPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\LoginDatabasePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="View\EditOrderPage.xaml">

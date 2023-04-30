@@ -37,6 +37,8 @@ namespace MyShop.Services
             {typeof(EditBookViewModel), typeof(EditBookPage)},
             {typeof(AddOrderViewModel), typeof(AddOrderPage) },
             {typeof(EditOrderViewModel), typeof(EditOrderPage)},
+            {typeof(LoginDatabaseViewModel), typeof(LoginDatabasePage)},
+            {typeof(RegisterViewModel), typeof(RegisterPage)},
             
             //add more page...
 

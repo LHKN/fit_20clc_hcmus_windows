@@ -10,6 +10,8 @@ namespace MyShop.Model
     public interface IAccountRepository
     {
         Task<string> AuthenticateAccount(NetworkCredential credentical);
+
+        Task<string> AuthenticateDbAccount(NetworkCredential credentical);
         void Add(Account account);
         void Edit(Account account);
         void Remove(int id);
