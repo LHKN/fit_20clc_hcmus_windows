@@ -14,8 +14,8 @@ namespace MyHeart
         public Point Start { get; set; }
         public Point End { get; set; }
         public string Name => "Heart";
-        public Color ShapeColor = Colors.Transparent;
-        public int Thickness = -1;
+        public Color ShapeColor { get; set; } = Colors.Transparent;
+        public int Thickness { get; set; } = -1;
         private DoubleCollection? Stroke;
 
         public object Clone()

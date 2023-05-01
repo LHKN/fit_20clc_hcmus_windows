@@ -14,8 +14,8 @@ namespace RectangleAbility
         public Point End { get; set; }
 
         public string Name => "Rectangle";
-        public Color ShapeColor = Colors.Transparent;
-        public int Thickness = -1;
+        public Color ShapeColor { get; set; } = Colors.Transparent;
+        public int Thickness { get; set; } = -1;
         private DoubleCollection? Stroke;
 
         public void UpdateStart(Point p)

@@ -20,13 +20,6 @@ namespace Pencil
             return MemberwiseClone();
         }
 
-        public UIElement Draw(Color color, int thickness)
-        {
-
-
-            return null;
-        }
-
         public void UpdateEnd(Point p)
         {
             End = p; ;
@@ -36,5 +29,11 @@ namespace Pencil
         {
             Start= p;
         }
+
+        public UIElement Draw(System.Windows.Media.Color color, int thickness, DoubleCollection stroke)
+        {
+            return null;
+        }
+
     }
 }
