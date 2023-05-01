@@ -7,25 +7,25 @@
         xmlns:local="clr-namespace:Paint"
         mc:Ignorable="d"
         Title="MyPaint" Height="450" Width="800" Loaded="RibbonWindow_Loaded">
-    <DockPanel LastChildFill="True">
+    <DockPanel LastChildFill="True" Keyboard.KeyDown="Screen_KeyDown_Handler" Keyboard.KeyUp="Screen_KeyUp_Handler">
         <Fluent:Ribbon Name="mainRibbon" DockPanel.Dock="Top">
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage Header="MyPaint">
                     <Fluent:BackstageTabControl>
-                        <Fluent:BackstageTabItem Header="New">
-
+                        <Fluent:BackstageTabItem Header="New" Content="Menu_New">
+                            
+                        </Fluent:BackstageTabItem>
+                        
+                        <Fluent:BackstageTabItem Header="Open" Content="Menu_Open" MouseDoubleClick="Menu_Button_Handler" MouseDown="Menu_Button_Handler">
+                            
                         </Fluent:BackstageTabItem>
 
-                        <Fluent:BackstageTabItem Header="Open">
-
+                        <Fluent:BackstageTabItem Header="Save" MouseDoubleClick="Menu_Button_Handler" Content="Menu_Save" MouseDown="Menu_Button_Handler">
+                            
                         </Fluent:BackstageTabItem>
 
-                        <Fluent:BackstageTabItem Header="Save">
-
-                        </Fluent:BackstageTabItem>
-
-                        <Fluent:BackstageTabItem Header="About">
-
+                        <Fluent:BackstageTabItem Header="About" Content="Menu_About">
+                            
                         </Fluent:BackstageTabItem>
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
