@@ -4,15 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms.VisualStyles;
+using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -24,12 +29,23 @@ namespace Paint
         public const int XML_FILE = 2;
         public const string MPXML_EXT = ".mpxml";
         public const string MPBIT_EXT = ".mpbit";
+        public const string BITMAP_EXT = ".bmp";
+        public const string PNG_EXT = ".png";
+        public const string JPG_EXT = ".jpg";
+        public const int CREATE_BITMAP = 1001;
+        public const int CREATE_PNG = 1002;
+        public const int CREATE_JPG = 1003;
 
 
         private const char big_seperator = '|';
         private const char minor_seperator_1 = ':';
         private const char minor_seperator_2 = ';';
         private const int BUFFER_SIZE = 1024 * 2;
+
+        public double ImageDpiX { get; set; }
+        public double ImageDpiY { get; set; }
+        public System.Windows.Media.PixelFormat ImagePixelFormat { get; set; }
+        
 
         public Dictionary<string, IShape>? ReferenceAbilities { get; set; } = null;
 
@@ -38,6 +54,8 @@ namespace Paint
         public SaveFileDialog SaveFileDialog { get; set; }
 
         public OpenFileDialog OpenFileDialog { get; set; }
+
+        public SaveFileDialog SaveImageDialog { get; set; }
 
         public MyFile()
         {
@@ -49,16 +67,32 @@ namespace Paint
             SaveFileDialog.CheckFileExists= false;
             SaveFileDialog.CheckPathExists= true;
             SaveFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin|Xml file (*.xml)|*.xml";
-            SaveFileDialog.FilterIndex = 0;
+            SaveFileDialog.FilterIndex = 1;
             SaveFileDialog.AddExtension = true;
 
             OpenFileDialog= new OpenFileDialog();
             OpenFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin|Xml file (*.xml)|*.xml";
-            OpenFileDialog.FilterIndex = 0;
+            OpenFileDialog.Title = "Open file";
+            OpenFileDialog.FilterIndex = 1;
             OpenFileDialog.AddExtension = true;
             OpenFileDialog.CheckFileExists= false;
             OpenFileDialog.CheckPathExists= true;
             OpenFileDialog.DefaultExt = "xml";
+
+            SaveImageDialog= new SaveFileDialog();
+            SaveImageDialog.InitialDirectory = @"C:\";
+            SaveImageDialog.Title = "Export to image";
+            SaveImageDialog.RestoreDirectory = true;
+            SaveImageDialog.DefaultExt = "bmp";
+            SaveImageDialog.CheckFileExists= false;
+            SaveImageDialog.CheckPathExists= true;
+            SaveImageDialog.Filter = "Bitmap file (*.bmp)|*.bmp|PNG file (*.png)|*.png";
+            SaveImageDialog.FilterIndex = 1;
+            SaveImageDialog.AddExtension = true;
+
+            ImageDpiX = 1 / 96;
+            ImageDpiY = 1 / 96;
+            ImagePixelFormat = PixelFormats.Pbgra32;
         }
 
         public MyFile(string OpenPath)
@@ -76,11 +110,27 @@ namespace Paint
 
             OpenFileDialog = new OpenFileDialog();
             OpenFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin|Xml file (*.xml)|*.xml";
-            OpenFileDialog.FilterIndex = 0;
+            OpenFileDialog.Title = "Open file";
+            OpenFileDialog.FilterIndex = 1;
             OpenFileDialog.AddExtension = true;
             OpenFileDialog.CheckFileExists = false;
             OpenFileDialog.CheckPathExists = true;
             OpenFileDialog.DefaultExt = "mpbin";
+
+            SaveImageDialog = new SaveFileDialog();
+            SaveImageDialog.InitialDirectory = @"C:\";
+            SaveImageDialog.Title = "Export to image";
+            SaveImageDialog.RestoreDirectory = true;
+            SaveImageDialog.DefaultExt = "bmp";
+            SaveImageDialog.CheckFileExists = false;
+            SaveImageDialog.CheckPathExists = true;
+            SaveImageDialog.Filter = "Bitmap file (*.bmp)|*.bmp|PNG file (*.png)|*.png";
+            SaveImageDialog.FilterIndex = 1;
+            SaveImageDialog.AddExtension = true;
+
+            ImageDpiX = 1 / 96;
+            ImageDpiY = 1 / 96;
+            ImagePixelFormat = PixelFormats.Pbgra32;
         }
 
         public bool isExist(string path)
@@ -133,8 +183,8 @@ namespace Paint
                                 string type = shapes[i].Name;
                                 string shape_color = shapes[i].ShapeColor.ToString();
                                 int thickness = shapes[i].Thickness;
-                                Point start = shapes[i].Start;
-                                Point End = shapes[i].End;
+                                System.Windows.Point start = shapes[i].Start;
+                                System.Windows.Point End = shapes[i].End;
                                 string storage_item = new StringBuilder().Append(big_seperator).Append(type).Append(minor_seperator_1).Append(shape_color)
                                     .Append(minor_seperator_2).Append(thickness).Append(minor_seperator_2).Append(start).Append(minor_seperator_2).Append(End).ToString();
                                 Debug.WriteLine(storage_item);
@@ -251,9 +301,9 @@ namespace Paint
                                     //details[4] == End
 
                                     IShape shape = (IShape)ReferenceAbilities[details[0]].Clone();
-                                    Color shape_color = (Color)ColorConverter.ConvertFromString(details[1]);
-                                    Point start = Point.Parse(details[3]);
-                                    Point end = Point.Parse(details[4]);
+                                    System.Windows.Media.Color shape_color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(details[1]);
+                                    System.Windows.Point start = System.Windows.Point.Parse(details[3]);
+                                    System.Windows.Point end = System.Windows.Point.Parse(details[4]);
                                     int thickness = Convert.ToInt32(details[2]);
                                     shape.UpdateStart(start);
                                     shape.UpdateEnd(end);
@@ -276,6 +326,40 @@ namespace Paint
             return shapes;
         }
 
-
+        public void SaveImage(string filepath, Canvas actual_canvas, int width, int height, int mode)
+        {
+            if(filepath == null || isExist(filepath))
+            {
+                return;
+            }
+            FileStream file = new FileStream(filepath, FileMode.OpenOrCreate);
+            RenderTargetBitmap bmp = new RenderTargetBitmap(width, height, ImageDpiX, ImageDpiY, ImagePixelFormat);
+            bmp.Render(actual_canvas);
+            BitmapEncoder encoder = new TiffBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bmp));
+            switch (mode)
+            {
+                case CREATE_BITMAP:
+                    {
+                        encoder.Save(file);
+                        file.Close();
+                        break;
+                    }
+                case CREATE_PNG:
+                    {
+                        using(MemoryStream memoryStream= new MemoryStream())
+                        {
+                            encoder.Save(memoryStream);
+                            Bitmap bitmap = new Bitmap(memoryStream);
+                            
+                            bitmap.Save(file, ImageFormat.Png);
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            memoryStream.Dispose();
+                        }
+                        file.Close();
+                        break;
+                    }
+            }
+        }
     }
 }

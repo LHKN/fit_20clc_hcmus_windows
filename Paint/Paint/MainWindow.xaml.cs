@@ -313,7 +313,14 @@ namespace Paint
             {
                 Open_File();
             }
+            else if(SenderContent.Equals(Constants.MENU_SAVE_AS))
+            {
 
+            }
+            else if(SenderContent.Equals(Constants.MENU_EXPORT_TO))
+            {
+                Save_Image();
+            }
         }
 
 
@@ -387,6 +394,36 @@ namespace Paint
 
         }
 
+        private void Save_Image()
+        {
+            bool? check = MyFile.SaveImageDialog.ShowDialog();
+            if(check!= null && check == true )
+            {
+                string path = MyFile.SaveImageDialog.FileName;
+                Debug.WriteLine(path);
+                string? ext = System.IO.Path.GetExtension(path);
+                int mode = MyFile.CREATE_BITMAP;
+                if(ext != null )
+                {
+                    if(ext.Equals(MyFile.BITMAP_EXT))
+                    {
+                        mode = MyFile.CREATE_BITMAP;
+                    }
+                    else if(ext.Equals(MyFile.PNG_EXT))
+                    {
+                        mode = MyFile.CREATE_PNG;
+                    }
+                    else if(ext.Equals(MyFile.JPG_EXT))
+                    {
+                        mode = MyFile.CREATE_JPG;
+                    }
+                }
+                int canvas_width = Convert.ToInt32(Math.Ceiling(aboveCanvas.ActualWidth));
+                int canvas_height = Convert.ToInt32(Math.Ceiling(aboveCanvas.ActualHeight));
+                MyFile.SaveImage(path, actualCanvas, canvas_width, canvas_height, mode);
+
+            }
+        }
 
 
         /// </execute>

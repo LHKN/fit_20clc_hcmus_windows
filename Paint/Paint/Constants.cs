@@ -18,5 +18,9 @@ namespace Paint
 
         public static string MENU_ABOUT = "Menu_About";
 
+        public static string MENU_SAVE_AS = "Save_As";
+
+        public static string MENU_EXPORT_TO = "Export_To";
+
     }
 }

@@ -21,6 +21,10 @@
                         </Fluent:BackstageTabItem>
 
                         <Fluent:BackstageTabItem Header="Save" MouseDoubleClick="Menu_Button_Handler" Content="Menu_Save" MouseDown="Menu_Button_Handler">
+
+                        </Fluent:BackstageTabItem>
+
+                        <Fluent:BackstageTabItem Header="Export to" Content="Export_To" MouseDoubleClick="Menu_Button_Handler" MouseDown="Menu_Button_Handler">
                             
                         </Fluent:BackstageTabItem>
 
