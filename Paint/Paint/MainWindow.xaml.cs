@@ -34,9 +34,12 @@ namespace Paint
             { "Heart", "Assets/heart.png" },
             { "Pencil", "Assets/pencil.png" }
         };
+        private Matrix originalMatrix;
         public MainWindow()
         {
             InitializeComponent();
+            var zoomedMatrix = aboveCanvas.RenderTransform as MatrixTransform;
+            if (zoomedMatrix != null) originalMatrix = zoomedMatrix.Matrix;
         }
         private void RibbonWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -449,6 +452,50 @@ namespace Paint
                 default:
                     break;
             }
+        }
+
+        private void zoomInCommand_Click(object sender, RoutedEventArgs e)
+        {
+            Point center = actualCanvas.TransformToAncestor(whiteBoard).Transform(new Point(actualCanvas.ActualWidth / 2, actualCanvas.ActualHeight / 2));
+
+            var curMatrix = actualCanvas.RenderTransform as MatrixTransform;
+            var matrix = curMatrix.Matrix;
+            var scale = 1.1;
+            matrix.ScaleAt(scale, scale, center.X, center.Y);
+            curMatrix.Matrix = matrix;
+            e.Handled = true;
+        }
+
+        private void zoomOutCommand_Click(object sender, RoutedEventArgs e)
+        {
+            Point center = actualCanvas.TransformToAncestor(whiteBoard).Transform(new Point(actualCanvas.ActualWidth / 2, actualCanvas.ActualHeight / 2));
+
+            var curMatrix = actualCanvas.RenderTransform as MatrixTransform;
+            var matrix = curMatrix.Matrix;
+            var scale = 1 / 1.1;
+            matrix.ScaleAt(scale, scale, center.X, center.Y);
+            curMatrix.Matrix = matrix;
+            e.Handled = true;
+        }
+
+        private void zoomOriginalCommand_Click(object sender, RoutedEventArgs e)
+        {
+            var curMatrix = actualCanvas.RenderTransform as MatrixTransform;
+            curMatrix.Matrix = originalMatrix;
+            e.Handled = true;
+        }
+
+        private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            var curMatrix = actualCanvas.RenderTransform as MatrixTransform;
+            var pos1 = e.GetPosition(whiteBoard);
+
+            var scale = e.Delta > 0 ? 1.1 : 1 / 1.1;
+
+            var matrix = curMatrix.Matrix;
+            matrix.ScaleAt(scale, scale, pos1.X, pos1.Y);
+            curMatrix.Matrix = matrix;
+            e.Handled = true;
         }
     }
 }

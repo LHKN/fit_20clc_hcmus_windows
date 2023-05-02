@@ -189,6 +189,26 @@
                         </Fluent:Button.Icon>
                     </Fluent:Button>
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Zoom">
+                    <Fluent:Button Header="Zoom in" Name="zoomInCommand"
+                                   Click="zoomInCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/zoomIn.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Zoom out" Name="zoomOutCommand"
+                                   Click="zoomOutCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/zoomOut.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="100%" Name="zoomOriginalCommand"
+                                   Click="zoomOriginalCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/100_origin.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Colors">
                     <Fluent:Button Name="primaryColor" Header="PColor" Fluent:RibbonProperties.SizeDefinition="Large" Background="Black"/>
                     <Fluent:Button Name="secondaryColor" Header="SColor" Fluent:RibbonProperties.SizeDefinition="Large" Background="FloralWhite"/>
@@ -205,10 +225,16 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
-        <Canvas Background="Transparent" Name="actualCanvas">
-        </Canvas>
-        <Canvas Background="Transparent"  Name="aboveCanvas" MouseDown="canvas_MouseDown" MouseMove="canvas_MouseMove" MouseUp="canvas_MouseUp">
-        </Canvas>
+        <Grid x:Name="whiteBoard" Background="White"  ClipToBounds="True" MouseWheel="Grid_MouseWheel">
+            <Canvas Background="Transparent" Name="actualCanvas">
+                <Canvas.RenderTransform>
+                    <MatrixTransform/>
+                </Canvas.RenderTransform>
+            </Canvas>
+            <Canvas Background="Transparent"  Name="aboveCanvas" MouseDown="canvas_MouseDown" MouseMove="canvas_MouseMove" MouseUp="canvas_MouseUp">
+
+            </Canvas>
+        </Grid>
 
     </DockPanel>
 </Fluent:RibbonWindow>
