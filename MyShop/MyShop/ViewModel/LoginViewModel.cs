@@ -57,8 +57,7 @@ namespace MyShop.ViewModel
                     new GenericIdentity(Account.Username), null);
                 string username = Account.Username;
                 var task = await _accountRepository.GetByUsername(username);
-                //ParentPageNavigation.ViewModel = new HomeViewModel(task);
-                ParentPageNavigation.ViewModel = new HomeViewModel();
+                ParentPageNavigation.ViewModel = new HomeViewModel(task);
             }
             else
             {
