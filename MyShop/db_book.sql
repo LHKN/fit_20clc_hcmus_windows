@@ -302,7 +302,7 @@ begin
 	--insert into result table the list of tupples(@date-price) that @start_date <= @date <= @end_date
 	while @date <= @end_date
 	begin
-		set @temp_value = (select bill.total_price from BILL as bill where bill.transaction_date = @date)
+		set @temp_value = (select SUM(bill.total_price) from BILL as bill where bill.transaction_date = @date)
 		if(@temp_value is null)
 		begin
 			set @temp_value= 0
