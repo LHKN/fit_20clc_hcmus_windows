@@ -21,6 +21,11 @@ namespace MyShop.ViewModel
             Account = account;
             ChildPageNavigation = new PageNavigation(new DashboardViewModel());
         }
+        public HomeViewModel()
+        {
+            Account = null;
+            ChildPageNavigation = new PageNavigation(new DashboardViewModel());
+        }
 
         private ICommand _itemInvokedCommand;
         public ICommand ItemInvokedCommand => _itemInvokedCommand ?? (_itemInvokedCommand = new RelayCommand<NavigationViewItemInvokedEventArgs>(OnItemInvoked));

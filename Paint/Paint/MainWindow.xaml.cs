@@ -1,4 +1,5 @@
-﻿using MyContract;
+﻿using Microsoft.Win32;
+using MyContract;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,6 +8,9 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -27,7 +31,8 @@ namespace Paint
             { "Line", "Assets/diagonal-line.png" },
             { "Ellipse", "Assets/ellipse.png" },
             { "Rectangle", "Assets/rectangle.png" },
-            { "Heart", "Assets/heart.png" }
+            { "Heart", "Assets/heart.png" },
+            { "Pencil", "Assets/pencil.png" }
         };
         public MainWindow()
         {
@@ -75,6 +80,10 @@ namespace Paint
                 RenderOptions.SetBitmapScalingMode(button, BitmapScalingMode.HighQuality);
                 shapeAbilityGrid.Children.Add(button);
             }
+
+
+            MyFile = new MyFile();
+            MyFile.ReferenceAbilities = _abilities;
         }
 
         private void ability_Click(object sender, RoutedEventArgs e)
@@ -94,6 +103,10 @@ namespace Paint
         Point _start;
         Point _end;
 
+        private MyFile MyFile;
+
+        private string collection_of_pressed_keys = "";
+
         List<IShape> _shapes = new List<IShape>();
 
         private void drawOldShapes()
@@ -106,6 +119,7 @@ namespace Paint
                 actualCanvas.Children.Add(oldShape);
             }
         }
+
         private void canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (String.IsNullOrEmpty(_selectedType)) { _isDrawing = false; return; }
@@ -132,14 +146,14 @@ namespace Paint
             _prototype.UpdateStart(_start);
         }
 
-        private void canvas_MouseMove(object sender, MouseEventArgs e)
+        private void canvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (String.IsNullOrEmpty(_selectedType)) { _isDrawing = false; return; }
 
             if (_isDrawing)
             {
                 drawOldShapes();
-
+               
                 _end = e.GetPosition(actualCanvas);
                 _prototype?.UpdateEnd(_end);
 
@@ -263,6 +277,156 @@ namespace Paint
             _selectedColor = Colors.Violet;
             primaryColor.Background = new SolidColorBrush(_selectedColor);
         }
+
+
+        private void Screen_KeyDown_Handler(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            collection_of_pressed_keys += e.Key.ToString();
+        }
+
+
+        private void Screen_KeyUp_Handler(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            System.Windows.Forms.MessageBox.Show("Key pressed: " + collection_of_pressed_keys);
+
+            if(collection_of_pressed_keys.Equals(Constants.SAVE))
+            {
+                Save_File();
+            }
+
+            collection_of_pressed_keys = "";
+            
+        }
+        
+        
+        private void Menu_Button_Handler(object sender, MouseButtonEventArgs e)
+        {
+            Debug.WriteLine(sender.ToString());
+            Debug.WriteLine(e.Source.ToString());
+            string SenderContent = sender.ToString().Split(':')[1].Trim();
+
+            if (SenderContent.Equals(Constants.MENU_SAVE))
+            {
+                Save_File();
+            }
+            else if(SenderContent.Equals(Constants.MENU_OPEN))
+            {
+                Open_File();
+            }
+            else if(SenderContent.Equals(Constants.MENU_SAVE_AS))
+            {
+
+            }
+            else if(SenderContent.Equals(Constants.MENU_EXPORT_TO))
+            {
+                Save_Image();
+            }
+        }
+
+
+        /// <execute>
+        private void Save_File()
+        {
+            if (MyFile.isNewFile())
+            {
+                MyFile.SaveFileDialog.CheckFileExists = false;
+                bool? check = MyFile.SaveFileDialog.ShowDialog();
+                Debug.WriteLine("Check= " + check.ToString());
+                if (check != null && check == true)
+                {
+                    string path = MyFile.SaveFileDialog.FileName;
+                    MyFile.CurrentStoredPath = path;
+                    int write_mode = 1;
+                    if (MyFile.SaveFileDialog.FilterIndex == 1)
+                    {
+                        write_mode = MyFile.BINARY_FILE;
+                    }
+                    else if(MyFile.SaveFileDialog.FilterIndex == 2)
+                    {
+                        write_mode = MyFile.XML_FILE;
+                    }
+                    MyFile.WriteTo(MyFile.CurrentStoredPath, _shapes, write_mode);
+                }
+            }
+            else
+            {
+                string? ext = System.IO.Path.GetExtension(MyFile.CurrentStoredPath);
+                if (ext != null)
+                {
+                    Debug.WriteLine(ext);
+                    /* MyFile.WriteTo(MyFile.CurrentStoredPath, _shapes, )*/
+                    if (ext.Equals(MyFile.MPXML_EXT)) // xml mode
+                    {
+                        MyFile.WriteTo(MyFile.CurrentStoredPath!, _shapes, MyFile.XML_FILE);
+                    }
+                    else //binary mode
+                    {
+                        MyFile.WriteTo(MyFile.CurrentStoredPath!, _shapes, MyFile.BINARY_FILE);
+                    }
+                }
+
+            }
+        }
+        
+        private void Open_File()
+        {
+            string SelectedFile = "";
+            bool? check = MyFile.OpenFileDialog.ShowDialog();
+            if(check!= null && check == true)
+            {
+                int selectedIndex = MyFile.OpenFileDialog.FilterIndex;
+                int mode = 0;
+                if(selectedIndex == 1)
+                {
+                    mode = MyFile.BINARY_FILE;
+                }
+                else if(selectedIndex == 2)
+                {
+                    mode = MyFile.XML_FILE;
+                }
+
+                SelectedFile = MyFile.OpenFileDialog.FileName;
+                Debug.WriteLine($"{SelectedFile} is selected");
+                MyFile.CurrentStoredPath = SelectedFile;
+                _shapes = MyFile.ReadFrom(MyFile.CurrentStoredPath, mode);
+                drawOldShapes();
+            }
+
+        }
+
+        private void Save_Image()
+        {
+            bool? check = MyFile.SaveImageDialog.ShowDialog();
+            if(check!= null && check == true )
+            {
+                string path = MyFile.SaveImageDialog.FileName;
+                Debug.WriteLine(path);
+                string? ext = System.IO.Path.GetExtension(path);
+                int mode = MyFile.CREATE_BITMAP;
+                if(ext != null )
+                {
+                    if(ext.Equals(MyFile.BITMAP_EXT))
+                    {
+                        mode = MyFile.CREATE_BITMAP;
+                    }
+                    else if(ext.Equals(MyFile.PNG_EXT))
+                    {
+                        mode = MyFile.CREATE_PNG;
+                    }
+                    else if(ext.Equals(MyFile.JPG_EXT))
+                    {
+                        mode = MyFile.CREATE_JPG;
+                    }
+                }
+                int canvas_width = Convert.ToInt32(Math.Ceiling(aboveCanvas.ActualWidth));
+                int canvas_height = Convert.ToInt32(Math.Ceiling(aboveCanvas.ActualHeight));
+                MyFile.SaveImage(path, actualCanvas, canvas_width, canvas_height, mode);
+
+            }
+        }
+
+
+        /// </execute>
 
         private void strokeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
