@@ -15,7 +15,7 @@ How to run your project? (WIP)
 
 What have been completed? (WIP)  
     1. Màn hình đăng nhập:  
-    	- Cho nhập username và password để đi vào màn hình chính. 
+    	- Cho nhập username và password để đi vào màn hình chính.  
 	- Có chức năng lưu username và password ở local để lần sau người dùng không cần đăng nhập lại.  
 	- Password cần được mã hóa.  
     2. Màn hình dashboard:  
