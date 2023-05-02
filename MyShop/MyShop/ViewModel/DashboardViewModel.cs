@@ -150,7 +150,7 @@ namespace MyShop.ViewModel
             //weekly revenue
             DateTime startWeeklyDate = DateTime.Parse(year_month_day);
             var getWeekTask = await _statisticRepository.GetListOfWeeks();
-            startWeeklyDate = getWeekTask.Last().Item2;
+            startWeeklyDate = getWeekTask[getWeekTask.Count - 2].Item2;
 
             var weeklyRevenueTask = await _statisticRepository.GetWeeklyStatistic(startWeeklyDate.Date, DateTimeOffset.Now.Date);
             WeeklyRevenue = weeklyRevenueTask.Last().Item2.ToString("C", CultureInfo.GetCultureInfo("vi-VN"));
