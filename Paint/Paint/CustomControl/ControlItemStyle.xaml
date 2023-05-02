@@ -1,0 +1,51 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Paint.CustomControl"
+    xmlns:helpers="clr-namespace:Paint.AttachedDeck"
+    xmlns:lib="clr-namespace:Paint.Lib">
+
+    <Style x:Key="SelectionRectangleStyle" TargetType="Rectangle">
+        <Setter Property="Stroke" Value="DodgerBlue" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="Fill">
+            <Setter.Value>
+                <SolidColorBrush Opacity="0.1" Color="DodgerBlue" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--<Style TargetType="Rectangle">
+        <Style.Resources>
+            <lib:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </Style.Resources>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Rectangle">
+                    <Grid>
+                        <local:ControlCanvas
+                            x:Name="PART_Canvas"
+                            Width="800"
+                            Height="500"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            helpers:AttachedDeck.ShowCanvasResizeAdorner="True"
+                            Background="White"
+                            ClipToBounds="True">
+                            <ItemsPresenter />
+                            <Rectangle
+                                x:Name="PART_SelectionRectangle"
+                                Canvas.Left="{Binding SelectionRectangleStyle.X}"
+                                Canvas.Top="{Binding SelectionRectangleStyle.Y}"
+                                Width="{Binding SelectionRectangleStyle.Width}"
+                                Height="{Binding SelectionRectangleStyle.Height}"
+                                Style="{StaticResource SelectionRectangleStyle}"
+                                Visibility="{Binding IsAreaSelecting, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        </local:ControlCanvas>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+</ResourceDictionary>

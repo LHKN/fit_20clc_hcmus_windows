@@ -22,6 +22,7 @@ namespace Paint
         Stack<IShape> _storeShapes = new Stack<IShape>();
         bool isActionStorable = true;
         bool isExecuteStoreAction = false;
+        private Matrix originalMatrix;
         Dictionary<string, string> _icons = new Dictionary<string, string>
         {
             { "Line", "Assets/diagonal-line.png" },
@@ -32,6 +33,8 @@ namespace Paint
         public MainWindow()
         {
             InitializeComponent();
+            var matrixTransform = aboveCanvas.RenderTransform as MatrixTransform;
+            if (matrixTransform != null) originalMatrix = matrixTransform.Matrix;
         }
         private void RibbonWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -108,6 +111,7 @@ namespace Paint
         }
         private void canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            Title = "Down";
             if (String.IsNullOrEmpty(_selectedType)) { _isDrawing = false; return; }
 
             //if (e.LeftButton == MouseButtonState.Pressed)
@@ -134,6 +138,7 @@ namespace Paint
 
         private void canvas_MouseMove(object sender, MouseEventArgs e)
         {
+            Title = "Move";
             if (String.IsNullOrEmpty(_selectedType)) { _isDrawing = false; return; }
 
             if (_isDrawing)
@@ -146,10 +151,13 @@ namespace Paint
                 UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke);
                 actualCanvas.Children.Add(newShape);
             }
+
+            
         }
 
         private void canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            Title = "Up";
             if (String.IsNullOrEmpty(_selectedType)) { _isDrawing = false; return; }
 
             _shapes.Add((IShape)_prototype.Clone());
@@ -161,7 +169,7 @@ namespace Paint
                 _storeShapes.Clear();
             }
 
-            Title = "Up";
+            //Title = "Up";
         }
 
         private void brushSize_Thin_Click(object sender, RoutedEventArgs e)
@@ -286,5 +294,49 @@ namespace Paint
                     break;
             }
         }
+
+        private void zoomInCommand_Click(object sender, RoutedEventArgs e)
+        {
+            Point center = actualCanvas.TransformToAncestor(whiteBoard).Transform(new Point(actualCanvas.ActualWidth / 2, actualCanvas.ActualHeight / 2));
+
+            var matTrans = actualCanvas.RenderTransform as MatrixTransform;
+            var mat = matTrans.Matrix;
+            var scale = 1.1;
+            mat.ScaleAt(scale, scale, center.X, center.Y);
+            matTrans.Matrix = mat;
+            e.Handled = true;
+        }
+
+        private void zoomOutCommand_Click(object sender, RoutedEventArgs e)
+        {
+            Point center = actualCanvas.TransformToAncestor(whiteBoard).Transform(new Point(actualCanvas.ActualWidth / 2, actualCanvas.ActualHeight / 2));
+
+            var matTrans = actualCanvas.RenderTransform as MatrixTransform;
+            var mat = matTrans.Matrix;
+            var scale = 1 / 1.1;
+            mat.ScaleAt(scale, scale, center.X, center.Y);
+            matTrans.Matrix = mat;
+            e.Handled = true;
+        }
+
+        private void zoomOriginalCommand_Click(object sender, RoutedEventArgs e)
+        {
+            var matTrans = actualCanvas.RenderTransform as MatrixTransform;
+            matTrans.Matrix = originalMatrix;
+            e.Handled = true;
+        }
+
+        //private void canvas_MouseWheel(object sender, MouseWheelEventArgs e)
+        //{
+        //    var matTrans = aboveCanvas.RenderTransform as MatrixTransform;
+        //    var pos1 = e.GetPosition(whiteBoard);
+
+        //    var scale = e.Delta > 0 ? 1.1 : 1 / 1.1;
+
+        //    var mat = matTrans.Matrix;
+        //    mat.ScaleAt(scale, scale, pos1.X, pos1.Y);
+        //    matTrans.Matrix = mat;
+        //    e.Handled = true;
+        //}
     }
 }

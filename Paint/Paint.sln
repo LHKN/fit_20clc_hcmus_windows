@@ -5,15 +5,15 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paint", "Paint\Paint.csproj", "{DC24C839-DF4A-422F-8C63-97532557EE4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyContract", "MyContract\MyContract.csproj", "{D740DF7D-0ACB-4BCB-99E0-9FF8330B9625}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyContract", "MyContract\MyContract.csproj", "{D740DF7D-0ACB-4BCB-99E0-9FF8330B9625}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineAbility", "LineAbility\LineAbility.csproj", "{DE5B7834-B62D-484B-946B-2E0A066D2728}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LineAbility", "LineAbility\LineAbility.csproj", "{DE5B7834-B62D-484B-946B-2E0A066D2728}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseAbility", "EclipseAbility\EllipseAbility.csproj", "{6DEAC556-6049-4ED8-B8A6-4C280B4193A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EllipseAbility", "EclipseAbility\EllipseAbility.csproj", "{6DEAC556-6049-4ED8-B8A6-4C280B4193A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RectangleAbility", "RectangleAbility\RectangleAbility.csproj", "{248A0F19-FF40-4A08-AAFD-2652E9355DB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RectangleAbility", "RectangleAbility\RectangleAbility.csproj", "{248A0F19-FF40-4A08-AAFD-2652E9355DB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHeart", "MyHeart\MyHeart.csproj", "{5EC46718-70F5-4B22-8469-12FDF20EDBF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHeart", "MyHeart\MyHeart.csproj", "{5EC46718-70F5-4B22-8469-12FDF20EDBF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

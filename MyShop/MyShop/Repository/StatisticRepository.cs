@@ -262,11 +262,12 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "SELECT Book.title, ISNULL(SUM(Detailed_bill.number), 0) AS number " +
-                             "FROM Book" +
-                             " LEFT JOIN Detailed_bill ON Book.id = Detailed_bill.book_id " +
-                             "LEFT JOIN Bill ON Bill.id = Detailed_bill.bill_id AND Bill.transaction_date BETWEEN @startDate AND @endDate " +
-                             "GROUP BY Book.title";
+                string sql = "select book.title,ISNULL(SUM(dt.number), 0) number" +
+                             "from book left join (select * from DETAILED_BILL " +
+                                                   "join Bill ON Bill.id = Detailed_bill.bill_id " +
+                                                   "where Bill.transaction_date BETWEEN @startDate AND @endDate) " +
+                                                   "on Book.id = dt.book_id " +
+                             "group by book.title";
 
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@startDate", SqlDbType.Date).Value = startDate.Date;
@@ -313,7 +314,7 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "select sum(DETAILED_BILL.number) quantity " +
+                string sql = "select ISNULL(SUM(DETAILED_BILL.number),0) quantity " +
                              "from DETAILED_BILL join BILL on DETAILED_BILL.bill_id = BILL.id" +
                              " where BILL.transaction_date BETWEEN @startDate AND @endDate";
 
@@ -411,12 +412,14 @@ namespace MyShop.Repository
 
             if (connection != null && connection.State == ConnectionState.Open)
             {
-                string sql = "select TOP 5 Book.title, sum(Detailed_bill.number) as quantity " +
-                             "from Book join Detailed_bill on Book.id=Detailed_bill.book_id " +
-                             "join Bill on Bill.id=Detailed_bill.bill_id " +
-                             "where Bill.transaction_date between @startDate and @endDate " +
-                             "group by Book.title " +
+                string sql = "select TOP 5 book.title,ISNULL(SUM(dt.number), 0) quantity " +
+                             "from book left join (select *from DETAILED_BILL " +
+                                                   "join Bill ON Bill.id = Detailed_bill.bill_id " +
+                                                   "where Bill.transaction_date BETWEEN @startDate AND @endDate) as dt " +
+                                                   "on Book.id = dt.book_id " +
+                             "group by book.title "+
                              "order by quantity desc";
+
 
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.Add("@startDate", SqlDbType.Date).Value = startDate.Date;

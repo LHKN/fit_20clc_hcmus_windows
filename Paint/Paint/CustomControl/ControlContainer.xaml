@@ -1,0 +1,17 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:custom="clr-namespace:Paint.CustomControl">
+
+    <Style TargetType="custom:ControlContainer">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="custom:ControlContainer">
+                    <Grid>
+                        <ContentPresenter />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

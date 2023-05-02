@@ -25,6 +25,7 @@ using Windows.ApplicationModel.VoiceCommands;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Globalization;
+using System.Drawing;
 
 namespace MyShop.ViewModel
 {
@@ -127,6 +128,7 @@ namespace MyShop.ViewModel
             BookQuantityList = new ObservableCollection<BookQuantity>();
             allBookQuantity = new ObservableCollection<BookQuantity>();
             filterContent = "";
+            MonthlyRevenue ="0";
             displayBookQuantityCollection = new ObservableCollection<Tuple<string, int>>();
             OnFilterChanged = new RelayCommand<TextChangedEventArgs>(FilterChanged);
             Load_page = new RelayCommand<RoutedEventArgs>(Load_Dashboard);
@@ -145,26 +147,33 @@ namespace MyShop.ViewModel
             
 
             var monthlyRevenueTask = await _statisticRepository.GetMonthlyStatistic(startMonthlyDate.Date, DateTimeOffset.Now.Date);
-            MonthlyRevenue = monthlyRevenueTask.Last().Item2.ToString("C", CultureInfo.GetCultureInfo("vi-VN"));
+            if (monthlyRevenueTask.Count>0)
+            { 
+                MonthlyRevenue = monthlyRevenueTask.Last().Item2.ToString("C", CultureInfo.GetCultureInfo("vi-VN")); 
+            }
 
             //weekly revenue
             DateTime startWeeklyDate = DateTime.Parse(year_month_day);
             var getWeekTask = await _statisticRepository.GetListOfWeeks();
             startWeeklyDate = getWeekTask.Last().Item2;
 
-            var weeklyRevenueTask = await _statisticRepository.GetWeeklyStatistic(startWeeklyDate.Date, DateTimeOffset.Now.Date);
-            WeeklyRevenue = weeklyRevenueTask.Last().Item2.ToString("C", CultureInfo.GetCultureInfo("vi-VN"));
 
-            //daily number of sold books
+            var weeklyRevenueTask = await _statisticRepository.GetWeeklyStatistic(startWeeklyDate.Date, DateTimeOffset.Now.Date);
+            if (weeklyRevenueTask.Count > 0)
+            {
+                WeeklyRevenue = weeklyRevenueTask.Last().Item2.ToString("C", CultureInfo.GetCultureInfo("vi-VN"));
+            }
+
+            //weekly number of sold books
             NumberOfSoldBook =await _statisticRepository.GetWeeklyNumberOfSoldBookStatistic(startWeeklyDate.Date, DateTimeOffset.Now.Date);
 
-            //daily number of orders
+            //weekly number of orders
             NumberOfOrder = await _statisticRepository.GetWeeklyNumberOfOrderStatistic(startWeeklyDate.Date, DateTimeOffset.Now.Date);
 
             //top 5 best selling books of the week
             var top5WeeklyBook = await _statisticRepository.GetTop5ProductStatistic(startWeeklyDate.Date, DateTimeOffset.Now.Date);
 
-            if (top5WeeklyBook == null)
+            if (top5WeeklyBook==null)
             {
                 top5WeeklyBook = new List<Tuple<string, int>>();
                 top5WeeklyBook.Add(new Tuple<string, int>("Book 1", 1));
@@ -195,7 +204,7 @@ namespace MyShop.ViewModel
             //top 5 best selling books of the month
             var top5MonthlyBook = await _statisticRepository.GetTop5ProductStatistic(startMonthlyDate.Date, DateTimeOffset.Now.Date);
 
-            if (top5MonthlyBook == null)
+            if (top5MonthlyBook.Count==0)
             {
                 top5MonthlyBook = new List<Tuple<string, int>>();
                 top5MonthlyBook.Add(new Tuple<string, int>("None", 1));
@@ -223,7 +232,7 @@ namespace MyShop.ViewModel
             DateTime startYearlyDate = DateTime.Parse(year_month_day);
             var top5YearlyBook = await _statisticRepository.GetTop5ProductStatistic(startYearlyDate.Date, DateTimeOffset.Now.Date);
 
-            if (top5YearlyBook == null)
+            if (top5YearlyBook.Count==0)
             {
                 top5YearlyBook = new List<Tuple<string, int>>();
                 top5YearlyBook.Add(new Tuple<string, int>("Book 1", 0));
@@ -317,7 +326,7 @@ namespace MyShop.ViewModel
                 else if (book.Item2 <=5)
                 {
                     status = "Low stock";
-                    colorStatus = "Yellow";       
+                    colorStatus = "DarkOrange";
                 }
                 else
                 {
