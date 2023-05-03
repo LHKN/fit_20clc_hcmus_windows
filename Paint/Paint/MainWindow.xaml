@@ -59,7 +59,7 @@
                         </Fluent:SplitButton.Icon>
                     </Fluent:SplitButton>
                     <!--select a single element for editing again-->
-                    <Fluent:Button Header="Add" Fluent:RibbonProperties.SizeDefinition="Middle">
+                    <Fluent:Button Header="Swap Image" Fluent:RibbonProperties.SizeDefinition="Middle" Click="insertImage_Click">
                         <Fluent:Button.Icon>
                             <Image Source="Assets/image.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.Icon>

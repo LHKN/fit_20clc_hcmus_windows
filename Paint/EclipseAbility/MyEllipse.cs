@@ -16,7 +16,7 @@ namespace EllipseAbility
 
         public Color ShapeColor { get; set; } = Colors.Transparent;
         public int Thickness { get; set; } = -1;
-        private DoubleCollection? Stroke;
+        public DoubleCollection? Stroke { get; set; }
 
         public void UpdateStart(Point p)
         {
@@ -27,7 +27,7 @@ namespace EllipseAbility
             End = p;
         }
 
-        public UIElement Draw(Color color, int thickness, DoubleCollection stroke)
+        public UIElement Draw(Color color, int thickness, DoubleCollection stroke, string source)
         {
             //handle color and thickness of redraw shape, only assign once
             if (ShapeColor == Colors.Transparent) { ShapeColor = color; }
