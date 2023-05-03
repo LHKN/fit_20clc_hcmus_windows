@@ -37,9 +37,9 @@ namespace Paint
         public const int CREATE_JPG = 1003;
 
 
-        private const char big_seperator = '|';
-        private const char minor_seperator_1 = ':';
-        private const char minor_seperator_2 = ';';
+        public const char big_seperator = '|';
+        public const char minor_seperator_1 = '!';
+        public const char minor_seperator_2 = ';';
         private const int BUFFER_SIZE = 1024 * 2;
 
         public double ImageDpiX { get; set; }
@@ -66,12 +66,12 @@ namespace Paint
             SaveFileDialog.DefaultExt = "mpbin";
             SaveFileDialog.CheckFileExists= false;
             SaveFileDialog.CheckPathExists= true;
-            SaveFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin|Xml file (*.xml)|*.xml";
+            SaveFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin";
             SaveFileDialog.FilterIndex = 1;
             SaveFileDialog.AddExtension = true;
 
             OpenFileDialog= new OpenFileDialog();
-            OpenFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin|Xml file (*.xml)|*.xml";
+            OpenFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin";
             OpenFileDialog.Title = "Open file";
             OpenFileDialog.FilterIndex = 1;
             OpenFileDialog.AddExtension = true;
@@ -86,7 +86,7 @@ namespace Paint
             SaveImageDialog.DefaultExt = "bmp";
             SaveImageDialog.CheckFileExists= false;
             SaveImageDialog.CheckPathExists= true;
-            SaveImageDialog.Filter = "Bitmap file (*.bmp)|*.bmp|PNG file (*.png)|*.png";
+            SaveImageDialog.Filter = "Bitmap file (*.bmp)|*.bmp|PNG file (*.png)|*.png|JPG file (*.jpg)|*.jpg";
             SaveImageDialog.FilterIndex = 1;
             SaveImageDialog.AddExtension = true;
 
@@ -105,11 +105,11 @@ namespace Paint
             SaveFileDialog.CheckPathExists = true;
             SaveFileDialog.AddExtension = true;
             SaveFileDialog.DefaultExt = "mpbin";
-            SaveFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin|Xml file (*.xml)|*.xml";
+            SaveFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin";
             CurrentStoredPath = OpenPath;
 
             OpenFileDialog = new OpenFileDialog();
-            OpenFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin|Xml file (*.xml)|*.xml";
+            OpenFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin";
             OpenFileDialog.Title = "Open file";
             OpenFileDialog.FilterIndex = 1;
             OpenFileDialog.AddExtension = true;
@@ -124,7 +124,7 @@ namespace Paint
             SaveImageDialog.DefaultExt = "bmp";
             SaveImageDialog.CheckFileExists = false;
             SaveImageDialog.CheckPathExists = true;
-            SaveImageDialog.Filter = "Bitmap file (*.bmp)|*.bmp|PNG file (*.png)|*.png";
+            SaveImageDialog.Filter = "Bitmap file (*.bmp)|*.bmp|PNG file (*.png)|*.png|JPG file (*.jpg)|*.jpg";
             SaveImageDialog.FilterIndex = 1;
             SaveImageDialog.AddExtension = true;
 
@@ -161,7 +161,9 @@ namespace Paint
 
                             StreamWriter writer = new StreamWriter(filepath);
                             //clear old data
+                            writer.BaseStream.Seek(0, SeekOrigin.Begin);
                             writer.Flush();
+
                             for (int i = 0; i < shapes.Count; i++)
                             {
                                 Debug.WriteLine(shapes[i].GetType().ToString());
@@ -180,16 +182,22 @@ namespace Paint
                             string construct_string = "";
                             for (int i = 0; i < shapes.Count; i++)
                             {
-                                string type = shapes[i].Name;
+                                /*string type = shapes[i].Name;
                                 string shape_color = shapes[i].ShapeColor.ToString();
                                 int thickness = shapes[i].Thickness;
                                 System.Windows.Point start = shapes[i].Start;
                                 System.Windows.Point End = shapes[i].End;
-                                string storage_item = new StringBuilder().Append(big_seperator).Append(type).Append(minor_seperator_1).Append(shape_color)
-                                    .Append(minor_seperator_2).Append(thickness).Append(minor_seperator_2).Append(start).Append(minor_seperator_2).Append(End).ToString();
-                                Debug.WriteLine(storage_item);
+                                DoubleCollection stroke = shapes[i].Stroke;
+                                Debug.WriteLine(stroke.ToString());*/
+                                /*                                string storage_item = new StringBuilder().Append(big_seperator).Append(type).Append(minor_seperator_1).Append(shape_color)
+                                                                    .Append(minor_seperator_2).Append(thickness).Append(minor_seperator_2).Append(start).Append(minor_seperator_2).Append(End).ToString();
+                                                                Debug.WriteLine(storage_item);
 
-                                construct_string = construct_string + storage_item;
+                                                                construct_string = construct_string + storage_item;*/
+
+                                string string_of_shape = new StringBuilder().Append(big_seperator).Append(shapes[i].FromShapeToString()).ToString();
+                                Debug.WriteLine(string_of_shape);
+                                construct_string = construct_string + string_of_shape;
                             }
 
                             Debug.WriteLine(construct_string);
@@ -199,11 +207,11 @@ namespace Paint
                             byte[] buffer = Encoding.Unicode.GetBytes(construct_string);
 
 
-                            FileStream file = File.Open(filepath, FileMode.OpenOrCreate);
-                            
+                            FileStream file = File.Open(filepath, FileMode.Create);
+                            file.Position = 0;
                             BinaryWriter writer = new BinaryWriter(file, Encoding.UTF8, false);
-                            writer.Seek(0, SeekOrigin.Begin);
                             writer.Flush();
+                            writer.Seek(0, SeekOrigin.Begin);
 
                             /*writer.Write(construct_string);*/
                             writer.Write(buffer);
@@ -293,22 +301,24 @@ namespace Paint
                                 for (int i = 1; i < items.Length; i++)
                                 {
                                     Debug.WriteLine(items[i]);
-                                    string[] details = items[i].Split(new char[] { minor_seperator_1, minor_seperator_2 });
+                                    string[] details = items[i].Split(minor_seperator_1);
                                     //details[0] == Name (Type)
                                     //details[1] == ShapeColor
                                     //details[2] == Thickness
                                     //details[3] == Start
                                     //details[4] == End
 
-                                    IShape shape = (IShape)ReferenceAbilities[details[0]].Clone();
-                                    System.Windows.Media.Color shape_color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(details[1]);
-                                    System.Windows.Point start = System.Windows.Point.Parse(details[3]);
-                                    System.Windows.Point end = System.Windows.Point.Parse(details[4]);
-                                    int thickness = Convert.ToInt32(details[2]);
-                                    shape.UpdateStart(start);
-                                    shape.UpdateEnd(end);
-                                    shape.Thickness = thickness;
-                                    shape.ShapeColor = shape_color;
+                                    IShape controller = (IShape)ReferenceAbilities[details[0]].Clone();
+                                    /* System.Windows.Media.Color shape_color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(details[1]);
+                                     System.Windows.Point start = System.Windows.Point.Parse(details[3]);
+                                     System.Windows.Point end = System.Windows.Point.Parse(details[4]);
+                                     int thickness = Convert.ToInt32(details[2]);
+                                     shape.UpdateStart(start);
+                                     shape.UpdateEnd(end);
+                                     shape.Thickness = thickness;
+                                     shape.ShapeColor = shape_color;*/
+
+                                    IShape shape = controller.FromStringToShape(items[i]);
                                     shapes.Add(shape);
 
                                 }
@@ -353,6 +363,20 @@ namespace Paint
                             Bitmap bitmap = new Bitmap(memoryStream);
                             
                             bitmap.Save(file, ImageFormat.Png);
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            memoryStream.Dispose();
+                        }
+                        file.Close();
+                        break;
+                    }
+                case CREATE_JPG:
+                    {
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            encoder.Save(memoryStream);
+                            Bitmap bitmap = new Bitmap(memoryStream);
+
+                            bitmap.Save(file, ImageFormat.Jpeg);
                             memoryStream.Seek(0, SeekOrigin.Begin);
                             memoryStream.Dispose();
                         }
