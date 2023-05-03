@@ -45,11 +45,11 @@ namespace Paint
         public double ImageDpiX { get; set; }
         public double ImageDpiY { get; set; }
         public System.Windows.Media.PixelFormat ImagePixelFormat { get; set; }
-        
+
 
         public Dictionary<string, IShape>? ReferenceAbilities { get; set; } = null;
 
-        public string ?CurrentStoredPath { get; set; } = null;
+        public string? CurrentStoredPath { get; set; } = null;
 
         public SaveFileDialog SaveFileDialog { get; set; }
 
@@ -64,28 +64,28 @@ namespace Paint
             SaveFileDialog.Title = "Save your file";
             SaveFileDialog.RestoreDirectory = true;
             SaveFileDialog.DefaultExt = "mpbin";
-            SaveFileDialog.CheckFileExists= false;
-            SaveFileDialog.CheckPathExists= true;
+            SaveFileDialog.CheckFileExists = false;
+            SaveFileDialog.CheckPathExists = true;
             SaveFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin";
             SaveFileDialog.FilterIndex = 1;
             SaveFileDialog.AddExtension = true;
 
-            OpenFileDialog= new OpenFileDialog();
+            OpenFileDialog = new OpenFileDialog();
             OpenFileDialog.Filter = "Binary file (*.mpbin)|*.mpbin";
             OpenFileDialog.Title = "Open file";
             OpenFileDialog.FilterIndex = 1;
             OpenFileDialog.AddExtension = true;
-            OpenFileDialog.CheckFileExists= false;
-            OpenFileDialog.CheckPathExists= true;
+            OpenFileDialog.CheckFileExists = false;
+            OpenFileDialog.CheckPathExists = true;
             OpenFileDialog.DefaultExt = "xml";
 
-            SaveImageDialog= new SaveFileDialog();
+            SaveImageDialog = new SaveFileDialog();
             SaveImageDialog.InitialDirectory = @"C:\";
             SaveImageDialog.Title = "Export to image";
             SaveImageDialog.RestoreDirectory = true;
             SaveImageDialog.DefaultExt = "bmp";
-            SaveImageDialog.CheckFileExists= false;
-            SaveImageDialog.CheckPathExists= true;
+            SaveImageDialog.CheckFileExists = false;
+            SaveImageDialog.CheckPathExists = true;
             SaveImageDialog.Filter = "Bitmap file (*.bmp)|*.bmp|PNG file (*.png)|*.png|JPG file (*.jpg)|*.jpg";
             SaveImageDialog.FilterIndex = 1;
             SaveImageDialog.AddExtension = true;
@@ -141,7 +141,7 @@ namespace Paint
 
         public bool isNewFile()
         {
-            if(CurrentStoredPath == null)
+            if (CurrentStoredPath == null)
             {
                 return true;
             }
@@ -202,7 +202,7 @@ namespace Paint
 
                             Debug.WriteLine(construct_string);
 
-                            if(construct_string.Length <= 0) { break; }
+                            if (construct_string.Length <= 0) { break; }
                             //convert to array of bytes
                             byte[] buffer = Encoding.Unicode.GetBytes(construct_string);
 
@@ -232,9 +232,9 @@ namespace Paint
 
         public List<IShape> ReadFrom(string filepath, int read_mode)
         {
-            if(ReferenceAbilities == null)
+            if (ReferenceAbilities == null)
             {
-                throw new ArgumentNullException("To use the function, please use the set ReferenceAbilities variable with the abilities of the main program.");    
+                throw new ArgumentNullException("To use the function, please use the set ReferenceAbilities variable with the abilities of the main program.");
             }
 
             List<IShape> shapes = new List<IShape>();
@@ -245,9 +245,9 @@ namespace Paint
                     case XML_FILE:
                         {
 
-                            XmlDocument xmlDocument= new XmlDocument();
+                            XmlDocument xmlDocument = new XmlDocument();
                             xmlDocument.Load(filepath);
-                            if(xmlDocument.DocumentElement == null)
+                            if (xmlDocument.DocumentElement == null)
                             {
                                 shapes = null;
                                 break;
@@ -260,9 +260,9 @@ namespace Paint
                             }
 
 
-                          /*  StreamReader reader = new StreamReader(filepath);
-                            
-                            XmlSerializer s = new XmlSerializer()*/
+                            /*  StreamReader reader = new StreamReader(filepath);
+
+                              XmlSerializer s = new XmlSerializer()*/
                             break;
                         }
                     case BINARY_FILE:
@@ -289,7 +289,7 @@ namespace Paint
                                 buffer.AddRange(task);
                             }
                             while (buffer.Count < file_size);
-                            
+
                             string convertedString = Encoding.Unicode.GetString(buffer.ToArray());
                             Debug.WriteLine(convertedString);
                             reader.Close();
@@ -328,7 +328,7 @@ namespace Paint
                         }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -338,7 +338,7 @@ namespace Paint
 
         public void SaveImage(string filepath, Canvas actual_canvas, int width, int height, int mode)
         {
-            if(filepath == null || isExist(filepath))
+            if (filepath == null || isExist(filepath))
             {
                 return;
             }
@@ -357,11 +357,11 @@ namespace Paint
                     }
                 case CREATE_PNG:
                     {
-                        using(MemoryStream memoryStream= new MemoryStream())
+                        using (MemoryStream memoryStream = new MemoryStream())
                         {
                             encoder.Save(memoryStream);
                             Bitmap bitmap = new Bitmap(memoryStream);
-                            
+
                             bitmap.Save(file, ImageFormat.Png);
                             memoryStream.Seek(0, SeekOrigin.Begin);
                             memoryStream.Dispose();

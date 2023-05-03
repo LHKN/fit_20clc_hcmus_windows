@@ -296,7 +296,7 @@ namespace Paint
                 else
                 {
                     _prototype?.UpdateEnd(_end);
-                    UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke,_newPathAbsolute,_textContent);
+                    UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke,_newPathAbsolute);
                     actualCanvas.Children.Add(newShape);
                 }
                 
