@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHeart", "MyHeart\MyHeart.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pencil", "Pencil\Pencil.csproj", "{C9CA7D6E-2EA8-4F13-B68A-041857C3381A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageAbility", "ImageAbility\ImageAbility.csproj", "{8B8660E1-4D09-44B3-9683-639DBF17E90B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{C9CA7D6E-2EA8-4F13-B68A-041857C3381A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9CA7D6E-2EA8-4F13-B68A-041857C3381A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9CA7D6E-2EA8-4F13-B68A-041857C3381A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B8660E1-4D09-44B3-9683-639DBF17E90B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B8660E1-4D09-44B3-9683-639DBF17E90B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B8660E1-4D09-44B3-9683-639DBF17E90B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B8660E1-4D09-44B3-9683-639DBF17E90B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -47,6 +47,7 @@ namespace Paint
 
         Point _start;
         Point _end;
+        string _newPathAbsolute;
 
         private MyFile MyFile;
 
@@ -200,8 +201,6 @@ namespace Paint
 
                 UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke, _newPathAbsolute);
                 actualCanvas.Children.Add(newShape);
-                UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke);
-                        actualCanvas.Children.Add(newShape);
             }
         }
 
@@ -239,7 +238,7 @@ namespace Paint
             _selectedThickness = 10;
         }
 
-        private void undoCommand_Click(object sender, RoutedEventArgs e)
+        public void UndoAction()
         {
             if (isActionStorable && _shapes.Count != 0)
             {
@@ -250,10 +249,9 @@ namespace Paint
                 drawOldShapes();
             }
             else { isExecuteStoreAction = false; }
-                    
         }
 
-        private void redoCommand_Click(object sender, RoutedEventArgs e)
+        public void RedoAction() 
         {
             if (isActionStorable && _storeShapes.Count != 0)
             {
@@ -263,6 +261,15 @@ namespace Paint
                 drawOldShapes();
             }
             else { isExecuteStoreAction = false; }
+        }
+        private void undoCommand_Click(object sender, RoutedEventArgs e)
+        {
+            UndoAction();
+        }
+
+        private void redoCommand_Click(object sender, RoutedEventArgs e)
+        {
+            RedoAction();
         }
 
         private void redColor_Click(object sender, RoutedEventArgs e)
@@ -328,13 +335,20 @@ namespace Paint
 
         private void Screen_KeyUp_Handler(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            System.Windows.Forms.MessageBox.Show("Key pressed: " + collection_of_pressed_keys);
+            //System.Windows.Forms.MessageBox.Show("Key pressed: " + collection_of_pressed_keys);
 
             if(collection_of_pressed_keys.Equals(Constants.SAVE))
             {
                 Save_File();
             }
-
+            else if (collection_of_pressed_keys.Equals(Constants.UNDO))
+            {
+                UndoAction();
+            }
+            else if (collection_of_pressed_keys.Equals(Constants.REDO))
+            {
+                RedoAction();
+            }
             collection_of_pressed_keys = "";
             
         }

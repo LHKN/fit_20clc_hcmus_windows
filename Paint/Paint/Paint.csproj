@@ -148,6 +148,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EclipseAbility\EllipseAbility.csproj" />
+    <ProjectReference Include="..\ImageAbility\ImageAbility.csproj" />
     <ProjectReference Include="..\LineAbility\LineAbility.csproj" />
     <ProjectReference Include="..\MyContract\MyContract.csproj" />
     <ProjectReference Include="..\MyHeart\MyHeart.csproj" />
