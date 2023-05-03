@@ -49,7 +49,7 @@ namespace Paint
 
         Point _start;
         Point _end;
-        string _newPathAbsolute;
+
 
         private MyFile MyFile;
 
@@ -80,7 +80,7 @@ namespace Paint
             _selectedType = "";
             _selectedColor = Colors.Black;
             _selectedThickness = 1;
-            _selectedStroke = null;
+            _selectedStroke = new DoubleCollection();
             _shapes = new List<IShape>();
         }
         public MainWindow()

@@ -19,5 +19,9 @@ namespace MyContract
         void UpdateEnd(System.Windows.Point p);
         UIElement Draw(System.Windows.Media.Color color, int thickness, DoubleCollection stroke, string source);
 
+        //storage structure: <Type>:<ShapeColor>,<Thickness>,<Start>,<End>,<Stroke>|....
+        string FromShapeToString();
+
+        IShape FromStringToShape(string str);
     }
 }
