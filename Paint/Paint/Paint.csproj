@@ -44,6 +44,8 @@
     <None Remove="Assets\thin.png" />
     <None Remove="Assets\underline.png" />
     <None Remove="Assets\undo.png" />
+    <None Remove="Assets\zoom-in.png" />
+    <None Remove="Assets\zoom-out.png" />
     <None Remove="Assets\zoomIn.png" />
     <None Remove="Assets\zoomOut.png" />
   </ItemGroup>
@@ -142,6 +144,12 @@
     <Content Include="Assets\undo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\zoom-in.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\zoom-out.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\zoomIn.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -159,6 +167,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EclipseAbility\EllipseAbility.csproj" />
+    <ProjectReference Include="..\ImageAbility\ImageAbility.csproj" />
     <ProjectReference Include="..\LineAbility\LineAbility.csproj" />
     <ProjectReference Include="..\MyContract\MyContract.csproj" />
     <ProjectReference Include="..\MyHeart\MyHeart.csproj" />

@@ -16,14 +16,14 @@ namespace MyHeart
         public string Name => "Heart";
         public Color ShapeColor { get; set; } = Colors.Transparent;
         public int Thickness { get; set; } = -1;
-        private DoubleCollection? Stroke;
+        public DoubleCollection? Stroke { get; set; }
 
         public object Clone()
         {
             return MemberwiseClone();
         }
 
-        public UIElement Draw(Color color, int thickness, DoubleCollection stroke, string source, string content)
+        public UIElement Draw(Color color, int thickness, DoubleCollection stroke, string source)
         {
             //handle color and thickness of redraw shape, only assign once
             if (ShapeColor == Colors.Transparent) { ShapeColor = color; }

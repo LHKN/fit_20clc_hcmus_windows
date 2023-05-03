@@ -10,6 +10,10 @@ namespace Paint
     {
         public static string SAVE = "LeftCtrlS";
 
+        public static string UNDO = "LeftCtrlZ";
+
+        public static string REDO = "LeftCtrlY";
+
         public static string MENU_SAVE = "Menu_Save";
 
         public static string MENU_NEW = "Menu_New";
