@@ -45,7 +45,7 @@ namespace Paint.CustomControl
             return (Transform)element.GetValue(ApplyTransformProperty);
         }
 
-        private static void OnApplyTransformChanged(ControlContainer d, DependencyPropertyChangedEventArgs e)
+        private static void OnApplyTransformChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var designItemContainer = Utils.Control.GetParentControl<ControlContainer>(d);
             designItemContainer.ApplyTransform((Transform)e.NewValue);

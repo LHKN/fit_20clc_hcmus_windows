@@ -56,7 +56,7 @@ namespace Paint.Actions
 
         public bool SelectByMouseDown(MouseButtonEventArgs e)
         {
-            HitTestResult hitTestResult = VisualTreeHelper.HitTest(_context.DesignCanvas, e.GetPosition(_context.DesignCanvas));
+            HitTestResult hitTestResult = VisualTreeHelper.HitTest(_context.ControlCanvas, e.GetPosition(_context.ControlCanvas));
             ControlContainer designItem = Utils.Control.GetParentControl<ControlContainer>(hitTestResult.VisualHit);
 
             // Click outside all designItems
@@ -92,34 +92,34 @@ namespace Paint.Actions
 
         public void SelectByMouseDoubleClick(MouseButtonEventArgs e)
         {
-            HitTestResult hitTestResult = VisualTreeHelper.HitTest(_context.DesignCanvas, e.GetPosition(_context.DesignCanvas));
+            HitTestResult hitTestResult = VisualTreeHelper.HitTest(_context.ControlCanvas, e.GetPosition(_context.ControlCanvas));
             ControlContainer designItem = Utils.Control.GetParentControl<ControlContainer>(hitTestResult.VisualHit);
 
             if (designItem == null) return;
 
             IShape nodeVM = (IShape)designItem.DataContext;
 
-            if (nodeVM is TextNodeViewModel textNodeVM)
-            {
-                UnselectAll();
+            //if (nodeVM is TextNodeViewModel textNodeVM)
+            //{
+            //    UnselectAll();
 
-                TextBox textbox = Utils.Control.GetParentControl<TextBox>(hitTestResult.VisualHit);
+            //    TextBox textbox = Utils.Control.GetParentControl<TextBox>(hitTestResult.VisualHit);
 
-                textNodeVM.IsFocusable = true;
-                textbox.Focus();
-                textbox.SelectAll();
+            //    textNodeVM.IsFocusable = true;
+            //    textbox.Focus();
+            //    textbox.SelectAll();
 
-                AddSelectedItem(textNodeVM);
+            //    AddSelectedItem(textNodeVM);
 
-                onePointSelectionHandleByMouseUp = false;
-            }
+            //    onePointSelectionHandleByMouseUp = false;
+            //}
         }
 
         public bool SelectByMouseUp(MouseButtonEventArgs e)
         {
             if (!onePointSelectionHandleByMouseUp) return false;
 
-            HitTestResult hitTestResult = VisualTreeHelper.HitTest(_context.DesignCanvas, e.GetPosition(_context.DesignCanvas));
+            HitTestResult hitTestResult = VisualTreeHelper.HitTest(_context.ControlCanvas, e.GetPosition(_context.ControlCanvas));
             ControlContainer designItem = Utils.Control.GetParentControl<ControlContainer>(hitTestResult.VisualHit);
             Debug.WriteLine(hitTestResult.VisualHit);
             Debug.WriteLine(designItem);
@@ -158,8 +158,8 @@ namespace Paint.Actions
         {
             foreach (var item in _context.SelectedItems)
             {
-                if (item is TextNodeViewModel textNode)
-                    textNode.IsFocusable = false;
+                //if (item is TextNodeViewModel textNode)
+                //    textNode.IsFocusable = false;
 
                 item.IsSelected = false;
             }
@@ -174,8 +174,8 @@ namespace Paint.Actions
 
         public void RemoveSelectedItem(IShape vm)
         {
-            if (vm is TextNodeViewModel textNode)
-                textNode.IsFocusable = false;
+            //if (vm is TextNodeViewModel textNode)
+            //    textNode.IsFocusable = false;
 
             vm.IsSelected = false;
             _context.SelectedItems.Remove(vm);

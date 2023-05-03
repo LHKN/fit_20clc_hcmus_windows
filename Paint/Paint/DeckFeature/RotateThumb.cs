@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Paint.DeckFeature
@@ -15,7 +16,7 @@ namespace Paint.DeckFeature
     {
         // Container is bound of element render nodeVM
         private ControlContainer container { get; set; }
-        //private DesignCanvas canvas;
+        private ControlCanvas canvas;
         private IShape nodeVM { get; set; }
 
         // For calculator end vector
@@ -34,14 +35,14 @@ namespace Paint.DeckFeature
         {
             container = (ControlContainer)DataContext;
             nodeVM = (IShape)container.DataContext;
-            //canvas = (DesignCanvas)VisualTreeHelper.GetParent(container);
+            canvas = (ControlCanvas)VisualTreeHelper.GetParent(container);
 
-            //if (canvas != null)
-            //{
-            //    initialAngle = nodeVM.RotateAngle;
-            //    startVector = CalculateStartVector();
-            //    nodeVM.IsCommitChanged = false;
-            //}
+            if (canvas != null)
+            {
+                initialAngle = nodeVM.RotateAngle;
+                startVector = CalculateStartVector();
+                nodeVM.IsCommitChanged = false;
+            }
         }
 
         private void RotateThumb_DragDelta(object sender, DragDeltaEventArgs e)

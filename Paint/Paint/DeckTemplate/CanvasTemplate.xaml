@@ -44,7 +44,7 @@
                 Cursor="SizeNWSE"
                 IsHitTestVisible="True" />
 
-            <thumb:CanvasResizeThumb
+            <thumb:ResizeThumb
                 Width="10"
                 Height="10"
                 Margin="-5"
@@ -53,7 +53,7 @@
                 Cursor="SizeWE"
                 IsHitTestVisible="True" />
 
-            <thumb:CanvasResizeThumb
+            <thumb:ResizeThumb
                 Width="10"
                 Height="10"
                 Margin="-5"

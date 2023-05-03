@@ -13,7 +13,7 @@ namespace MyContract
         double Width { get; set; }
         double Height { get; set; }
         int ZIndex { get; set;  }
-        double RotateAngle { get;}
+        double RotateAngle { get; set; }
         Point TransformOrigin { get; set;  } 
        
         public bool IsSelected { get; set; }

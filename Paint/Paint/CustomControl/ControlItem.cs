@@ -17,7 +17,7 @@ namespace Paint.CustomControl
         private Selecting _selectingGesture { get; set; }
         private Actions.Drawing _drawingGesture;
 
-        public ControlCanvas DesignCanvas { get; set; }
+        public ControlCanvas ControlCanvas { get; set; }
 
         public bool IsDrawing { get; set; }
 

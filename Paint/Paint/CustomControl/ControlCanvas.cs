@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace Paint.CustomControl
 {
-    class ControlCanvas : Canvas
+    public class ControlCanvas : Canvas
     {
         static ControlCanvas()
         {
