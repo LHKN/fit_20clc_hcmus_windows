@@ -44,6 +44,10 @@ namespace MyShop.ViewModel
 
         public async void ExecuteConfirmCommand()
         {
+            if(NewBook.Image == null)
+            {
+                NewBook.Image = "StoreLogo.png";
+            }
             var task = await _bookRepository.Add(NewBook);
             if (task)
             {
