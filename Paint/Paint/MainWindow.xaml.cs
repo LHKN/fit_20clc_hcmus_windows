@@ -2,10 +2,12 @@
 using MyContract;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,7 +19,7 @@ namespace Paint
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Fluent.RibbonWindow
+    public partial class MainWindow : Fluent.RibbonWindow, INotifyPropertyChanged
     {
         Dictionary<string, IShape> _abilities =
            new Dictionary<string, IShape>();
@@ -34,11 +36,58 @@ namespace Paint
             { "Image", "Assets/image.png" }
         };
         private Matrix originalMatrix;
+
+        bool _isDrawing = false;
+        IShape? _prototype = null;
+        string _selectedType;
+        Color _selectedColor;
+        int _selectedThickness;
+        DoubleCollection? _selectedStroke;
+        private string _mousePos;
+
+        Point _start;
+        Point _end;
+
+        private MyFile MyFile;
+
+        private string collection_of_pressed_keys = "";
+
+        List<IShape> _shapes;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string property = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+
+        public string MousePos
+        {
+            get => _mousePos; 
+            set 
+            {
+                if (_mousePos != value)
+                {
+                    _mousePos = value;
+                    OnPropertyChanged(nameof(MousePos));
+                }
+            }
+        }
+
+        private void defaultSettings()
+        {
+            _isDrawing = false;
+            _selectedType = "";
+            _selectedColor = Colors.Black;
+            _selectedThickness = 1;
+            _selectedStroke = null;
+            _shapes = new List<IShape>();
+        }
         public MainWindow()
         {
             InitializeComponent();
             var zoomedMatrix = aboveCanvas.RenderTransform as MatrixTransform;
             if (zoomedMatrix != null) originalMatrix = zoomedMatrix.Matrix;
+            defaultSettings();
+
+            DataContext = this;
         }
         private void RibbonWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -97,24 +146,6 @@ namespace Paint
             _selectedType = name;
         }
 
-        bool _isDrawing = false;
-        IShape? _prototype = null;
-        string _selectedType = "";
-        Color _selectedColor = Colors.Black;
-        int _selectedThickness = 1; //By default
-        DoubleCollection _selectedStroke;
-
-        string _newPathAbsolute;
-
-        Point _start;
-        Point _end;
-
-        private MyFile MyFile;
-
-        private string collection_of_pressed_keys = "";
-
-        List<IShape> _shapes = new List<IShape>();
-
         private void drawOldShapes()
         {
             actualCanvas.Children.Clear();
@@ -143,7 +174,6 @@ namespace Paint
             //    _selectedColor = scb.Color;
             //}
 
-            Title = _selectedType;
 
             _isDrawing = true;
             isActionStorable = true;
@@ -156,8 +186,11 @@ namespace Paint
 
         private void canvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (String.IsNullOrEmpty(_selectedType)) { _isDrawing = false; return; }
+            Point mousePos = e.GetPosition(actualCanvas);
+            MousePos = $"{Math.Round(mousePos.X,0)}px , {Math.Round(mousePos.Y,0)}px";
 
+            if (String.IsNullOrEmpty(_selectedType)) { _isDrawing = false; return; }
+            
             if (_isDrawing)
             {
                 drawOldShapes();
@@ -167,6 +200,8 @@ namespace Paint
 
                 UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke, _newPathAbsolute);
                 actualCanvas.Children.Add(newShape);
+                UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke);
+                        actualCanvas.Children.Add(newShape);
             }
         }
 
@@ -326,6 +361,33 @@ namespace Paint
             else if(SenderContent.Equals(Constants.MENU_EXPORT_TO))
             {
                 Save_Image();
+            }
+            else if(SenderContent.Equals(Constants.MENU_NEW))
+            {
+                New_File();
+            }
+        }
+
+        private void New_File()
+        {
+            //Ask to save current file
+            MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to save your work?", "Save", MessageBoxButton.YesNoCancel);
+            if (result == MessageBoxResult.Yes) {
+                Save_Image();
+                _shapes.Clear();
+                _storeShapes.Clear();
+                defaultSettings();
+                drawOldShapes();
+
+            }
+            else if (result == MessageBoxResult.No)
+            {
+                defaultSettings();
+                drawOldShapes();
+            }
+            else
+            {
+                //Do nothing..
             }
         }
 
@@ -532,6 +594,8 @@ namespace Paint
             }
             File.Copy(_selectedImage.FullName, _newPathAbsolute);
         }
+
+
 
     }
 }
