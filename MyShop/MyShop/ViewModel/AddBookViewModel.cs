@@ -44,6 +44,10 @@ namespace MyShop.ViewModel
 
         public async void ExecuteConfirmCommand()
         {
+            if(NewBook.Image == null)
+            {
+                NewBook.Image = "StoreLogo.png";
+            }
             var task = await _bookRepository.Add(NewBook);
             if (task)
             {
@@ -68,10 +72,11 @@ namespace MyShop.ViewModel
             filePicker.ViewMode = PickerViewMode.Thumbnail;
             string image_extensions = ".png;.jpeg;.gif;.jpg;.bmp;.tiff;.tif";
             new List<string>(image_extensions.Split(";")).ForEach(item => filePicker.FileTypeFilter.Add(item));
-            StorageFile file = await filePicker.PickSingleFileAsync();
+            //StorageFile file = await filePicker.PickSingleFileAsync();
             
 
             WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
+            StorageFile file = await filePicker.PickSingleFileAsync();
 
             if (file != null)
             {
