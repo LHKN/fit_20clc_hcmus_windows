@@ -45,6 +45,8 @@ namespace Paint
         DoubleCollection? _selectedStroke;
         private string _mousePos;
 
+        string _newPathAbsolute;
+
         Point _start;
         Point _end;
 
@@ -200,8 +202,6 @@ namespace Paint
 
                 UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke, _newPathAbsolute);
                 actualCanvas.Children.Add(newShape);
-                UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke);
-                        actualCanvas.Children.Add(newShape);
             }
         }
 
