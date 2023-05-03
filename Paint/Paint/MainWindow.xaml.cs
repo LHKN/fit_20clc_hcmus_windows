@@ -45,6 +45,8 @@ namespace Paint
         DoubleCollection? _selectedStroke;
         private string _mousePos;
 
+        string _newPathAbsolute;
+
         Point _start;
         Point _end;
         string _newPathAbsolute;
