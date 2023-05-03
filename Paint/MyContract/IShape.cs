@@ -16,7 +16,7 @@ namespace MyContract
 
         void UpdateStart(System.Windows.Point p);
         void UpdateEnd(System.Windows.Point p);
-        UIElement Draw(System.Windows.Media.Color color, int thickness, DoubleCollection stroke);
+        UIElement Draw(System.Windows.Media.Color color, int thickness, DoubleCollection stroke, string source, string content);
 
     }
 }

@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Paint"
         mc:Ignorable="d"
         Title="MyPaint" Height="450" Width="800" Loaded="RibbonWindow_Loaded">
-    <DockPanel LastChildFill="True" Keyboard.KeyDown="Screen_KeyDown_Handler" Keyboard.KeyUp="Screen_KeyUp_Handler">
+    <DockPanel LastChildFill="True" Keyboard.KeyDown="Screen_KeyDown_Handler" >
         <Fluent:Ribbon Name="mainRibbon" DockPanel.Dock="Top">
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage Header="MyPaint">
@@ -41,7 +41,7 @@
                             <Image Source="Assets/scissors.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.Icon>
                     </Fluent:Button>
-                    <Fluent:Button Header="Copy">
+                    <Fluent:Button Header="Copy" Click="CopyButton_Click">
                         <Fluent:Button.Icon>
                             <Image Source="Assets/copy.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.Icon>
@@ -92,6 +92,9 @@
 
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Tools">
+                    
+                        
+                    
                     <Fluent:ToggleButton GroupName="Abilities" Header="Pencil" Fluent:RibbonProperties.SizeDefinition="Middle">
                         <Fluent:ToggleButton.Icon>
                             <Image Source="Assets/pencil.png" RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -102,7 +105,7 @@
                             <Image Source="Assets/bucket.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:ToggleButton.Icon>
                     </Fluent:ToggleButton>
-                    <Fluent:ToggleButton GroupName="Abilities" Header="Text" Fluent:RibbonProperties.SizeDefinition="Middle">
+                    <Fluent:ToggleButton GroupName="Abilities" Header="Text" Fluent:RibbonProperties.SizeDefinition="Middle" Click="TextButton_Click">
                         <Fluent:ToggleButton.Icon>
                             <Image Source="Assets/text.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:ToggleButton.Icon>
@@ -118,6 +121,42 @@
                         </Fluent:ToggleButton.Icon>
                     </Fluent:ToggleButton>
                 </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="Font">
+                    <StackPanel Orientation="Vertical" Width="195">
+                    <Fluent:ComboBox Header="Font Family" x:Name="fontFamilyComboBox" Height="20" Width="195"  IsEditable="False" HorizontalAlignment="Left"
+                                         SelectionChanged="fontFamily_SelectionChanged">
+             
+
+                    </Fluent:ComboBox>
+                    <Fluent:ComboBox Header="Size" x:Name="fontSizeComboBox" Height="20" Width="100"  IsEditable="False" HorizontalAlignment="Left" Padding="10"
+                                         SelectionChanged="fontSize_SelectionChanged">
+
+                        
+                    </Fluent:ComboBox>
+                        <StackPanel Orientation="Horizontal">
+                    <Fluent:Button Header="" Name="boldCommand"
+                                   Click="boldCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/bold.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="" Name="italicCommand"
+                                   Click="italicCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/italic.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="" Name="underlineCommand"
+                                   Click="underlineCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/underline.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    </StackPanel>
+                    </StackPanel>
+                </Fluent:RibbonGroupBox>
+
                 <Fluent:RibbonGroupBox Header="Stroke">
                     <!--<Fluent:ToggleButton GroupName="Stroke" Header="Dash" Click="dash_Click">
                         <Fluent:ToggleButton.Icon>
@@ -230,6 +269,7 @@
                 <Canvas.RenderTransform>
                     <MatrixTransform/>
                 </Canvas.RenderTransform>
+                
             </Canvas>
             <Canvas Background="Transparent"  Name="aboveCanvas" MouseDown="canvas_MouseDown" MouseMove="canvas_MouseMove" MouseUp="canvas_MouseUp">
 

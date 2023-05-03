@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MyFile.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Assets\100_origin.png" />
+    <None Remove="Assets\bold.png" />
     <None Remove="Assets\brush-size.png" />
     <None Remove="Assets\bucket.png" />
     <None Remove="Assets\color-picker.png" />
@@ -23,6 +28,7 @@
     <None Remove="Assets\flip.png" />
     <None Remove="Assets\heart.png" />
     <None Remove="Assets\image.png" />
+    <None Remove="Assets\italic.png" />
     <None Remove="Assets\line-thickness.png" />
     <None Remove="Assets\medium.png" />
     <None Remove="Assets\paste.png" />
@@ -36,6 +42,7 @@
     <None Remove="Assets\text.png" />
     <None Remove="Assets\thick.png" />
     <None Remove="Assets\thin.png" />
+    <None Remove="Assets\underline.png" />
     <None Remove="Assets\undo.png" />
     <None Remove="Assets\zoomIn.png" />
     <None Remove="Assets\zoomOut.png" />
@@ -43,6 +50,9 @@
 
   <ItemGroup>
     <Content Include="Assets\100_origin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\bold.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\bucket.png">
@@ -84,6 +94,9 @@
     <Content Include="Assets\image.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\italic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\line-thickness.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -123,6 +136,9 @@
     <Content Include="Assets\thin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\underline.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\undo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -130,6 +146,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\zoomOut.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyFile.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -145,6 +164,7 @@
     <ProjectReference Include="..\MyHeart\MyHeart.csproj" />
     <ProjectReference Include="..\Pencil\Pencil.csproj" />
     <ProjectReference Include="..\RectangleAbility\RectangleAbility.csproj" />
+    <ProjectReference Include="..\TextInputAbility\TextInputAbility.csproj" />
   </ItemGroup>
 
   <ItemGroup>

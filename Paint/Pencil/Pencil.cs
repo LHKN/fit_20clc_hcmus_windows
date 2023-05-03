@@ -30,7 +30,7 @@ namespace Pencil
             Start= p;
         }
 
-        public UIElement Draw(System.Windows.Media.Color color, int thickness, DoubleCollection stroke)
+        public UIElement Draw(System.Windows.Media.Color color, int thickness, DoubleCollection stroke, string source, string content)
         {
             return null;
         }

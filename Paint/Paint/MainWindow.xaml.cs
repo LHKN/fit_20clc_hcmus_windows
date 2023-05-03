@@ -10,9 +10,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
+
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
+using TextInputAbility;
 
 namespace Paint
 {
@@ -32,7 +34,8 @@ namespace Paint
             { "Ellipse", "Assets/ellipse.png" },
             { "Rectangle", "Assets/rectangle.png" },
             { "Heart", "Assets/heart.png" },
-            { "Pencil", "Assets/pencil.png" }
+            { "Pencil", "Assets/pencil.png" },
+            {"Text","Assets/text.png" }
         };
         private Matrix originalMatrix;
         public MainWindow()
@@ -69,6 +72,9 @@ namespace Paint
 
             foreach (var ability in _abilities)
             {
+                if (string.Compare(ability.Value.Name, "Text")==0){
+                    continue;
+                }
                 var button = new Fluent.ToggleButton()
                 {
                     Header = ability.Value.Name,
@@ -85,28 +91,57 @@ namespace Paint
             }
 
 
-            MyFile = new MyFile();
-            MyFile.ReferenceAbilities = _abilities;
+            //MyFile = new MyFile();
+            //MyFile.ReferenceAbilities = _abilities;
+
+            foreach (FontFamily fontFamily in Fonts.SystemFontFamilies)
+            {
+                fontFamilyComboBox.Items.Add(fontFamily);
+            }
+
+            for (int i = 8; i <= 72; i++)
+            {
+                fontSizeComboBox.Items.Add(i);
+            }
+
+
+
+            // bind font family collection to font combo box
+            //strokeComboBox.ItemsSource = fontFamilyCollection;
         }
 
         private void ability_Click(object sender, RoutedEventArgs e)
         {
+            _isTextType = false;
             var button = (Fluent.ToggleButton)sender;
             string name = (string)button.Tag;
             _selectedType = name;
         }
 
         bool _isDrawing = false;
+        bool _isTextType = false;
         IShape? _prototype = null;
+        MyText _textPrototype;
+        TextBox _textBox;
         string _selectedType = "";
         Color _selectedColor = Colors.Black;
         int _selectedThickness = 1; //By default
         DoubleCollection _selectedStroke;
+        FontFamily selectedFontFamily = null;
+        int selectedFontSize = 0;
+        bool _isBold= false;
+        bool _isItalic= false;
+        bool _isUnderline = false;
+
+        string _newPathAbsolute;
+        string _textContent;
 
         Point _start;
         Point _end;
+        int count = 0;
+        string contentText = "";
 
-        private MyFile MyFile;
+        //private MyFile MyFile;
 
         private string collection_of_pressed_keys = "";
 
@@ -118,35 +153,62 @@ namespace Paint
 
             foreach (var shape in _shapes)
             {
-                UIElement oldShape = shape.Draw(_selectedColor, _selectedThickness, _selectedStroke);
+                UIElement oldShape = shape.Draw(_selectedColor, _selectedThickness, _selectedStroke,_newPathAbsolute,_textContent);
                 actualCanvas.Children.Add(oldShape);
             }
+        }
+        
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Cập nhật giá trị text của TextBox vào đối tượng _prototype
+            contentText = ((TextBox)sender).Text;
         }
 
         private void canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (String.IsNullOrEmpty(_selectedType)) { _isDrawing = false; return; }
 
-            //if (e.LeftButton == MouseButtonState.Pressed)
-            //{
-            //    // Left mouse button was clicked
-            //    SolidColorBrush scb = (SolidColorBrush)primaryColor.Background;
-            //    _selectedColor = scb.Color;
-            //}
-            //else if (e.RightButton == MouseButtonState.Pressed)
-            //{
-            //    // Right mouse button was clicked
-            //    SolidColorBrush scb = (SolidColorBrush)secondaryColor.Background;
-            //    _selectedColor = scb.Color;
-            //}
-
             _isDrawing = true;
             isActionStorable = true;
             _start = e.GetPosition(actualCanvas);
+            if (_isTextType)
+            {
+                _textBox = new System.Windows.Controls.TextBox();
+                _textBox.Foreground = new SolidColorBrush(_selectedColor);
+                if (selectedFontFamily != null)
+                {
+                    _textBox.FontFamily = selectedFontFamily;
+                }
+                if (selectedFontSize > 0)
+                {
+                    _textBox.FontSize = selectedFontSize;
+                }
 
-            _prototype = (IShape)
-                _abilities[_selectedType].Clone();
-            _prototype.UpdateStart(_start);
+                if (_isBold)
+                {
+                    _textBox.FontWeight = FontWeights.Bold;
+                }
+                if (_isItalic)
+                {
+                    _textBox.FontStyle = FontStyles.Italic;
+                }
+                if (_isUnderline)
+                {
+                    _textBox.TextDecorations = TextDecorations.Underline;
+                }
+                _textBox.TextChanged += TextBox_TextChanged;
+                _textBox.Focus();
+
+                
+            }
+            else
+            {
+                _prototype = (IShape)
+                    _abilities[_selectedType].Clone();
+                _prototype.UpdateStart(_start);
+            }
+
+           
         }
 
         private void canvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
@@ -158,10 +220,40 @@ namespace Paint
                 drawOldShapes();
                
                 _end = e.GetPosition(actualCanvas);
-                _prototype?.UpdateEnd(_end);
+                if (_isTextType)
+                {
+                    _textPrototype?.UpdateEnd(_end);
+                    double width = Math.Abs(_end.X - _start.X);
+                    double height = Math.Abs(_end.Y - _start.Y);
+                    double left = Math.Min(_start.X, _end.X); // Use Math.Min to determine the left position
+                    double top = Math.Min(_start.Y, _end.Y); // Use Math.Min to determine the top position
+                    _textBox.Width = width;
+                    _textBox.Height = height;
 
-                UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke);
-                actualCanvas.Children.Add(newShape);
+                    Canvas.SetLeft(_textBox, left);
+                    Canvas.SetTop(_textBox, top);
+
+                    actualCanvas.Children.Add(_textBox);
+                    _textBox.Focus();
+                    _textBox.TextChanged += TextBox_TextChanged;
+
+                    _textPrototype = new MyText();
+                    _textPrototype.UpdateStart(_start);
+                    _textPrototype.UpdateEnd(_end);
+                    _textPrototype.UpdateFontFamily(selectedFontFamily);
+                    _textPrototype.UpdateFontSize(selectedFontSize);
+                    _textPrototype.UpdateBold(_isBold);
+                    _textPrototype.UpdateItalic(_isItalic);
+                    _textPrototype.UpdateUnderline(_isUnderline);
+                }
+                else
+                {
+                    _prototype?.UpdateEnd(_end);
+                    UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke,_newPathAbsolute,_textContent);
+                    //AdornerLayer.GetAdornerLayer(actualCanvas).Add(new ResizeAdorner(newShape));
+                    actualCanvas.Children.Add(newShape);
+                }
+                
             }
         }
 
@@ -169,7 +261,32 @@ namespace Paint
         {
             if (String.IsNullOrEmpty(_selectedType)) { _isDrawing = false; return; }
 
-            _shapes.Add((IShape)_prototype.Clone());
+            
+            
+            if (_isTextType)
+            {
+                ++count;
+                _textBox.TextChanged += TextBox_TextChanged;
+                //var textArea = (TextBox)_textBox;
+                if (count==2)
+                {
+                    //_textPrototype = new MyText();
+                    //_textPrototype.UpdateStart(_start);
+                    //_textPrototype.UpdateEnd(_end);
+                    //if (!_textBox.IsFocused)
+                    //{
+
+                    //}
+                    _textPrototype.SetContent(contentText);
+                    _shapes.Add((IShape)_textPrototype.Clone());
+                    count = 0;
+                    contentText = "";
+                }
+            }
+            else
+            {
+                _shapes.Add((IShape)_prototype.Clone());
+            }
 
             _isDrawing = false;
 
@@ -294,7 +411,7 @@ namespace Paint
 
             if(collection_of_pressed_keys.Equals(Constants.SAVE))
             {
-                Save_File();
+                //Save_File();
             }
 
             collection_of_pressed_keys = "";
@@ -304,129 +421,129 @@ namespace Paint
         
         private void Menu_Button_Handler(object sender, MouseButtonEventArgs e)
         {
-            Debug.WriteLine(sender.ToString());
-            Debug.WriteLine(e.Source.ToString());
-            string SenderContent = sender.ToString().Split(':')[1].Trim();
+        //    Debug.WriteLine(sender.ToString());
+        //    Debug.WriteLine(e.Source.ToString());
+        //    string SenderContent = sender.ToString().Split(':')[1].Trim();
 
-            if (SenderContent.Equals(Constants.MENU_SAVE))
-            {
-                Save_File();
-            }
-            else if(SenderContent.Equals(Constants.MENU_OPEN))
-            {
-                Open_File();
-            }
-            else if(SenderContent.Equals(Constants.MENU_SAVE_AS))
-            {
+        //    if (SenderContent.Equals(Constants.MENU_SAVE))
+        //    {
+        //        Save_File();
+        //    }
+        //    else if(SenderContent.Equals(Constants.MENU_OPEN))
+        //    {
+        //        Open_File();
+        //    }
+        //    else if(SenderContent.Equals(Constants.MENU_SAVE_AS))
+        //    {
 
-            }
-            else if(SenderContent.Equals(Constants.MENU_EXPORT_TO))
-            {
-                Save_Image();
-            }
+        //    }
+        //    else if(SenderContent.Equals(Constants.MENU_EXPORT_TO))
+        //    {
+        //        Save_Image();
+        //    }
         }
 
 
         /// <execute>
-        private void Save_File()
-        {
-            if (MyFile.isNewFile())
-            {
-                MyFile.SaveFileDialog.CheckFileExists = false;
-                bool? check = MyFile.SaveFileDialog.ShowDialog();
-                Debug.WriteLine("Check= " + check.ToString());
-                if (check != null && check == true)
-                {
-                    string path = MyFile.SaveFileDialog.FileName;
-                    MyFile.CurrentStoredPath = path;
-                    int write_mode = 1;
-                    if (MyFile.SaveFileDialog.FilterIndex == 1)
-                    {
-                        write_mode = MyFile.BINARY_FILE;
-                    }
-                    else if(MyFile.SaveFileDialog.FilterIndex == 2)
-                    {
-                        write_mode = MyFile.XML_FILE;
-                    }
-                    MyFile.WriteTo(MyFile.CurrentStoredPath, _shapes, write_mode);
-                }
-            }
-            else
-            {
-                string? ext = System.IO.Path.GetExtension(MyFile.CurrentStoredPath);
-                if (ext != null)
-                {
-                    Debug.WriteLine(ext);
-                    /* MyFile.WriteTo(MyFile.CurrentStoredPath, _shapes, )*/
-                    if (ext.Equals(MyFile.MPXML_EXT)) // xml mode
-                    {
-                        MyFile.WriteTo(MyFile.CurrentStoredPath!, _shapes, MyFile.XML_FILE);
-                    }
-                    else //binary mode
-                    {
-                        MyFile.WriteTo(MyFile.CurrentStoredPath!, _shapes, MyFile.BINARY_FILE);
-                    }
-                }
+        //private void Save_File()
+        //{
+        //    if (MyFile.isNewFile())
+        //    {
+        //        MyFile.SaveFileDialog.CheckFileExists = false;
+        //        bool? check = MyFile.SaveFileDialog.ShowDialog();
+        //        Debug.WriteLine("Check= " + check.ToString());
+        //        if (check != null && check == true)
+        //        {
+        //            string path = MyFile.SaveFileDialog.FileName;
+        //            MyFile.CurrentStoredPath = path;
+        //            int write_mode = 1;
+        //            if (MyFile.SaveFileDialog.FilterIndex == 1)
+        //            {
+        //                write_mode = MyFile.BINARY_FILE;
+        //            }
+        //            else if(MyFile.SaveFileDialog.FilterIndex == 2)
+        //            {
+        //                write_mode = MyFile.XML_FILE;
+        //            }
+        //            MyFile.WriteTo(MyFile.CurrentStoredPath, _shapes, write_mode);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        string? ext = System.IO.Path.GetExtension(MyFile.CurrentStoredPath);
+        //        if (ext != null)
+        //        {
+        //            Debug.WriteLine(ext);
+        //            /* MyFile.WriteTo(MyFile.CurrentStoredPath, _shapes, )*/
+        //            if (ext.Equals(MyFile.MPXML_EXT)) // xml mode
+        //            {
+        //                MyFile.WriteTo(MyFile.CurrentStoredPath!, _shapes, MyFile.XML_FILE);
+        //            }
+        //            else //binary mode
+        //            {
+        //                MyFile.WriteTo(MyFile.CurrentStoredPath!, _shapes, MyFile.BINARY_FILE);
+        //            }
+        //        }
 
-            }
-        }
+        //    }
+        //}
         
-        private void Open_File()
-        {
-            string SelectedFile = "";
-            bool? check = MyFile.OpenFileDialog.ShowDialog();
-            if(check!= null && check == true)
-            {
-                int selectedIndex = MyFile.OpenFileDialog.FilterIndex;
-                int mode = 0;
-                if(selectedIndex == 1)
-                {
-                    mode = MyFile.BINARY_FILE;
-                }
-                else if(selectedIndex == 2)
-                {
-                    mode = MyFile.XML_FILE;
-                }
+        //private void Open_File()
+        //{
+        //    string SelectedFile = "";
+        //    bool? check = MyFile.OpenFileDialog.ShowDialog();
+        //    if(check!= null && check == true)
+        //    {
+        //        int selectedIndex = MyFile.OpenFileDialog.FilterIndex;
+        //        int mode = 0;
+        //        if(selectedIndex == 1)
+        //        {
+        //            mode = MyFile.BINARY_FILE;
+        //        }
+        //        else if(selectedIndex == 2)
+        //        {
+        //            mode = MyFile.XML_FILE;
+        //        }
 
-                SelectedFile = MyFile.OpenFileDialog.FileName;
-                Debug.WriteLine($"{SelectedFile} is selected");
-                MyFile.CurrentStoredPath = SelectedFile;
-                _shapes = MyFile.ReadFrom(MyFile.CurrentStoredPath, mode);
-                drawOldShapes();
-            }
+        //        SelectedFile = MyFile.OpenFileDialog.FileName;
+        //        Debug.WriteLine($"{SelectedFile} is selected");
+        //        MyFile.CurrentStoredPath = SelectedFile;
+        //        _shapes = MyFile.ReadFrom(MyFile.CurrentStoredPath, mode);
+        //        drawOldShapes();
+        //    }
 
-        }
+        //}
 
-        private void Save_Image()
-        {
-            bool? check = MyFile.SaveImageDialog.ShowDialog();
-            if(check!= null && check == true )
-            {
-                string path = MyFile.SaveImageDialog.FileName;
-                Debug.WriteLine(path);
-                string? ext = System.IO.Path.GetExtension(path);
-                int mode = MyFile.CREATE_BITMAP;
-                if(ext != null )
-                {
-                    if(ext.Equals(MyFile.BITMAP_EXT))
-                    {
-                        mode = MyFile.CREATE_BITMAP;
-                    }
-                    else if(ext.Equals(MyFile.PNG_EXT))
-                    {
-                        mode = MyFile.CREATE_PNG;
-                    }
-                    else if(ext.Equals(MyFile.JPG_EXT))
-                    {
-                        mode = MyFile.CREATE_JPG;
-                    }
-                }
-                int canvas_width = Convert.ToInt32(Math.Ceiling(aboveCanvas.ActualWidth));
-                int canvas_height = Convert.ToInt32(Math.Ceiling(aboveCanvas.ActualHeight));
-                MyFile.SaveImage(path, actualCanvas, canvas_width, canvas_height, mode);
+        //private void Save_Image()
+        //{
+        //    bool? check = MyFile.SaveImageDialog.ShowDialog();
+        //    if(check!= null && check == true )
+        //    {
+        //        string path = MyFile.SaveImageDialog.FileName;
+        //        Debug.WriteLine(path);
+        //        string? ext = System.IO.Path.GetExtension(path);
+        //        int mode = MyFile.CREATE_BITMAP;
+        //        if(ext != null )
+        //        {
+        //            if(ext.Equals(MyFile.BITMAP_EXT))
+        //            {
+        //                mode = MyFile.CREATE_BITMAP;
+        //            }
+        //            else if(ext.Equals(MyFile.PNG_EXT))
+        //            {
+        //                mode = MyFile.CREATE_PNG;
+        //            }
+        //            else if(ext.Equals(MyFile.JPG_EXT))
+        //            {
+        //                mode = MyFile.CREATE_JPG;
+        //            }
+        //        }
+        //        int canvas_width = Convert.ToInt32(Math.Ceiling(aboveCanvas.ActualWidth));
+        //        int canvas_height = Convert.ToInt32(Math.Ceiling(aboveCanvas.ActualHeight));
+        //        MyFile.SaveImage(path, actualCanvas, canvas_width, canvas_height, mode);
 
-            }
-        }
+        //    }
+        //}
 
 
         /// </execute>
@@ -451,6 +568,24 @@ namespace Paint
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void fontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (fontFamilyComboBox.SelectedItem != null)
+            {
+               selectedFontFamily = (FontFamily)fontFamilyComboBox.SelectedItem;
+                // Do something with the selected Font Family
+            }
+        }
+
+        private void fontSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (fontSizeComboBox.SelectedItem != null)
+            {
+                selectedFontSize = (int)fontSizeComboBox.SelectedItem;
+                // Do something with the selected Font Family
             }
         }
 
@@ -496,6 +631,38 @@ namespace Paint
             matrix.ScaleAt(scale, scale, pos1.X, pos1.Y);
             curMatrix.Matrix = matrix;
             e.Handled = true;
+        }
+
+     
+
+        private void CopyButton_Click(object sender, RoutedEventArgs e)
+        {
+           
+
+            _storeShapes.Clear();
+            _shapes = new List<IShape>();
+            drawOldShapes();
+        }
+
+        private void TextButton_Click(object sender, RoutedEventArgs e)
+        {
+           _isTextType= true;
+            _selectedType = "Text";
+        }
+
+        private void boldCommand_Click(object sender, RoutedEventArgs e)
+        {
+            _isBold = !_isBold;
+        }
+
+        private void italicCommand_Click(object sender, RoutedEventArgs e)
+        {
+            _isItalic=!_isItalic;
+        }
+
+        private void underlineCommand_Click(object sender, RoutedEventArgs e)
+        {
+            _isUnderline= !_isUnderline;
         }
     }
 }

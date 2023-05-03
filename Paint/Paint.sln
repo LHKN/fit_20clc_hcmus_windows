@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RectangleAbility", "Rectang
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyHeart", "MyHeart\MyHeart.csproj", "{5EC46718-70F5-4B22-8469-12FDF20EDBF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pencil", "Pencil\Pencil.csproj", "{C9CA7D6E-2EA8-4F13-B68A-041857C3381A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pencil", "Pencil\Pencil.csproj", "{C9CA7D6E-2EA8-4F13-B68A-041857C3381A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextInputAbility", "TextInputAbility\TextInputAbility.csproj", "{ADE92E24-1604-4006-A02F-E4580545DD11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{C9CA7D6E-2EA8-4F13-B68A-041857C3381A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9CA7D6E-2EA8-4F13-B68A-041857C3381A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9CA7D6E-2EA8-4F13-B68A-041857C3381A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADE92E24-1604-4006-A02F-E4580545DD11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADE92E24-1604-4006-A02F-E4580545DD11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADE92E24-1604-4006-A02F-E4580545DD11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADE92E24-1604-4006-A02F-E4580545DD11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

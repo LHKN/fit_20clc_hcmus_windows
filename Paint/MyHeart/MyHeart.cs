@@ -23,7 +23,7 @@ namespace MyHeart
             return MemberwiseClone();
         }
 
-        public UIElement Draw(Color color, int thickness, DoubleCollection stroke)
+        public UIElement Draw(Color color, int thickness, DoubleCollection stroke, string source, string content)
         {
             //handle color and thickness of redraw shape, only assign once
             if (ShapeColor == Colors.Transparent) { ShapeColor = color; }
