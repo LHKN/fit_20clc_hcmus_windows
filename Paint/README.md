@@ -50,6 +50,8 @@ Info: ID & Name & Email
 * Create new canvas and ask user if they want to save their work in progress's image  
 * Clear screen
 
+### In develop branch, we've been researching in custom Adorner for "Select a single element for editing again" feature
+
 
 ## Expected grade  
 

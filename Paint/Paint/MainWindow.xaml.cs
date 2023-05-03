@@ -63,7 +63,7 @@ namespace Paint
         Point _end;
 
 
-        private MyFile MyFile;
+        //private MyFile MyFile;
 
         private string collection_of_pressed_keys = "";
 
@@ -486,11 +486,11 @@ namespace Paint
 
             if (SenderContent.Equals(Constants.MENU_SAVE))
             {
-                Save_File();
+                //Save_File();
             }
             else if(SenderContent.Equals(Constants.MENU_OPEN))
             {
-                Open_File();
+                //Open_File();
             }
             else if(SenderContent.Equals(Constants.MENU_SAVE_AS))
             {
@@ -498,7 +498,7 @@ namespace Paint
             }
             else if(SenderContent.Equals(Constants.MENU_EXPORT_TO))
             {
-                Save_Image();
+                //Save_Image();
             }
             else if(SenderContent.Equals(Constants.MENU_NEW))
             {
@@ -511,7 +511,7 @@ namespace Paint
             //Ask to save current file
             MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to save your work?", "Save", MessageBoxButton.YesNoCancel);
             if (result == MessageBoxResult.Yes) {
-                Save_Image();
+                //Save_Image();
                 _shapes.Clear();
                 _storeShapes.Clear();
                 defaultSettings();
@@ -547,7 +547,7 @@ namespace Paint
                     {
                         write_mode = MyFile.BINARY_FILE;
                     }
-                    else if(MyFile.SaveFileDialog.FilterIndex == 2)
+                    else if (MyFile.SaveFileDialog.FilterIndex == 2)
                     {
                         write_mode = MyFile.XML_FILE;
                     }
@@ -573,20 +573,20 @@ namespace Paint
 
             }
         }
-        
+
         private void Open_File()
         {
             string SelectedFile = "";
             bool? check = MyFile.OpenFileDialog.ShowDialog();
-            if(check!= null && check == true)
+            if (check != null && check == true)
             {
                 int selectedIndex = MyFile.OpenFileDialog.FilterIndex;
                 int mode = 0;
-                if(selectedIndex == 1)
+                if (selectedIndex == 1)
                 {
                     mode = MyFile.BINARY_FILE;
                 }
-                else if(selectedIndex == 2)
+                else if (selectedIndex == 2)
                 {
                     mode = MyFile.XML_FILE;
                 }
@@ -603,23 +603,23 @@ namespace Paint
         private void Save_Image()
         {
             bool? check = MyFile.SaveImageDialog.ShowDialog();
-            if(check!= null && check == true )
+            if (check != null && check == true)
             {
                 string path = MyFile.SaveImageDialog.FileName;
                 Debug.WriteLine(path);
                 string? ext = System.IO.Path.GetExtension(path);
                 int mode = MyFile.CREATE_BITMAP;
-                if(ext != null )
+                if (ext != null)
                 {
-                    if(ext.Equals(MyFile.BITMAP_EXT))
+                    if (ext.Equals(MyFile.BITMAP_EXT))
                     {
                         mode = MyFile.CREATE_BITMAP;
                     }
-                    else if(ext.Equals(MyFile.PNG_EXT))
+                    else if (ext.Equals(MyFile.PNG_EXT))
                     {
                         mode = MyFile.CREATE_PNG;
                     }
-                    else if(ext.Equals(MyFile.JPG_EXT))
+                    else if (ext.Equals(MyFile.JPG_EXT))
                     {
                         mode = MyFile.CREATE_JPG;
                     }
