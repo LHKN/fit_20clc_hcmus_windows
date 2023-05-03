@@ -10,10 +10,14 @@ Info: ID & Name & Email
 |20127679     |Lê Hoàng Khanh Nguyên|lhknguyen20@clc.fitus.edu.vn|  
 
 
-How to run your project? (WIP)  
-    'Start with debugging' or 'Start without debugging' to run
+How to run our project?  
+    - Method 1: 'Start with debugging' or 'Start without debugging' to run the project  
+    - Method 2: Follow these steps:  
+    		1. Run "MyShopSetup.msi" or "setup.exe" file to install.  
+    		2. Select folder to install MyShopSetup.  
+    		3. Go to MyShopSetup folder and run the executable file (MyShop.exe)  
 
-What have been completed? (WIP)  
+What have been completed?  
     1. Màn hình đăng nhập:  
     	- Cho nhập username và password để đi vào màn hình chính.  
 	- Có chức năng lưu username và password ở local để lần sau người dùng không cần đăng nhập lại.  
@@ -51,4 +55,4 @@ What should be considered for bonus?
 	- Cho phép tìm các sản phẩm sắp hết hàng (số lượng < 5)  
 	- Sử dụng thư viện WinUI mới (WinUI3)  
 Expected grade  
-    
+    	
