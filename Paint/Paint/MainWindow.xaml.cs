@@ -62,6 +62,7 @@ namespace Paint
         Point _start;
         Point _end;
 
+
         private MyFile MyFile;
 
         private string collection_of_pressed_keys = "";
@@ -91,7 +92,7 @@ namespace Paint
             _selectedType = "";
             _selectedColor = Colors.Black;
             _selectedThickness = 1;
-            _selectedStroke = null;
+            _selectedStroke = new DoubleCollection();
             _shapes = new List<IShape>();
         }
         public MainWindow()
@@ -720,7 +721,7 @@ namespace Paint
 
      
 
-        private void CopyButton_Click(object sender, RoutedEventArgs e)
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
            
 

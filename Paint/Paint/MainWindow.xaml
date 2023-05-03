@@ -41,14 +41,14 @@
                             <Image Source="Assets/scissors.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.Icon>
                     </Fluent:Button>
-                    <Fluent:Button Header="Copy" Click="CopyButton_Click">
+                    <Fluent:Button Header="Copy" >
                         <Fluent:Button.Icon>
                             <Image Source="Assets/copy.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.Icon>
                     </Fluent:Button>
-                    <Fluent:Button Header="Paste">
+                    <Fluent:Button Header="Clear" Click="ClearButton_Click">
                         <Fluent:Button.Icon>
-                            <Image Source="Assets/paste.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Image Source="Assets/clean.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.Icon>
                     </Fluent:Button>
                 </Fluent:RibbonGroupBox>

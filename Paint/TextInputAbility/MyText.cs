@@ -19,6 +19,8 @@ namespace TextInputAbility
 
         public Color ShapeColor { get; set; } = Colors.Transparent;
         public int Thickness { get; set; } = -1;
+        DoubleCollection IShape.Stroke { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         private DoubleCollection? Stroke;
         private string textContent = "";
         private FontFamily fontFamily = null;
@@ -63,7 +65,7 @@ namespace TextInputAbility
             textContent = text;
         }
 
-        public UIElement Draw(Color color, int thickness, DoubleCollection stroke, string source, string content)
+        public UIElement Draw(Color color, int thickness, DoubleCollection stroke, string source)
         {
             //handle color and thickness of redraw shape, only assign once
             if (ShapeColor == Colors.Transparent) { ShapeColor = color; }
@@ -118,5 +120,14 @@ namespace TextInputAbility
             return MemberwiseClone();
         }
 
+        public string FromShapeToString()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IShape FromStringToShape(string str)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
