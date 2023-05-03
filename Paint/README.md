@@ -48,6 +48,7 @@ Info: ID & Name & Email
 * Undo, Redo  
 * Save as image  
 * Create new canvas and ask user if they want to save their work in progress's image  
+* Clear screen
 
 
 ## Expected grade  
