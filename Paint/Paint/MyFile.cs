@@ -86,7 +86,7 @@ namespace Paint
             SaveImageDialog.DefaultExt = "bmp";
             SaveImageDialog.CheckFileExists= false;
             SaveImageDialog.CheckPathExists= true;
-            SaveImageDialog.Filter = "Bitmap file (*.bmp)|*.bmp|PNG file (*.png)|*.png";
+            SaveImageDialog.Filter = "Bitmap file (*.bmp)|*.bmp|PNG file (*.png)|*.png|JPG file (*.jpg)|*.jpg";
             SaveImageDialog.FilterIndex = 1;
             SaveImageDialog.AddExtension = true;
 
@@ -124,7 +124,7 @@ namespace Paint
             SaveImageDialog.DefaultExt = "bmp";
             SaveImageDialog.CheckFileExists = false;
             SaveImageDialog.CheckPathExists = true;
-            SaveImageDialog.Filter = "Bitmap file (*.bmp)|*.bmp|PNG file (*.png)|*.png";
+            SaveImageDialog.Filter = "Bitmap file (*.bmp)|*.bmp|PNG file (*.png)|*.png|JPG file (*.jpg)|*.jpg";
             SaveImageDialog.FilterIndex = 1;
             SaveImageDialog.AddExtension = true;
 
@@ -363,6 +363,20 @@ namespace Paint
                             Bitmap bitmap = new Bitmap(memoryStream);
                             
                             bitmap.Save(file, ImageFormat.Png);
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            memoryStream.Dispose();
+                        }
+                        file.Close();
+                        break;
+                    }
+                case CREATE_JPG:
+                    {
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            encoder.Save(memoryStream);
+                            Bitmap bitmap = new Bitmap(memoryStream);
+
+                            bitmap.Save(file, ImageFormat.Jpeg);
                             memoryStream.Seek(0, SeekOrigin.Begin);
                             memoryStream.Dispose();
                         }
