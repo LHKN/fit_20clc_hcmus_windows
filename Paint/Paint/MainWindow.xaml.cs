@@ -34,7 +34,7 @@ namespace Paint
             { "Rectangle", "Assets/rectangle.png" },
             { "Heart", "Assets/heart.png" },
             { "Pencil", "Assets/pencil.png" },
-            { "Image", "Assets/image.png" }
+            { "Image", "Assets/image.png" },
             {"Text","Assets/text.png" }
         };
         private Matrix originalMatrix;
@@ -61,7 +61,6 @@ namespace Paint
 
         Point _start;
         Point _end;
-        string _newPathAbsolute;
 
         private MyFile MyFile;
 
@@ -176,22 +175,6 @@ namespace Paint
             string name = (string)button.Tag;
             _selectedType = name;
         }
-
-        bool _isDrawing = false;
-        IShape? _prototype = null;
-        string _selectedType = "";
-        Color _selectedColor = Colors.Black;
-        int _selectedThickness = 1; //By default
-        DoubleCollection _selectedStroke;
-
-        Point _start;
-        Point _end;
-
-        private MyFile MyFile;
-
-        private string collection_of_pressed_keys = "";
-
-        List<IShape> _shapes = new List<IShape>();
 
         private void drawOldShapes()
         {
