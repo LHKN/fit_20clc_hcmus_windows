@@ -28,8 +28,9 @@ namespace TextInputAbility
         bool isBold = false;
         bool isItalic = false;
         bool isUnderline = false;
+        Color color;
 
-        
+
 
         public void UpdateStart(Point p)
         {
@@ -39,10 +40,16 @@ namespace TextInputAbility
         {
             End = p;
         }
+        public void UpdateFontFamily(Color c)
+        {
+            color = c;
+        }
+
         public void UpdateFontFamily(FontFamily ff)
         {
             fontFamily = ff;
         }
+        
         public void UpdateFontSize(int size)
         {
             fontSize = size;
@@ -82,6 +89,7 @@ namespace TextInputAbility
             shape.Width = width;
             shape.Height = height;
             shape.Text = textContent;
+            shape.Foreground = new SolidColorBrush(color);
             if (fontFamily != null)
             {
                 shape.FontFamily = fontFamily;

@@ -16,6 +16,7 @@
     <None Remove="Assets\bold.png" />
     <None Remove="Assets\brush-size.png" />
     <None Remove="Assets\bucket.png" />
+    <None Remove="Assets\clean.png" />
     <None Remove="Assets\color-picker.png" />
     <None Remove="Assets\copy.png" />
     <None Remove="Assets\crop.png" />
@@ -58,6 +59,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\bucket.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\clean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\color-picker.png">
