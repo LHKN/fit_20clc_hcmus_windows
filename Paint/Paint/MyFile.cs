@@ -161,7 +161,9 @@ namespace Paint
 
                             StreamWriter writer = new StreamWriter(filepath);
                             //clear old data
+                            writer.BaseStream.Seek(0, SeekOrigin.Begin);
                             writer.Flush();
+
                             for (int i = 0; i < shapes.Count; i++)
                             {
                                 Debug.WriteLine(shapes[i].GetType().ToString());
@@ -199,11 +201,11 @@ namespace Paint
                             byte[] buffer = Encoding.Unicode.GetBytes(construct_string);
 
 
-                            FileStream file = File.Open(filepath, FileMode.OpenOrCreate);
-                            
+                            FileStream file = File.Open(filepath, FileMode.Create);
+                            file.Position = 0;
                             BinaryWriter writer = new BinaryWriter(file, Encoding.UTF8, false);
-                            writer.Seek(0, SeekOrigin.Begin);
                             writer.Flush();
+                            writer.Seek(0, SeekOrigin.Begin);
 
                             /*writer.Write(construct_string);*/
                             writer.Write(buffer);
