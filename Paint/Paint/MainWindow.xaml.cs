@@ -8,11 +8,9 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Paint
 {
@@ -32,7 +30,8 @@ namespace Paint
             { "Ellipse", "Assets/ellipse.png" },
             { "Rectangle", "Assets/rectangle.png" },
             { "Heart", "Assets/heart.png" },
-            { "Pencil", "Assets/pencil.png" }
+            { "Pencil", "Assets/pencil.png" },
+            { "Image", "Assets/image.png" }
         };
         private Matrix originalMatrix;
         public MainWindow()
@@ -84,6 +83,8 @@ namespace Paint
                 shapeAbilityGrid.Children.Add(button);
             }
 
+            //var folder = AppDomain.CurrentDomain.BaseDirectory;
+            _newPathAbsolute = $"{folder}Assets/image.png";
 
             MyFile = new MyFile();
             MyFile.ReferenceAbilities = _abilities;
@@ -103,6 +104,8 @@ namespace Paint
         int _selectedThickness = 1; //By default
         DoubleCollection _selectedStroke;
 
+        string _newPathAbsolute;
+
         Point _start;
         Point _end;
 
@@ -118,7 +121,7 @@ namespace Paint
 
             foreach (var shape in _shapes)
             {
-                UIElement oldShape = shape.Draw(_selectedColor, _selectedThickness, _selectedStroke);
+                UIElement oldShape = shape.Draw(_selectedColor, _selectedThickness, _selectedStroke, _newPathAbsolute);
                 actualCanvas.Children.Add(oldShape);
             }
         }
@@ -140,6 +143,8 @@ namespace Paint
             //    _selectedColor = scb.Color;
             //}
 
+            Title = _selectedType;
+
             _isDrawing = true;
             isActionStorable = true;
             _start = e.GetPosition(actualCanvas);
@@ -160,7 +165,7 @@ namespace Paint
                 _end = e.GetPosition(actualCanvas);
                 _prototype?.UpdateEnd(_end);
 
-                UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke);
+                UIElement newShape = _prototype.Draw(_selectedColor, _selectedThickness, _selectedStroke, _newPathAbsolute);
                 actualCanvas.Children.Add(newShape);
             }
         }
@@ -495,5 +500,38 @@ namespace Paint
             curMatrix.Matrix = matrix;
             e.Handled = true;
         }
+
+        private void insertImage_Click(object sender, RoutedEventArgs e)
+        {
+            FileInfo? _selectedImage = null;
+            BitmapImage imageBitmap;
+
+            var screen = new System.Windows.Forms.OpenFileDialog();
+            screen.Filter = "All Images Files (*.png;*.jpeg;*.gif;*.jpg;*.bmp;*.tiff;*.tif)|*.png;*.jpeg;*.gif;*.jpg;*.bmp;*.tiff;*.tif" +
+            "|PNG Portable Network Graphics (*.png)|*.png" +
+            "|JPEG File Interchange Format (*.jpg *.jpeg *jfif)|*.jpg;*.jpeg;*.jfif" +
+            "|BMP Windows Bitmap (*.bmp)|*.bmp" +
+            "|TIF Tagged Imaged File Format (*.tif *.tiff)|*.tif;*.tiff" +
+            "|GIF Graphics Interchange Format (*.gif)|*.gif";
+
+            if (screen.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                _selectedImage = new FileInfo(screen.FileName);
+            }
+
+            if (_selectedImage == null) { return; };
+            Random rng = new Random();
+            var folder = AppDomain.CurrentDomain.BaseDirectory;
+            _newPathAbsolute = $"{folder}Assets\\{_selectedImage.Name}";
+            string relativePath = $"Assets\\{_selectedImage.Name}";
+
+
+            if (File.Exists(_newPathAbsolute))
+            {
+                _newPathAbsolute = $"{folder}Assets\\{rng.Next()}{_selectedImage.Name}";
+            }
+            File.Copy(_selectedImage.FullName, _newPathAbsolute);
+        }
+
     }
 }

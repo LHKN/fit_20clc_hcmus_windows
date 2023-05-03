@@ -14,6 +14,7 @@ namespace Pencil
         public string Name => "Pencil";
         public Color ShapeColor { get; set; } = Colors.Transparent;
         public int Thickness { get; set; } = -1;
+        public DoubleCollection Stroke { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public object Clone()
         {
@@ -35,5 +36,9 @@ namespace Pencil
             return null;
         }
 
+        public UIElement Draw(Color color, int thickness, DoubleCollection stroke, string source)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
