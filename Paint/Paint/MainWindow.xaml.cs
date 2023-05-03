@@ -177,8 +177,6 @@ namespace Paint
                 //isActionStorable = false;
                 _storeShapes.Clear();
             }
-
-            Title = "Up";
         }
 
         private void brushSize_Thin_Click(object sender, RoutedEventArgs e)

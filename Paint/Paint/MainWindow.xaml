@@ -119,17 +119,6 @@
                     </Fluent:ToggleButton>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Stroke">
-                    <!--<Fluent:ToggleButton GroupName="Stroke" Header="Dash" Click="dash_Click">
-                        <Fluent:ToggleButton.Icon>
-                            <Image Source="Assets/dash-line.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Fluent:ToggleButton.Icon>
-                    </Fluent:ToggleButton>
-                    <Fluent:ToggleButton GroupName="Stroke" Header="Dot" Click="dot_Click">
-                        <Fluent:ToggleButton.Icon>
-                            <Image Source="Assets/dotted-line.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Fluent:ToggleButton.Icon>
-                    </Fluent:ToggleButton>-->
-                    
                     <!--dash, dot, dash dot dot-->
                     <Image Source="Assets/dotted-line.png" RenderOptions.BitmapScalingMode="HighQuality" Width="20"/>
 
@@ -193,13 +182,13 @@
                     <Fluent:Button Header="Zoom in" Name="zoomInCommand"
                                    Click="zoomInCommand_Click">
                         <Fluent:Button.Icon>
-                            <Image Source="Assets/zoomIn.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Image Source="Assets/zoom-in.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.Icon>
                     </Fluent:Button>
                     <Fluent:Button Header="Zoom out" Name="zoomOutCommand"
                                    Click="zoomOutCommand_Click">
                         <Fluent:Button.Icon>
-                            <Image Source="Assets/zoomOut.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Image Source="Assets/zoom-out.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.Icon>
                     </Fluent:Button>
                     <Fluent:Button Header="100%" Name="zoomOriginalCommand"

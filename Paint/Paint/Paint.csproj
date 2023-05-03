@@ -37,6 +37,8 @@
     <None Remove="Assets\thick.png" />
     <None Remove="Assets\thin.png" />
     <None Remove="Assets\undo.png" />
+    <None Remove="Assets\zoom-in.png" />
+    <None Remove="Assets\zoom-out.png" />
     <None Remove="Assets\zoomIn.png" />
     <None Remove="Assets\zoomOut.png" />
   </ItemGroup>
@@ -124,6 +126,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\undo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\zoom-in.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\zoom-out.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\zoomIn.png">
