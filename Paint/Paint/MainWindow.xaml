@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Paint"
         mc:Ignorable="d"
         Title="MyPaint" Height="450" Width="800" Loaded="RibbonWindow_Loaded">
-    <DockPanel LastChildFill="True" Keyboard.KeyDown="Screen_KeyDown_Handler" >
+    <DockPanel LastChildFill="True" Keyboard.KeyDown="Screen_KeyDown_Handler" Keyboard.KeyUp="Screen_KeyUp_Handler">
         <Fluent:Ribbon Name="mainRibbon" DockPanel.Dock="Top">
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage Header="MyPaint">

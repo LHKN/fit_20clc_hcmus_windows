@@ -1,34 +1,26 @@
-﻿using Microsoft.Win32;
-using MyContract;
-using System;
+﻿using MyContract;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Forms.VisualStyles;
-using System.Windows.Interop;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Xml;
+using System.Windows.Media;
 using System.Xml.Serialization;
+using System.Xml;
+using System;
+using Microsoft.Win32;
 
 namespace Paint
 {
-    public class MyFile
+    internal class MyFile
     {
         public const int BINARY_FILE = 1;
         public const int XML_FILE = 2;
-        public const string MPXML_EXT = ".mpxml";
-        public const string MPBIT_EXT = ".mpbit";
+        public const string MPXML_EXT = ".xml";
+        public const string MPBIT_EXT = ".mpbin";
         public const string BITMAP_EXT = ".bmp";
         public const string PNG_EXT = ".png";
         public const string JPG_EXT = ".jpg";

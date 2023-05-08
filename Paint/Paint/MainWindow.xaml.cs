@@ -62,8 +62,7 @@ namespace Paint
         Point _start;
         Point _end;
 
-
-        //private MyFile MyFile;
+        private MyFile MyFile;
 
         private string collection_of_pressed_keys = "";
 
@@ -459,11 +458,11 @@ namespace Paint
 
         private void Screen_KeyUp_Handler(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            //System.Windows.Forms.MessageBox.Show("Key pressed: " + collection_of_pressed_keys);
+            /*System.Windows.Forms.MessageBox.Show("Key pressed: " + collection_of_pressed_keys);*/
 
             if(collection_of_pressed_keys.Equals(Constants.SAVE))
             {
-                //Save_File();
+                Save_File();
             }
             else if (collection_of_pressed_keys.Equals(Constants.UNDO))
             {
@@ -486,11 +485,11 @@ namespace Paint
 
             if (SenderContent.Equals(Constants.MENU_SAVE))
             {
-                //Save_File();
+                Save_File();
             }
             else if(SenderContent.Equals(Constants.MENU_OPEN))
             {
-                //Open_File();
+                Open_File();
             }
             else if(SenderContent.Equals(Constants.MENU_SAVE_AS))
             {
@@ -498,7 +497,7 @@ namespace Paint
             }
             else if(SenderContent.Equals(Constants.MENU_EXPORT_TO))
             {
-                //Save_Image();
+                Save_Image();
             }
             else if(SenderContent.Equals(Constants.MENU_NEW))
             {
@@ -511,7 +510,7 @@ namespace Paint
             //Ask to save current file
             MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to save your work?", "Save", MessageBoxButton.YesNoCancel);
             if (result == MessageBoxResult.Yes) {
-                //Save_Image();
+                Save_Image();
                 _shapes.Clear();
                 _storeShapes.Clear();
                 defaultSettings();
@@ -560,7 +559,7 @@ namespace Paint
                 if (ext != null)
                 {
                     Debug.WriteLine(ext);
-                    /* MyFile.WriteTo(MyFile.CurrentStoredPath, _shapes, )*/
+                    
                     if (ext.Equals(MyFile.MPXML_EXT)) // xml mode
                     {
                         MyFile.WriteTo(MyFile.CurrentStoredPath!, _shapes, MyFile.XML_FILE);

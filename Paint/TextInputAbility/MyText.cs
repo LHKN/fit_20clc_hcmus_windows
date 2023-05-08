@@ -6,11 +6,14 @@ using System.Windows.Shapes;
 using System.Windows;
 using MyContract;
 using System.Windows.Documents;
+using System.Text;
 
 namespace TextInputAbility
 {
     public class MyText: IShape
     {
+        private const char minor_separator_1 = '!';
+        private const char minor_separator_2 = ';';
         public Point Start { get; set; }
         public Point End { get; set; }
 
@@ -130,12 +133,41 @@ namespace TextInputAbility
 
         public string FromShapeToString()
         {
-            throw new NotImplementedException();
+            string constructed_string = "";
+
+            //storage structure: <Type>:<ShapeColor>;<Thickness>;<Start>;<End>;<Stroke>;<TextContent>;<FontFamily>;<FontSize>;<Bold>;<Italic>;<Underline>
+            //                      0  :     1      ;      2    ;   3   ;  4  ;    5   ;     6              7           8        9       10        11
+            constructed_string = new StringBuilder().Append(Name).Append(minor_separator_1).Append(ShapeColor.ToString()).
+                Append(minor_separator_2).Append(Thickness).Append(minor_separator_2).Append(Start).
+                Append(minor_separator_2).Append(End).Append(minor_separator_2).Append("None")
+                .Append(minor_separator_2).Append(textContent).Append(minor_separator_2).Append(fontFamily).Append(minor_separator_2).
+                Append(fontSize).Append(minor_separator_2).Append(isBold).Append(minor_separator_2).Append(isItalic).Append(minor_separator_2).Append(isUnderline)
+                .ToString();
+
+            return constructed_string;
         }
 
         public IShape FromStringToShape(string str)
         {
-            throw new NotImplementedException();
+            if(str == null)
+            {
+                throw new ArgumentNullException("The input constructed string is referenced to null object");
+            }
+            string[] details = str.Split(new char[] { minor_separator_1, minor_separator_2 });
+
+            MyText textObject = new MyText();
+            textObject.ShapeColor = (Color)ColorConverter.ConvertFromString(details[1]);
+            textObject.Thickness = Convert.ToInt32(details[2]);
+            textObject.Start = Point.Parse(details[3]);
+            textObject.End = Point.Parse(details[4]);
+            textObject.textContent= details[6];
+            textObject.fontFamily = new FontFamily(details[7]);
+            textObject.fontSize = Convert.ToInt32(details[8]);
+            textObject.isBold = Convert.ToBoolean(details[9]);
+            textObject.isItalic = Convert.ToBoolean(details[10]);
+            textObject.isUnderline  = Convert.ToBoolean(details[11]);
+
+            return textObject;
         }
     }
 }
