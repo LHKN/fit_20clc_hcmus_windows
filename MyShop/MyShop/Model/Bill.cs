@@ -11,11 +11,12 @@ namespace MyShop.Model
         private int _id;
         private int _customerId;
         private int _totalPrice;
-        private DateTime _transactionDate;
+        private DateOnly? _transactionDate;
 
         public int Id { get => _id; set => _id = value; }
         public int CustomerId { get => _customerId; set => _customerId = value; }
         public int TotalPrice { get => _totalPrice; set => _totalPrice = value; }
-        public DateTime TransactionDate { get => _transactionDate; set => _transactionDate = value; }
+        public DateOnly? TransactionDate { get => _transactionDate; set => _transactionDate = value; }
+
     }
 }

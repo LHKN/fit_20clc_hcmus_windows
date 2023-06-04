@@ -1,12 +1,273 @@
-﻿<Window x:Class="Paint.MainWindow"
+﻿<Fluent:RibbonWindow x:Class="Paint.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         xmlns:local="clr-namespace:Paint"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MyPaint" Height="450" Width="800" Loaded="RibbonWindow_Loaded">
+    <DockPanel LastChildFill="True" Keyboard.KeyDown="Screen_KeyDown_Handler" Keyboard.KeyUp="Screen_KeyUp_Handler">
+        <Fluent:Ribbon Name="mainRibbon" DockPanel.Dock="Top">
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage Header="MyPaint">
+                    <Fluent:BackstageTabControl>
+                        <Fluent:BackstageTabItem Header="New" Content="Menu_New" MouseDoubleClick="Menu_Button_Handler" MouseDown="Menu_Button_Handler">
 
-    </Grid>
-</Window>
+                        </Fluent:BackstageTabItem>
+
+                        <Fluent:BackstageTabItem Header="Open" Content="Menu_Open" MouseDoubleClick="Menu_Button_Handler" MouseDown="Menu_Button_Handler">
+
+                        </Fluent:BackstageTabItem>
+
+                        <Fluent:BackstageTabItem Header="Save" MouseDoubleClick="Menu_Button_Handler" Content="Menu_Save" MouseDown="Menu_Button_Handler">
+
+                        </Fluent:BackstageTabItem>
+
+                        <Fluent:BackstageTabItem Header="Export to" Content="Export_To" MouseDoubleClick="Menu_Button_Handler" MouseDown="Menu_Button_Handler">
+
+                        </Fluent:BackstageTabItem>
+
+                        <Fluent:BackstageTabItem Header="About" Content="Menu_About">
+
+                        </Fluent:BackstageTabItem>
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+            <Fluent:RibbonTabItem Header="Master">
+                <Fluent:RibbonGroupBox Focusable="True" Header="Clipboard">
+                    <Fluent:Button Header="Cut">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/scissors.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Copy" >
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/copy.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Clear" Click="ClearButton_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/clean.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Image">
+                    <Fluent:SplitButton Header="Select">
+                        <Fluent:SplitButton.Icon>
+                            <Image Source="Assets/selection.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:SplitButton.Icon>
+                    </Fluent:SplitButton>
+                    <!--select a single element for editing again-->
+                    <Fluent:Button Header="Swap Image" Fluent:RibbonProperties.SizeDefinition="Middle" Click="insertImage_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/image.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <!--new picture to canvas-->
+                    <Fluent:SplitButton Header="Flip" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:SplitButton.Icon>
+                            <Image Source="Assets/image.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:SplitButton.Icon>
+                    </Fluent:SplitButton>
+                    <!--horizonal/vertical-->
+                    <Fluent:SplitButton Header="Rotate" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:SplitButton.Icon>
+                            <Image Source="Assets/rotate.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:SplitButton.Icon>
+                    </Fluent:SplitButton>
+                    <!--90 degree to the right/left & 180 degree-->
+                    <Fluent:ToggleButton GroupName="Abilities" Header="Crop" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:ToggleButton.Icon>
+                            <Image Source="Assets/crop.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:ToggleButton.Icon>
+                    </Fluent:ToggleButton>
+                    <!--crop the selected area-->
+                    <Fluent:ToggleButton GroupName="Abilities" Header="Resize" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:ToggleButton.Icon>
+                            <Image Source="Assets/resize.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:ToggleButton.Icon>
+                    </Fluent:ToggleButton>
+                    <!--resize selection/whole page-->
+
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Tools">
+                    
+                        
+                    
+                    <Fluent:ToggleButton GroupName="Abilities" Header="Pencil" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:ToggleButton.Icon>
+                            <Image Source="Assets/pencil.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:ToggleButton.Icon>
+                    </Fluent:ToggleButton>
+                    <Fluent:ToggleButton GroupName="Abilities" Header="Fill" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:ToggleButton.Icon>
+                            <Image Source="Assets/bucket.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:ToggleButton.Icon>
+                    </Fluent:ToggleButton>
+                    <Fluent:ToggleButton GroupName="Abilities" Header="Text" Fluent:RibbonProperties.SizeDefinition="Middle" Click="TextButton_Click">
+                        <Fluent:ToggleButton.Icon>
+                            <Image Source="Assets/text.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:ToggleButton.Icon>
+                    </Fluent:ToggleButton>
+                    <Fluent:ToggleButton GroupName="Abilities" Header="Eraser" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:ToggleButton.Icon>
+                            <Image Source="Assets/eraser.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:ToggleButton.Icon>
+                    </Fluent:ToggleButton>
+                    <Fluent:ToggleButton GroupName="Abilities" Header="Color picker" Fluent:RibbonProperties.SizeDefinition="Middle">
+                        <Fluent:ToggleButton.Icon>
+                            <Image Source="Assets/color-picker.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:ToggleButton.Icon>
+                    </Fluent:ToggleButton>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="Font">
+                    <StackPanel Orientation="Vertical" Width="195">
+                    <Fluent:ComboBox Header="Font Family" x:Name="fontFamilyComboBox" Height="20" Width="195"  IsEditable="False" HorizontalAlignment="Left"
+                                         SelectionChanged="fontFamily_SelectionChanged">
+             
+
+                    </Fluent:ComboBox>
+                    <Fluent:ComboBox Header="Size" x:Name="fontSizeComboBox" Height="20" Width="100"  IsEditable="False" HorizontalAlignment="Left" Padding="10"
+                                         SelectionChanged="fontSize_SelectionChanged">
+
+                        
+                    </Fluent:ComboBox>
+                        <StackPanel Orientation="Horizontal">
+                    <Fluent:Button Header="" Name="boldCommand"
+                                   Click="boldCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/bold.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="" Name="italicCommand"
+                                   Click="italicCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/italic.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="" Name="underlineCommand"
+                                   Click="underlineCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/underline.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    </StackPanel>
+                    </StackPanel>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="Stroke">
+                    <!--dash, dot, dash dot dot-->
+                    <Image Source="Assets/dotted-line.png" RenderOptions.BitmapScalingMode="HighQuality" Width="20"/>
+
+                    <Fluent:ComboBox Header="Types" x:Name="strokeComboBox" Height="20" IsEditable="False" HorizontalAlignment="Center"
+                                         SelectionChanged="strokeComboBox_SelectionChanged">
+                        <ComboBoxItem IsSelected="True">
+                            <TextBlock Text="__________" FontWeight="ExtraBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <TextBlock Text="_.._.._.._.." FontWeight="ExtraBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </ComboBoxItem>
+
+                        <ComboBoxItem>
+                            <TextBlock Text="............" FontWeight="ExtraBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </ComboBoxItem>
+
+                        <ComboBoxItem>
+                            <TextBlock Text="_ _ _ _ _ _ " FontWeight="ExtraBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </ComboBoxItem>
+                    </Fluent:ComboBox>
+
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Size">
+                    <!--pen width-->
+                    <Fluent:SplitButton Header="Thickness">
+                        <Fluent:SplitButton.Icon>
+                            <Image Source="Assets/line-thickness.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:SplitButton.Icon>
+                        <Fluent:MenuItem GroupName="Thickness" Name="brushSize_Thin" Header="1px" Icon="Assets/thin.png"
+                                         Click="brushSize_Thin_Click" IsCheckable="True" IsChecked="True"/>
+                        <Fluent:MenuItem GroupName="Thickness" Name="brushSize_Medium" Header="3px" Icon="Assets/medium.png"
+                                         Click="brushSize_Medium_Click" IsCheckable="True"/>
+                        <Fluent:MenuItem GroupName="Thickness" Name="brushSize_Thick" Header="5px" Icon="Assets/thick.png"
+                                         Click="brushSize_Thick_Click" IsCheckable="True"/>
+                        <Fluent:MenuItem GroupName="Thickness" Name="brushSize_ExtraThick" Header="10px" Icon="Assets/extrathick.png"
+                                         Click="brushSize_ExtraThick_Click" IsCheckable="True"/>
+                    </Fluent:SplitButton>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Shapes">
+                    <UniformGrid Name="shapeAbilityGrid" Columns="4">
+
+                    </UniformGrid>
+                    <!--add when loaded-->
+
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Commands">
+                    <Fluent:Button Header="Undo" Name="undoCommand"
+                                   Click="undoCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/undo.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Redo" Name="redoCommand"
+                                   Click="redoCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/redo.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Zoom">
+                    <Fluent:Button Header="Zoom in" Name="zoomInCommand"
+                                   Click="zoomInCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/zoom-in.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Zoom out" Name="zoomOutCommand"
+                                   Click="zoomOutCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/zoom-out.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="100%" Name="zoomOriginalCommand"
+                                   Click="zoomOriginalCommand_Click">
+                        <Fluent:Button.Icon>
+                            <Image Source="Assets/100_origin.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Colors">
+                    <Fluent:Button Name="primaryColor" Header="PColor" Fluent:RibbonProperties.SizeDefinition="Large" Background="Black"/>
+                    <Fluent:Button Name="secondaryColor" Header="SColor" Fluent:RibbonProperties.SizeDefinition="Large" Background="FloralWhite"/>
+                    <Fluent:Button Name="redColor" Header="Red" Fluent:RibbonProperties.SizeDefinition="Small" Background="Red" Click="redColor_Click" />
+                    <Fluent:Button Name="whiteColor" Header="White" Fluent:RibbonProperties.SizeDefinition="Small" Background="FloralWhite" Click="whiteColor_Click"/>
+                    <Fluent:Button Name="blackColor" Header="Black" Fluent:RibbonProperties.SizeDefinition="Small" Background="Black" Click="blackColor_Click"/>
+                    <Fluent:Button Name="orangeColor" Header="Orange" Fluent:RibbonProperties.SizeDefinition="Small" Background="Orange" Click="orangeColor_Click"/>
+                    <Fluent:Button Name="yellowColor" Header="Yellow" Fluent:RibbonProperties.SizeDefinition="Small" Background="Yellow" Click="yellowColor_Click"/>
+                    <Fluent:Button Name="greenColor" Header="Green" Fluent:RibbonProperties.SizeDefinition="Small" Background="Green" Click="greenColor_Click"/>
+                    <Fluent:Button Name="blueColor" Header="Blue" Fluent:RibbonProperties.SizeDefinition="Small" Background="Blue" Click="blueColor_Click"/>
+                    <Fluent:Button Name="indigoColor" Header="Indigo" Fluent:RibbonProperties.SizeDefinition="Small" Background="Indigo" Click="indigoColor_Click"/>
+                    <Fluent:Button Name="violetColor" Header="Violet" Fluent:RibbonProperties.SizeDefinition="Small" Background="Violet" Click="violetColor_Click"/>
+
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+        <Grid x:Name="whiteBoard" Background="White"  ClipToBounds="True" MouseWheel="Grid_MouseWheel">
+            <Canvas Background="Transparent" Name="actualCanvas">
+                <Canvas.RenderTransform>
+                    <MatrixTransform/>
+                </Canvas.RenderTransform>
+                
+            </Canvas>
+            <Canvas Background="Transparent" Name="aboveCanvas" MouseDown="canvas_MouseDown" MouseMove="canvas_MouseMove" MouseUp="canvas_MouseUp">
+            
+            </Canvas>
+            <TextBlock VerticalAlignment="Bottom" 
+                       Text="{Binding MousePos, UpdateSourceTrigger=PropertyChanged}"
+                       Margin="5,5,0,0"/>
+        </Grid>
+        
+        
+    </DockPanel>
+</Fluent:RibbonWindow>

@@ -1,0 +1,160 @@
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<Page
+    x:Class="MyShop.View.OrderHistoryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyShop.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:viewmodel="using:MyShop.ViewModel" 
+    d:DataContext="{d:DesignInstance Type=viewmodel:OrderHistoryViewModel}"
+    xmlns:services="using:MyShop.Services" 
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <services:TimeConverter x:Key="timeConverter"/>
+    </Page.Resources>
+
+    <Grid Margin="20, 20, 20, 20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel x:Name="BookCommandStackPanel" Orientation="Horizontal" RelativePanel.AlignTopWithPanel="True">
+            <AppBarButton Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
+            <AppBarButton Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}"/>
+            <AppBarButton Icon="Edit" Label="Update" Command="{Binding EditCommand}"/>
+        </StackPanel>
+        
+        
+        <CalendarDatePicker Grid.Column="1" PlaceholderText="Pick a date" Header="Filter Orders From Date" 
+                            Date="{Binding DateFrom, Converter={StaticResource timeConverter}, Mode=TwoWay}" 
+                            DateFormat = "{}{dayofweek.full}, {month.full} {day.integer}, {year.full}"/>
+        
+        <CalendarDatePicker Grid.Column="2" PlaceholderText="Pick a date" Header="To Date" 
+                            Date="{Binding DateTo, Converter={StaticResource timeConverter}, Mode=TwoWay}" 
+                            DateFormat = "{}{dayofweek.full}, {month.full} {day.integer}, {year.full}"/>
+        <AppBarButton Grid.Column="3" Icon="Find"  Label="Search" Command="{Binding SearchCommand}"/>
+
+        <ListView Grid.Row="1" 
+                  x:Name="dataListView" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Margin="10,50,0,0"
+                  ItemsSource="{Binding DisplayBillList, Mode=TwoWay}"
+                  SelectedItem="{Binding SelectedBill, Mode=TwoWay}">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="200" Height="100">
+                        <TextBlock TextWrapping="WrapWholeWords" >
+                                ID: <Run Text="{Binding Id}" FontWeight="Bold" Foreground="Blue"/>
+                        </TextBlock>
+                        <TextBlock TextWrapping="WrapWholeWords" >
+                                Customer ID: <Run Text="{Binding CustomerId}" FontWeight="Bold" Foreground="CadetBlue"/>
+                        </TextBlock>
+                        <TextBlock TextWrapping="WrapWholeWords" >
+                                Total price: <Run Text="{Binding TotalPrice}" FontWeight="Bold" Foreground="CadetBlue"/>
+                        </TextBlock>
+                        <TextBlock TextWrapping="WrapWholeWords" >
+                                Transaction date: <Run Text="{Binding TransactionDate}" FontWeight="Bold" Foreground="CadetBlue"/>
+                        </TextBlock>
+
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+            <ListView.Resources>
+                <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
+                    <AppBarButton Icon="Add" Label="Add" Command="{Binding AddCommand}"/>
+                    <AppBarButton Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}"/>
+                    <AppBarButton Icon="Edit" Label="Update" Command="{Binding EditCommand}"/>
+                </CommandBarFlyout>
+            </ListView.Resources>
+
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                           MaximumRowsOrColumns="1"
+                           Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center">
+            <AppBarButton Label="Previous" Icon="Previous" Command="{Binding GoToPreviousPageCommand}"/>
+            <StackPanel>
+                <TextBlock HorizontalTextAlignment="Center" Text="{Binding PaginationMessage}"/>
+                <TextBlock HorizontalAlignment="Center">
+                    <Run Text="{Binding CurrentPage}"></Run>/<Run Text="{Binding TotalPages}"></Run>
+                </TextBlock>
+            </StackPanel>
+            <AppBarButton Label="Next" Icon="Next" Command="{Binding GoToNextPageCommand}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0 40 0 0">
+            <TextBlock Text="Selected Order's Detail Summary" Margin="10 10 10 10"/>
+            <TextBlock Text="{Binding SelectedCustomer}" Margin="10 10 10 10" FontWeight="Light"/>
+            <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                      Width="200" Height="200"
+                      HorizontalAlignment="Left"
+                      ItemsSource="{Binding SelectedBillDetailList, Mode=TwoWay}">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="200" Height="100" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Book ID" FontWeight="Light"/>
+                            <TextBlock Grid.Column="1" TextWrapping="WrapWholeWords">
+                                    <Run Text="{Binding BookId}" FontWeight="Bold" Foreground="CadetBlue"/>
+                            </TextBlock>
+                            
+                            <TextBlock Grid.Row="1" Text="Book Price" FontWeight="Light"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" TextWrapping="WrapWholeWords" HorizontalAlignment="Left">
+                                        <Run Text="{Binding Price}" FontWeight="Bold" Foreground="CadetBlue"/>
+                            </TextBlock>
+
+                            <TextBlock Grid.Row="2" Text="Quantity" FontWeight="Light"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Number}"
+                                           FontWeight="Bold" Foreground="CadetBlue"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <ListView.Resources>
+
+                </ListView.Resources>
+
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                               MaximumRowsOrColumns="2"
+                               Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+        </StackPanel>
+    </Grid>
+</Page>

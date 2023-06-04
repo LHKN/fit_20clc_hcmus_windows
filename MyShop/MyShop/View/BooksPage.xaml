@@ -1,0 +1,162 @@
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<Page
+    x:Class="MyShop.View.BooksPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyShop.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodel="using:MyShop.ViewModel" 
+    xmlns:services="using:MyShop.Services" 
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:slider="using:Syncfusion.UI.Xaml.Sliders"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+>
+
+    <Page.DataContext>
+        <viewmodel:BooksViewModel x:Name="booksViewModel"/>
+    </Page.DataContext>
+
+    <Page.Resources>
+        <services:RelativeToAbsoluteConverter x:Key="absoluteConverter"/>
+        <services:FormatCurrencyService x:Key="formatCurrency"/>
+        <services:AutoSuggestQueryParameterConverter x:Key="argsConverter"/>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel x:Name="BookCommandStackPanel"
+                        Grid.Row="0" Grid.Column="0"
+                        Orientation="Horizontal" Height="50" 
+                        RelativePanel.AlignLeftWithPanel="True">
+            <AppBarButton x:Name="addButton" Icon="Add" Label="Add" Command="{Binding AddBookCommand}"/>
+            <AppBarButton x:Name="deleteButton" Icon="Delete" Label="Delete" Command="{Binding DeleteBookCommand}"/>
+            <AppBarButton x:Name="updateButton" Icon="Edit" Label="Update" Command="{Binding EditBookCommand}"/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Column="2"
+              Grid.RowSpan="3"
+                    Margin="10">
+            <AutoSuggestBox Header="Search"
+                PlaceholderText="Type a book name"
+                                VerticalContentAlignment="Center"
+                                QueryIcon="Find"
+                                Text="{Binding CurrentKeyword, Mode=TwoWay}"
+                                Margin="0,10,0,30">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="QuerySubmitted">
+                        <core:InvokeCommandAction 
+                                Command="{Binding SearchCommand}"
+                                InputConverter="{StaticResource argsConverter}" />
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+            </AutoSuggestBox>
+            <StackPanel Margin="0,0,0,10">
+                <TextBlock Text="Price value"></TextBlock>
+                <slider:SfRangeSlider
+                    RangeStart="{Binding StartPrice, Mode=TwoWay}" 
+                    RangeEnd="{Binding EndPrice, Mode=TwoWay}"
+                    Minimum="0"
+                    Maximum="500000"
+                    StepFrequency="10000"
+                    TickOffset="5"
+                    TickPlacement="After"
+                    ShowTicks="True"
+                    ShowLabels="True"
+                    FontSize="10"
+                    Margin="0,0,0,20"/>
+            </StackPanel>
+            <ComboBox Header="Category" 
+                      ItemsSource="{Binding Genres}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="Id"
+                      SelectedValue="{Binding GenreId, Mode=TwoWay}"
+                      Width="auto"
+                      Margin="0,0,0,20"
+                      PlaceholderText="Default"/>
+            <Button x:Name="refreshButton" Content="Reset">
+                <Button.Flyout>
+                    <MenuFlyout Placement="Right">
+                        <MenuFlyoutItem Text="By search" Command="{Binding ResetSearchCommand}" Icon="Find"/>
+                        <MenuFlyoutItem Text="By price" Command="{Binding ResetPriceCommand}" Icon="Calculator"/>
+                        <MenuFlyoutItem Text="By category" Command="{Binding ResetCategoryCommand}" Icon="Tag"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+        </StackPanel>
+
+        <GridView     Grid.Row="1"
+                      Grid.ColumnSpan="2"
+                      Margin="0,10,0,0"
+                      x:Name="bookContentGridView"
+                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                      ItemsSource="{Binding DisplayBookCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding SelectedBook, Mode=TwoWay}"
+                      HorizontalAlignment="Center">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical" Width="200" Height="280">
+                        <Image  Margin="0, 0, 5, 0" Width="100" Height="200" 
+                                Source="{Binding Image, Converter={StaticResource absoluteConverter}}"/>
+                        <TextBlock TextWrapping="Wrap" HorizontalTextAlignment="Center">
+                                <Run Text="{Binding Title}" FontWeight="Bold" Foreground="Blue"/>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap" HorizontalTextAlignment="Center">
+                                <Run Text="{Binding Author}" Foreground="DimGray"/>
+                        </TextBlock>
+                        <!--<TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
+                                <Run Text="{Binding PublishedDate}" Foreground="ForestGreen"/>
+                        </TextBlock>-->
+                        <TextBlock TextWrapping="WrapWholeWords" HorizontalTextAlignment="Center">
+                                <Run Text="{Binding Price, Converter={StaticResource formatCurrency}}" Foreground="CadetBlue" FontWeight="Bold"/>
+                        </TextBlock>
+
+
+                        <!--<StackPanel.ContextFlyout>
+                            <CommandBarFlyout Placement="Right" x:Name="CommandBarFlyout1">
+                                <AppBarButton Label="Edit" Icon="Edit" ToolTipService.ToolTip="Save" Command="{Binding EditBookCommand}" />
+                                <AppBarButton Label="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" Command="{Binding DeleteBookCommand}"/>
+                            </CommandBarFlyout>
+                        </StackPanel.ContextFlyout>-->
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                           MaximumRowsOrColumns="5"
+                           Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+
+        </GridView>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+            <AppBarButton Label="Previous" Icon="Previous" Command="{Binding GoToPreviousPageCommand}"/>
+            <StackPanel>
+                <TextBlock HorizontalTextAlignment="Center" Text="{Binding PaginationMessage}"/>
+                <TextBlock HorizontalAlignment="Center">
+                    <Run Text="{Binding CurrentPage}"></Run>/<Run Text="{Binding TotalPages}"></Run>
+                </TextBlock>
+            </StackPanel>
+            <AppBarButton Label="Next" Icon="Next" Command="{Binding GoToNextPageCommand}"/>
+        </StackPanel>
+
+    </Grid>
+</Page>

@@ -7,9 +7,8 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="eceafe26-280b-4f53-8bd6-780836b7249d"
     Publisher="CN=minhq"
-    Version="1.0.0.0" />
+    Version="1.0.0.0"  Name="eceafe26-280b-4f53-8bd6-780836b7249d"/>
 
   <Properties>
     <DisplayName>MyShop</DisplayName>
@@ -34,9 +33,12 @@
         DisplayName="MyShop"
         Description="MyShop"
         BackgroundColor="transparent"
-        Square150x150Logo="Assets\Square150x150Logo.png"
-        Square44x44Logo="Assets\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
+        Square44x44Logo="Assets\Square44x44Logo.png" Square150x150Logo="Assets\Square150x150Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"  Square71x71Logo="Assets\LockScreenLogo.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>

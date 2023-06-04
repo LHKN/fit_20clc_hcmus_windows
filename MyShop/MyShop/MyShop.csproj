@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
@@ -10,12 +10,59 @@
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+    <UserSecretsId>0cfef0a2-4262-470c-9cc5-3acd43f6b2c1</UserSecretsId>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="Assets\wp9381234.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\book_cover.jpg" />
+    <None Remove="Assets\logo_bookit.png" />
+    <None Remove="Assets\wp9381234.jpg" />
+    <None Remove="Styles\ButtonStyles.xaml" />
+    <None Remove="Styles\UIColors.xaml" />
+    <None Remove="View\AccountPage.xaml" />
+    <None Remove="View\AddBookPage.xaml" />
+    <None Remove="View\AddOrderPage.xaml" />
+    <None Remove="View\BookPage.xaml" />
+    <None Remove="View\BooksPage.xaml" />
+    <None Remove="View\BookTypePage.xaml" />
+    <None Remove="View\ContentDialogContent.xaml" />
+    <None Remove="View\DailyProductPage.xaml" />
+    <None Remove="View\DailyRevenuePage.xaml" />
+    <None Remove="View\DashboardPage.xaml" />
+    <None Remove="View\EditBookPage.xaml" />
+    <None Remove="View\EditOrderPage.xaml" />
+    <None Remove="View\HomePage.xaml" />
+    <None Remove="View\LoginDatabasePage.xaml" />
+    <None Remove="View\LoginView.xaml" />
+    <None Remove="View\MonthlyProductPage.xaml" />
+    <None Remove="View\MonthlyRevenuePage.xaml" />
+    <None Remove="View\OrderHistoryPage.xaml" />
+    <None Remove="View\RegisterPage.xaml" />
+    <None Remove="View\RootPage.xaml" />
+    <None Remove="View\SettingPage.xaml" />
+    <None Remove="View\StatisticPage.xaml" />
+    <None Remove="View\WeeklyProductPage.xaml" />
+    <None Remove="View\WeeklyRevenuePage.xaml" />
+    <None Remove="View\YearlyProductPage.xaml" />
+    <None Remove="View\YearlyRevenuePage.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221109.1" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0-preview2" />
+    <PackageReference Include="EPPlus" Version="6.2.2" />
+    <PackageReference Include="H.OxyPlot.WinUI" Version="0.9.30" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WinUI" Version="2.0.0-beta.701" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0-preview1.23109.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0-preview.3.23174.8" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230331000" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.25346-preview" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+    <PackageReference Include="Syncfusion.Sliders.WinUI" Version="21.1.41" />
+    <PackageReference Include="System.Data.OleDb" Version="7.0.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
@@ -28,10 +75,167 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\" />
-    <Folder Include="Services\" />
-    <Folder Include="ViewModel\" />
-    <Folder Include="View\" />
+    <Content Update="Assets\LockScreenLogo.scale-200.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\SplashScreen.scale-200.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square150x150Logo.scale-200.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.scale-200.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\StoreLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Wide310x150Logo.scale-200.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Assets\book_cover.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\logo_bookit.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\RegisterPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\LoginDatabasePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\EditOrderPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\AddOrderPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\AddBookPage.xaml" />
+    <Page Update="View\ContentDialogContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\EditBookPage.xaml" />
+    <Page Update="View\YearlyProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\YearlyRevenuePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\MonthlyProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\MonthlyRevenuePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\WeeklyProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\WeeklyRevenuePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\DailyProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\DailyRevenuePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\BookTypePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\BooksPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\SettingPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\StatisticPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\AccountPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\OrderHistoryPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\DashboardPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\BookPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Styles\ButtonStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\RootPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\HomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\LoginView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Styles\UIColors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!-- 
